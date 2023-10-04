@@ -40,6 +40,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-#Lisence
-kendo-ui-license.txt

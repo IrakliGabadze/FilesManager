@@ -4,7 +4,6 @@ import { FolderItemComponent } from './components/folder-item.component';
 import { FilesComponent } from './pages/files/files.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
-import { TooltipsModule } from '@progress/kendo-angular-tooltip';
 
 @NgModule({
 
@@ -16,8 +15,7 @@ import { TooltipsModule } from '@progress/kendo-angular-tooltip';
   ],
 
   imports: [
-    CommonModule,
-    TooltipsModule
+    CommonModule
   ],
   exports:[
     FolderItemComponent,

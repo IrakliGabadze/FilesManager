@@ -19,21 +19,9 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
-    "@progress/kendo-angular-buttons": "13.5.0",
-    "@progress/kendo-angular-common": "13.5.0",
-    "@progress/kendo-angular-icons": "13.5.0",
-    "@progress/kendo-angular-l10n": "13.5.0",
-    "@progress/kendo-angular-layout": "^13.5.0",
-    "@progress/kendo-angular-navigation": "^13.5.0",
-    "@progress/kendo-angular-progressbar": "13.5.0",
-    "@progress/kendo-angular-tooltip": "^13.5.0",
-    "@progress/kendo-licensing": "^1.0.2",
-    "@progress/kendo-svg-icons": "^1.0.0",
-    "@progress/kendo-theme-material": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0",
-    "@progress/kendo-angular-popup": "13.5.0"
+    "zone.js": "~0.13.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.4",
