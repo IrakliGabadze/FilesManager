@@ -1,3 +1,4 @@
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -6,9 +7,13 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class FilesController : ControllerBase
 {
-    [HttpGet(Name = "GetFolderItems")]
-    public List<string> GetFiles()
+    private readonly FilesService _filesService;
+
+    public FilesController(FilesService filesService)
     {
-       return new List<string>(0);
+        _filesService = filesService;
     }
+
+    [HttpGet(Name = "GetFolderItems")]
+    public List<string> GetFolderItems() => -_filesService.GetFolderItems();
 }

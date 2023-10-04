@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FolderItemModel } from '../models/folderItemModel';
+import { FolderItemType } from '../enums/folderItemType';
 
 @Component({
   selector: 'folder-item',
@@ -17,6 +18,6 @@ export class FolderItemComponent implements OnInit{
   iconPath!:string;
 
   ngOnInit(){
-    this.iconPath = this.folderItem.isFolder ? FolderItemComponent.folderIconPath : FolderItemComponent.fileIconPath;
+    this.iconPath = this.folderItem.type == FolderItemType.Folder ? FolderItemComponent.folderIconPath : FolderItemComponent.fileIconPath;
   }
 }
