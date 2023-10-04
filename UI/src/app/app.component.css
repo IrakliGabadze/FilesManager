@@ -51,12 +51,17 @@ li {
     color: #d6002f;
   }
 
-mat-toolbar a {
-  text-decoration: none;
-  font-size: 18px !important;
-  color: cornflowerblue;
-  margin: 5px;
+mat-toolbar {
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
 }
+
+  mat-toolbar a {
+    text-decoration: none;
+    font-size: 18px !important;
+    color: cornflowerblue;
+    margin: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
 
 .active {
   color: rgb(85, 26, 139) !important;
