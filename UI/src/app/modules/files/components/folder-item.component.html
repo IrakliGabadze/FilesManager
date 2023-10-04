@@ -1,0 +1,13 @@
+
+<div class="card" kendoTooltip position="bottom">
+
+    <img [src]="iconPath" />
+
+    <div *ngIf="folderItem.name.length > 30" class="folder-item-name" [title]="folderItem.name">
+        {{folderItem.name}}
+    </div>
+
+    <div *ngIf="folderItem.name.length <= 35" class="folder-item-name">
+        {{folderItem.name}}
+    </div>
+</div>
