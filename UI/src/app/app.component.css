@@ -31,7 +31,7 @@ body {
 .content-wrapper {
   position: relative;
   width: 100%;
-  height:max-content;
+  height: max-content;
 }
 
 ul {
@@ -51,10 +51,34 @@ li {
     color: #d6002f;
   }
 
-a {
-    text-decoration: none;
+mat-toolbar a {
+  text-decoration: none;
+  font-size: 18px !important;
+  color: cornflowerblue;
+  margin: 5px;
 }
 
-  .active{
-      color: cornflowerblue;
-  }
+.active {
+  color: rgb(85, 26, 139) !important;
+}
+
+#toobar-icon {
+  width: 70px;
+  height: 70px;
+  margin-top: -7px;
+}
+
+#toolbar-header {
+  margin: 0;
+  margin-left: 20px;
+  color: cornflowerblue;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 1.5em;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
