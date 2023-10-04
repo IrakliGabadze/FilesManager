@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { FilesModule } from './modules/files/files.module';
 import { AppRoutingModule } from './app-routing.module';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
     bootstrap:    [AppComponent],
@@ -17,6 +20,9 @@ import { AppRoutingModule } from './app-routing.module';
       BrowserAnimationsModule,
       FilesModule,
       HttpClientModule,
+      MatToolbarModule,
+      MatButtonModule,
+      MatIconModule
     ]
 })
 export class AppModule {
