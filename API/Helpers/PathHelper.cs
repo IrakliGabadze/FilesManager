@@ -8,12 +8,12 @@ public class PathHelper
     
     public PathHelper(IConfiguration configuration)
     {
-        var mainFolderPath = configuration["MainFolderPath"];
+        var filesRootFolderPath = configuration["FilesRootFolderPath"];
 
-        if (string.IsNullOrWhiteSpace(mainFolderPath))
-            throw new InvalidOperationException("MainFolderPath is not specified in");
+        if (string.IsNullOrWhiteSpace(filesRootFolderPath) || Directory.Exists(filesRootFolderPath))
+            throw new InvalidOperationException("FilesRootFolderPath is not defined in");
 
-        _mainFolderPath = mainFolderPath;
+        _mainFolderPath = filesRootFolderPath;
     }
 
     public static bool PathIsSafe(string path) => !ContainsPathTraversal(path) && !ContainsInvalidCharacters(path);
