@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FolderItem } from '../../models/folderItemModel';
 import { FilesService } from '../../services/files/files.service';
+import { FolderItemType } from '../../enums/folderItemType';
 
 @Component({
   selector: 'files-page',
@@ -29,5 +30,11 @@ export class FilesComponent implements OnInit {
         error: (err: any) => console.log(err) //TODO handle error
         //complete: () => console.log(`API call for url: ${url} completed`)
       });
+  }
+
+   folderItemClicked(folderItem: FolderItem) {
+    if (folderItem.type == FolderItemType.Folder) {
+      this.getFolderItems(folderItem.path);
+    }
   }
 }
