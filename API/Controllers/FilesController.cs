@@ -1,3 +1,4 @@
+using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,5 +16,6 @@ public class FilesController : ControllerBase
     }
 
     [HttpGet(Name = "GetFolderItems")]
-    public List<string> GetFolderItems() => -_filesService.GetFolderItems();
+    public List<FolderItem> GetFolderItems([FromQuery] string? folderPartialPath) => 
+        _filesService.GetFolderItems(folderPartialPath);
 }

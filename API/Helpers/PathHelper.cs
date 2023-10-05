@@ -4,21 +4,7 @@ public class PathHelper
 {
     private static readonly char[] InvalidChars = Path.GetInvalidPathChars();
 
-    private static string _mainFolderPath = default!;
-    
-    public PathHelper(IConfiguration configuration)
-    {
-        var filesRootFolderPath = configuration["FilesRootFolderPath"];
-
-        if (string.IsNullOrWhiteSpace(filesRootFolderPath) || Directory.Exists(filesRootFolderPath))
-            throw new InvalidOperationException("FilesRootFolderPath is not defined in");
-
-        _mainFolderPath = filesRootFolderPath;
-    }
-
     public static bool PathIsSafe(string path) => !ContainsPathTraversal(path) && !ContainsInvalidCharacters(path);
-
-    public static string MainFolderPath => _mainFolderPath;
 
     private static bool ContainsPathTraversal(string path)
     {

@@ -25,8 +25,8 @@ import { AboutComponent } from './pages/about/about.component';
       RouterModule,
       AppRoutingModule,
       BrowserModule,
-      BrowserAnimationsModule,
       HttpClientModule,
+      BrowserAnimationsModule,
       MatToolbarModule,
       MatButtonModule,
       MatIconModule

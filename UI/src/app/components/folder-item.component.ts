@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FolderItemModel } from '../models/folderItemModel';
+import { FolderItem } from '../models/folderItemModel';
 import { FolderItemType } from '../enums/folderItemType';
 
 @Component({
@@ -10,7 +10,7 @@ import { FolderItemType } from '../enums/folderItemType';
 
 export class FolderItemComponent implements OnInit{
 
- @Input() folderItem!: FolderItemModel;
+ @Input() folderItem!: FolderItem;
 
   static folderIconPath:string = "assets/folderIcon.png";
   static fileIconPath = "assets/fileIcon.png";

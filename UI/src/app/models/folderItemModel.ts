@@ -1,6 +1,6 @@
 import { FolderItemType } from "../enums/folderItemType";
 
-export class FolderItemModel {
+export class FolderItem {
 
  constructor(name: string, path: string, type: FolderItemType, fileMediaType?: string, fileExt?: string) {
     this.name = name;

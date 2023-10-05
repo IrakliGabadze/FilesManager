@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FolderItemModel } from '../../models/folderItemModel';
-import { FolderItemType } from '../../enums/folderItemType';
+import { FolderItem } from '../../models/folderItemModel';
+import { FilesService } from '../../services/files/files.service';
 
 @Component({
   selector: 'files-page',
@@ -10,17 +10,24 @@ import { FolderItemType } from '../../enums/folderItemType';
 
 export class FilesComponent implements OnInit {
 
-  _folderItems?: FolderItemModel[];
+  constructor(private filesService: FilesService) { }
+
+  _folderItems?: FolderItem[];
 
   ngOnInit() {
-    //TODO Call files API here
-    this._folderItems = [
-      new FolderItemModel("First folder", "FirstFolderPath", FolderItemType.Folder, undefined , undefined),
-      new FolderItemModel("Second folder", "SecondFolderPath", FolderItemType.Folder, undefined , undefined),
-      new FolderItemModel("1.png", "1", FolderItemType.Image, undefined, ".png"),
-      new FolderItemModel("2.jpeg", "2", FolderItemType.Image, undefined, ".jpeg"),
-      new FolderItemModel("3.zip", "3", FolderItemType.OtherFile, undefined, ".zip"),
-      new FolderItemModel("4.rar", "4", FolderItemType.OtherFile, undefined, ".rar"),
-    ];
+    this.getFolderItems(undefined);
+  }
+
+  getFolderItems(folderPartialPath?: string) {
+
+    var pathWithouArgs = "https://localhost:7142/files";
+
+    let url = folderPartialPath == undefined ? pathWithouArgs : `${pathWithouArgs}?folderPartialPath=${folderPartialPath}`;
+
+    this.filesService.getFolderItems(url)
+    .subscribe(
+      res => this._folderItems = res,
+      (err: any) => console.log(err),
+      () => console.log(`API call for url: ${url} completed`)); 
   }
 }
