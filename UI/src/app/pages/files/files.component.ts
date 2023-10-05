@@ -24,10 +24,10 @@ export class FilesComponent implements OnInit {
 
     let url = folderPartialPath == undefined ? pathWithouArgs : `${pathWithouArgs}?folderPartialPath=${folderPartialPath}`;
 
-    this.filesService.getFolderItems(url)
-    .subscribe(
-      res => this._folderItems = res,
-      (err: any) => console.log(err),
-      () => console.log(`API call for url: ${url} completed`)); 
+    this.filesService.getFolderItems(url).subscribe({
+        next: res => this._folderItems = res,
+        error: (err: any) => console.log(err) //TODO handle error
+        //complete: () => console.log(`API call for url: ${url} completed`)
+      });
   }
 }
