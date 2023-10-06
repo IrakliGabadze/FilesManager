@@ -54,7 +54,7 @@ public class FilesService
                     folderItemType,
                     fileMediaType,
                     item.Extension,
-                    GetFileThumbnail(folderItemType, item.FullName, item.Extension));
+                    null); //GetFileThumbnail(folderItemType, item.FullName, item.Extension));
 
                 result.Add(folderItem);
             }
@@ -64,7 +64,7 @@ public class FilesService
     }
 
     private static bool IsFolder(FileSystemInfo fileSystemInfo) => fileSystemInfo is DirectoryInfo;
-  
+
     private string? GetFileThumbnail(FolderItemType folderItemType, string fullPath, string ext)
     {
         if (folderItemType == FolderItemType.Image)
@@ -74,6 +74,4 @@ public class FilesService
 
         return null;
     }
-
-   
 }
