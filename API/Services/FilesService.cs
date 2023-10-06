@@ -7,16 +7,18 @@ namespace API.Services;
 
 public class FilesService
 {
-    private const string InternalFilesRootFolderPartialPath = "FilesRootFolder"!;
-    
     private static string _filesRootFolderPath = default!;
 
-    public FilesService(IWebHostEnvironment env, IOptions<Settings> options)
+    private readonly ThumbnailService _thumbnailService;
+
+    public FilesService(IWebHostEnvironment env, IOptions<Settings> options, ThumbnailService thumbnailHelper)
     {
-        GetCleanRootFolderPath(env, options);
+        _thumbnailService = thumbnailHelper;
+
+        _filesRootFolderPath = PathHelper.GetCleanRootFolderPath(env, options);
     }
 
-    public List<FolderItem> GetFolderItems(string? folderPartialPath)
+    public async Task<List<FolderItem>> GetFolderItemsAsync(string? folderPartialPath)
     {
         if (folderPartialPath?.StartsWith("\\") == true || folderPartialPath?.StartsWith("/") == true)
             throw new InvalidOperationException($"Invalid characters in folder partial path: {folderPartialPath}");
@@ -40,11 +42,19 @@ public class FilesService
             {
                 var isFolder = IsFolder(item);
 
-                var folderItemType = isFolder ? FolderItemType.Folder : GetFolderItemType(item.Name);
+                var folderItemType = isFolder ? FolderItemType.Folder : PathHelper.GetFolderItemType(item.Name);
 
                 var fileMediaType = isFolder ? null : PathHelper.GetMimeType(item.Extension);
 
-                var folderItem = new FolderItem(item.Name, item.FullName.Replace(_filesRootFolderPath, string.Empty), folderItemType, fileMediaType, isFolder ? null : item.Extension);
+                var partialPath = item.FullName.Replace(_filesRootFolderPath, string.Empty);
+
+                var folderItem = new FolderItem(
+                    item.Name,
+                    partialPath,
+                    folderItemType,
+                    fileMediaType,
+                    item.Extension,
+                    await GetFileThumbnailAsync(folderItemType, partialPath));
 
                 result.Add(folderItem);
             }
@@ -54,37 +64,16 @@ public class FilesService
     }
 
     private static bool IsFolder(FileSystemInfo fileSystemInfo) => fileSystemInfo is DirectoryInfo;
-
-    private static FolderItemType GetFolderItemType(string fileName)
+  
+    private async Task<string?> GetFileThumbnailAsync(FolderItemType folderItemType, string partialPath)
     {
-        if (PathHelper.IsImage(fileName))
-            return FolderItemType.Image;
+        if (folderItemType == FolderItemType.Image)
+            return await _thumbnailService.GetImageThumbnailAsync(partialPath);
 
-        if (PathHelper.IsVideo(fileName))
-            return FolderItemType.Video;
+        //TODO video thumbnail
 
-        if (PathHelper.IsAudio(fileName))
-            return FolderItemType.Audio;
-
-        return FolderItemType.OtherFile;
+        return null;
     }
 
-    private static void GetCleanRootFolderPath(IWebHostEnvironment env, IOptions<Settings> options)
-    {
-        _filesRootFolderPath = options.Value.FilesRootFolderPath;
-
-        if (string.IsNullOrWhiteSpace(_filesRootFolderPath))
-        {
-            _filesRootFolderPath = Path.Combine(env.ContentRootPath, InternalFilesRootFolderPartialPath);
-        }
-        else
-        {
-            var directoryInfo = new DirectoryInfo(_filesRootFolderPath);
-
-            if (!_filesRootFolderPath.EndsWith("\\"))
-                _filesRootFolderPath = $"{directoryInfo.FullName}\\";
-            else
-                _filesRootFolderPath = directoryInfo.FullName;
-        }
-    }
+   
 }

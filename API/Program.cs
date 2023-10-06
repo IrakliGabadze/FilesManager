@@ -19,6 +19,10 @@ builder.Services.AddCors(options =>
             });
 });
 
+builder.Services.AddMemoryCache();
+
+builder.Services.AddSingleton<ThumbnailService>();
+
 builder.Services.AddSingleton<FilesService>();
 
 var app = builder.Build();

@@ -1,7 +1,13 @@
-﻿namespace API.Helpers;
+﻿using API.Enums;
+using API.Models;
+using Microsoft.Extensions.Options;
+
+namespace API.Helpers;
 
 public class PathHelper
 {
+    private const string InternalFilesRootFolderPartialPath = "FilesRootFolder";
+    
     private static readonly char[] InvalidChars = Path.GetInvalidPathChars();
 
     public static bool PathIsSafe(string path) => !ContainsPathTraversal(path) && !ContainsInvalidCharacters(path);
@@ -32,8 +38,44 @@ public class PathHelper
         return false;
     }
 
+    public static FolderItemType GetFolderItemType(string fileName)
+    {
+        if (IsImage(fileName))
+            return FolderItemType.Image;
+
+        if (IsVideo(fileName))
+            return FolderItemType.Video;
+
+        if (IsAudio(fileName))
+            return FolderItemType.Audio;
+
+        return FolderItemType.OtherFile;
+    }
+
+    public static string GetCleanRootFolderPath(IWebHostEnvironment env, IOptions<Settings> options)
+    {
+        var filesRootFolderPath = options.Value.FilesRootFolderPath;
+
+        if (string.IsNullOrWhiteSpace(filesRootFolderPath))
+        {
+            filesRootFolderPath = Path.Combine(env.ContentRootPath, InternalFilesRootFolderPartialPath);
+        }
+        else
+        {
+            var directoryInfo = new DirectoryInfo(filesRootFolderPath);
+
+            if (!filesRootFolderPath.EndsWith("\\"))
+                filesRootFolderPath = $"{directoryInfo.FullName}\\";
+            else
+                filesRootFolderPath = directoryInfo.FullName;
+        }
+
+        return filesRootFolderPath;
+    }
+
     public static string GetNormalizedPath(string path) => path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 
+    
     public static readonly List<string> SupportedFileFormats = new()
     {
        ".mp4", ".mp3", ".jpg", ".jpeg", ".png", ".svg", ".pdf", ".json", ".txt", ".xml", ".docx", ".pptx", ".xlsx", ".zip", ".rar",
