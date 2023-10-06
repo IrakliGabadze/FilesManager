@@ -7,30 +7,20 @@ namespace API.Services;
 
 public class FilesService
 {
-    private static string _filesRootFolderPath = default!;
     private const string InternalFilesRootFolderPartialPath = "FilesRootFolder"!;
+    
+    private static string _filesRootFolderPath = default!;
 
     public FilesService(IWebHostEnvironment env, IOptions<Settings> options)
     {
-        _filesRootFolderPath = options.Value.FilesRootFolderPath;
-
-        if (string.IsNullOrWhiteSpace(_filesRootFolderPath))
-        {
-            _filesRootFolderPath = Path.Combine(env.ContentRootPath, InternalFilesRootFolderPartialPath);
-        }
-        else
-        {
-            var directoryInfo = new DirectoryInfo(_filesRootFolderPath);
-
-            if (!_filesRootFolderPath.EndsWith("\\"))
-                _filesRootFolderPath = $"{directoryInfo.FullName}\\";
-            else
-                _filesRootFolderPath = directoryInfo.FullName;
-        }
+        GetCleanRootFolderPath(env, options);
     }
 
     public List<FolderItem> GetFolderItems(string? folderPartialPath)
     {
+        if (folderPartialPath?.StartsWith("\\") == true || folderPartialPath?.StartsWith("/") == true)
+            throw new InvalidOperationException($"Invalid characters in folder partial path: {folderPartialPath}");
+
         var result = new List<FolderItem>(0);
 
         var isNullOrWhiteSpace = string.IsNullOrWhiteSpace(folderPartialPath);
@@ -77,5 +67,24 @@ public class FilesService
             return FolderItemType.Audio;
 
         return FolderItemType.OtherFile;
+    }
+
+    private static void GetCleanRootFolderPath(IWebHostEnvironment env, IOptions<Settings> options)
+    {
+        _filesRootFolderPath = options.Value.FilesRootFolderPath;
+
+        if (string.IsNullOrWhiteSpace(_filesRootFolderPath))
+        {
+            _filesRootFolderPath = Path.Combine(env.ContentRootPath, InternalFilesRootFolderPartialPath);
+        }
+        else
+        {
+            var directoryInfo = new DirectoryInfo(_filesRootFolderPath);
+
+            if (!_filesRootFolderPath.EndsWith("\\"))
+                _filesRootFolderPath = $"{directoryInfo.FullName}\\";
+            else
+                _filesRootFolderPath = directoryInfo.FullName;
+        }
     }
 }
