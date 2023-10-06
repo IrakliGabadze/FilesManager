@@ -20,10 +20,22 @@ export class FolderItemComponent implements OnInit {
   iconPath!: string;
 
   ngOnInit() {
-    this.iconPath = this.folderItem.type == FolderItemType.Folder ? FolderItemComponent.folderIconPath : FolderItemComponent.fileIconPath;
+    if (this.folderItem.type == FolderItemType.Folder) {
+      this.iconPath = FolderItemComponent.folderIconPath;
+    }
+    else if (!this.stringIsNullOrWhitespace(this.folderItem.fileThumbnail)) {
+      this.iconPath = this.folderItem.fileThumbnail!;
+    }
+    else {
+      this.iconPath = FolderItemComponent.fileIconPath;
+    }
   }
 
   onFolderItemClicked() {
-      this.folderItemClick.emit(this.folderItem);
+    this.folderItemClick.emit(this.folderItem);
+  }
+
+  stringIsNullOrWhitespace(input: string | null | undefined): boolean {
+    return !input || !input.trim();
   }
 }

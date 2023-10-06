@@ -18,7 +18,7 @@ public class FilesService
         _filesRootFolderPath = PathHelper.GetCleanRootFolderPath(env, options);
     }
 
-    public async Task<List<FolderItem>> GetFolderItemsAsync(string? folderPartialPath)
+    public List<FolderItem> GetFolderItems(string? folderPartialPath)
     {
         if (folderPartialPath?.StartsWith("\\") == true || folderPartialPath?.StartsWith("/") == true)
             throw new InvalidOperationException($"Invalid characters in folder partial path: {folderPartialPath}");
@@ -54,7 +54,7 @@ public class FilesService
                     folderItemType,
                     fileMediaType,
                     item.Extension,
-                    await GetFileThumbnailAsync(folderItemType, partialPath));
+                    GetFileThumbnail(folderItemType, item.FullName, item.Extension));
 
                 result.Add(folderItem);
             }
@@ -65,10 +65,10 @@ public class FilesService
 
     private static bool IsFolder(FileSystemInfo fileSystemInfo) => fileSystemInfo is DirectoryInfo;
   
-    private async Task<string?> GetFileThumbnailAsync(FolderItemType folderItemType, string partialPath)
+    private string? GetFileThumbnail(FolderItemType folderItemType, string fullPath, string ext)
     {
         if (folderItemType == FolderItemType.Image)
-            return await _thumbnailService.GetImageThumbnailAsync(partialPath);
+            return _thumbnailService.GetImageThumbnail(fullPath, ext);
 
         //TODO video thumbnail
 

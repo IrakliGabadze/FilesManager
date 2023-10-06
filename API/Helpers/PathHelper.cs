@@ -7,7 +7,7 @@ namespace API.Helpers;
 public class PathHelper
 {
     private const string InternalFilesRootFolderPartialPath = "FilesRootFolder";
-    
+
     private static readonly char[] InvalidChars = Path.GetInvalidPathChars();
 
     public static bool PathIsSafe(string path) => !ContainsPathTraversal(path) && !ContainsInvalidCharacters(path);
@@ -63,19 +63,18 @@ public class PathHelper
         else
         {
             var directoryInfo = new DirectoryInfo(filesRootFolderPath);
-
-            if (!filesRootFolderPath.EndsWith("\\"))
-                filesRootFolderPath = $"{directoryInfo.FullName}\\";
-            else
-                filesRootFolderPath = directoryInfo.FullName;
+            filesRootFolderPath = directoryInfo.FullName;
         }
+
+        if (!filesRootFolderPath.EndsWith("\\"))
+            filesRootFolderPath = $"{filesRootFolderPath}\\";
 
         return filesRootFolderPath;
     }
 
     public static string GetNormalizedPath(string path) => path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 
-    
+
     public static readonly List<string> SupportedFileFormats = new()
     {
        ".mp4", ".mp3", ".jpg", ".jpeg", ".png", ".svg", ".pdf", ".json", ".txt", ".xml", ".docx", ".pptx", ".xlsx", ".zip", ".rar",

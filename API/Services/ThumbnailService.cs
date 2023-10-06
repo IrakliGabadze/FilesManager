@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using API.Helpers;
+using ImageMagick;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Services;
 
@@ -19,39 +19,35 @@ public class ThumbnailService
         _cache = cache;
     }
 
-    public async Task<string> GetImageThumbnailAsync(string imagePath)
+    public string? GetImageThumbnail(string imagePath, string ext)
     {
-        if (_cache.TryGetValue(imagePath, out var cachedThumbnail) && cachedThumbnail is not null)
-            return cachedThumbnail.ToString()!;
+        try
+        {
+            if (_cache.TryGetValue(imagePath, out var cachedThumbnail) && cachedThumbnail is not null)
+                return cachedThumbnail.ToString()!;
 
-        using var image = Image.FromFile(imagePath);
+            using var image = new MagickImage(imagePath);
 
-        var thumbnailSize = CalculateThumbnailSize(image, 100);
+            var size = new MagickGeometry(1500, 0) { IgnoreAspectRatio = false };
+            
+            image.Resize(size);
 
-        using var thumbnail = image.GetThumbnailImage(thumbnailSize.Width, thumbnailSize.Height, null, nint.Zero);
+            var thumbnailBytes = image.ToByteArray();
 
-        await using MemoryStream ms = new();
+            var fullBaseBase64String = GetFullBase64String(thumbnailBytes, ext);
 
-        thumbnail.Save(ms, ImageFormat.Jpeg);
+            _cache.Set(imagePath, fullBaseBase64String, _cacheEntryOptions);
 
-        var thumbnailBytes = ms.ToArray();
+            return fullBaseBase64String;
+        }
+        catch
+        {
+            return null;
+        }
 
-        var base64String = Convert.ToBase64String(thumbnailBytes);
-
-        _cache.Set(imagePath, base64String, _cacheEntryOptions);
-
-        return base64String;
     }
 
-    private static Size CalculateThumbnailSize(Image originalImage, int desiredWidth)
-    {
-        var aspectRatio = (float)originalImage.Width / originalImage.Height;
-
-        var width = desiredWidth;
-
-        var height = (int)(desiredWidth / aspectRatio);
-
-        return new Size(width, height);
-    }
+    public static string GetFullBase64String(byte[] bytes, string fileExt) =>
+        $"data:{PathHelper.GetMimeType(fileExt)};charset=utf-8;base64,{Convert.ToBase64String(bytes)}";
 }
 #pragma warning restore CA1416 // Validate platform compatibility
