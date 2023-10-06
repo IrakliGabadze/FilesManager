@@ -9,10 +9,17 @@ namespace API.Services;
 public class FilesService
 {
     private static string _filesRootFolderPath = default!;
+    private const string InternalFilesRootFolderPartialPath = "FilesRootFolder"!;
 
-    public FilesService(IOptions<Settings> options)
+    public FilesService(IWebHostEnvironment env, IOptions<Settings> options)
     {
         _filesRootFolderPath = options.Value.FilesRootFolderPath;
+
+        if (string.IsNullOrWhiteSpace(_filesRootFolderPath))
+            _filesRootFolderPath = Path.Combine(env.ContentRootPath, InternalFilesRootFolderPartialPath);
+
+        if (!_filesRootFolderPath.EndsWith("\\"))
+            _filesRootFolderPath = $"{_filesRootFolderPath}\\";
     }
 
     public List<FolderItem> GetFolderItems(string? folderPartialPath)
@@ -32,13 +39,14 @@ public class FilesService
 
             var folderItems = directoryInfo.GetFileSystemInfos();
 
-            foreach (var item in folderItems) 
+            foreach (var item in folderItems)
             {
                 var isFolder = IsFolder(item);
 
+                //TODO get FolderItemType
                 var folderItemType = isFolder ? FolderItemType.Folder : FolderItemType.OtherFile;
                 //TODO get file media type
-                var folderItem = new FolderItem(item.Name, item.FullName.Replace(directoryInfo.FullName, string.Empty), folderItemType, null, isFolder ? null : item.Extension);
+                var folderItem = new FolderItem(item.Name, item.FullName.Replace(_filesRootFolderPath, string.Empty), folderItemType, null, isFolder ? null : item.Extension);
 
                 result.Add(folderItem);
             }
