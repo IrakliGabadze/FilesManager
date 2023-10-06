@@ -9,5 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\enums\" />
+    <Folder Include="src\environments\" />
   </ItemGroup>
 </Project>
