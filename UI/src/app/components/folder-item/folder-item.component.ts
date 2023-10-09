@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FolderItem } from '../models/folderItemModel';
-import { FolderItemType } from '../enums/folderItemType';
+import { FolderItem } from '../../models/folderItemModel';
+import { FolderItemType } from '../../enums/folderItemType';
 
 @Component({
   selector: 'folder-item',

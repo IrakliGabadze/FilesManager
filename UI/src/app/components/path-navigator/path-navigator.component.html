@@ -1,0 +1,20 @@
+
+<mat-card class="path-navigator-wrapper">
+
+    <mat-card-content>
+
+        <span class="files-path-nav-item"
+              *ngFor="let pathItem of currentPathItems; let i = index;"
+              (click)="pathItemClicked(i)">
+
+            {{pathItem}}
+
+            <span *ngIf="pathItemNeedsSlashToEnd(i)"> / </span>
+
+        </span>
+
+    </mat-card-content>
+
+</mat-card>
+
+

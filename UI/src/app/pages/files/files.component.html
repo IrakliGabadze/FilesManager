@@ -1,5 +1,14 @@
 
 
 <div class="files-page-content">
-    <folder-item *ngFor="let folderItem of _folderItems;" [folderItem]="folderItem" (folderItemClick)="folderItemClicked($event)"></folder-item>
+
+    <path-navigator [currentFolderItemPath]="currentFolderItemPath"
+                    (pathItemClick)="pathItemClickedInNavigator($event)">
+    </path-navigator>
+
+    <folder-item *ngFor="let folderItem of folderItems;"
+                 [folderItem]="folderItem"
+                 (folderItemClick)="folderItemClicked(folderItem.type, $event.path)">
+    </folder-item>
+
 </div>

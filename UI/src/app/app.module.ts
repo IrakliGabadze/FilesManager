@@ -8,10 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FolderItemComponent } from './components/folder-item.component';
+import { FolderItemComponent } from './components/folder-item/folder-item.component';
 import { FilesComponent } from './pages/files/files.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
+import { PathNavigatorComponent } from './components/path-navigator/path-navigator.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -20,7 +22,8 @@ import { AboutComponent } from './pages/about/about.component';
       FolderItemComponent,
       FilesComponent,
       HomeComponent,
-      AboutComponent],
+      AboutComponent,
+      PathNavigatorComponent],
     imports: [
       RouterModule,
       AppRoutingModule,
@@ -29,7 +32,8 @@ import { AboutComponent } from './pages/about/about.component';
       BrowserAnimationsModule,
       MatToolbarModule,
       MatButtonModule,
-      MatIconModule
+      MatIconModule,
+      MatCardModule
     ]
   })
   export class AppModule {
