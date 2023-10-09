@@ -3,13 +3,16 @@
 
     <mat-card-content>
 
-        <span class="files-path-nav-item"
-              *ngFor="let pathItem of currentPathItems; let i = index;"
+        <span *ngFor="let pathItem of currentPathItems; let i = index;"
               (click)="pathItemClicked(i)">
 
-            {{pathItem}}
+            <span class="files-path-nav-item">
+                {{pathItem}}
+            </span>
 
-            <span *ngIf="pathItemNeedsSlashToEnd(i)"> / </span>
+            <span *ngIf="pathItemNeedsSlashToEnd(i)">
+                /
+            </span>
 
         </span>
 

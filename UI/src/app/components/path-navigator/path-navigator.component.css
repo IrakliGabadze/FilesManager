@@ -5,4 +5,16 @@
   margin-top: -30px;
   margin-bottom: 18px;
   box-shadow: var(--box-shadow);
+  font-size: 16px;
+  color:darkcyan;
+}
+
+.files-path-nav-item {
+  font-style: oblique;
+  cursor: pointer;
+  color: cornflowerblue;
+}
+
+.files-path-nav-item:hover {
+  color: blue;
 }
