@@ -3,14 +3,15 @@
 
     <mat-card-content>
 
-        <span *ngFor="let pathItem of currentPathItems; let i = index;"
-              (click)="pathItemClicked(i)">
+        <mat-icon (click)="returnBackIconClicked()" [ngClass]="returnBackIconClass" fontIcon="arrow_back" class="mr-2"></mat-icon>
 
-            <span class="files-path-nav-item">
+        <span *ngFor="let pathItem of currentPathItems; let i = index;">
+
+            <span (click)="pathItemClicked(i)" class="files-path-nav-item">
                 {{pathItem}}
             </span>
 
-            <span *ngIf="pathItemNeedsSlashToEnd(i)">
+            <span *ngIf="pathItemNeedsSlashToEnd(i)" class="nav-item-slash">
                 /
             </span>
 

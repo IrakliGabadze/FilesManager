@@ -13,7 +13,7 @@ import { FilesComponent } from './pages/files/files.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { PathNavigatorComponent } from './components/path-navigator/path-navigator.component';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -33,7 +33,8 @@ import {MatCardModule} from '@angular/material/card';
       MatToolbarModule,
       MatButtonModule,
       MatIconModule,
-      MatCardModule
+      MatCardModule,
+      MatIconModule
     ]
   })
   export class AppModule {
