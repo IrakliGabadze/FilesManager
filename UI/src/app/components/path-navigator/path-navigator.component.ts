@@ -11,12 +11,13 @@ export class PathNavigatorComponent implements OnChanges {
 
     if (this.currentFolderItemPath == undefined) {
       this.currentPathItems = PathNavigatorComponent.rootPathItem;
-    } else {
+    }
+    else {
       let splitPath = this.currentFolderItemPath.split("\\");
       this.currentPathItems = PathNavigatorComponent.rootPathItem.concat(splitPath);
     }
 
-    this.defineReturnBackIconClass(this.currentFolderItemPath);
+    this.enableReturnBack = this.currentFolderItemPath != undefined;
   }
 
   @Input() currentFolderItemPath?: string;
@@ -25,11 +26,8 @@ export class PathNavigatorComponent implements OnChanges {
 
   static rootPathItem: Array<string> = ["Root"];
 
-  static navbackIconEnabledClassName = "navBackIconEnabled";
-  static navbackIconDisabledClassName = "navBackIconDisabled";
-
   currentPathItems!: Array<string>;
-  returnBackIconClass?: string;
+  enableReturnBack: boolean = false;
 
   pathItemNeedsSlashToEnd(index: number): boolean {
 
@@ -53,11 +51,5 @@ export class PathNavigatorComponent implements OnChanges {
 
   returnBackIconClicked() {
     this.pathItemClicked(this.currentPathItems.length - 2);
-  }
-
-  defineReturnBackIconClass(path?:string) {
-    this.returnBackIconClass = path == undefined ?
-    PathNavigatorComponent.navbackIconDisabledClassName :
-    PathNavigatorComponent.navbackIconEnabledClassName;
   }
 }
