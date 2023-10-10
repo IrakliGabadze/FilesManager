@@ -15,7 +15,8 @@ public class FilesController : ControllerBase
         _filesService = filesService;
     }
 
-    [HttpGet(Name = "GetFolderItems")]
+    [HttpGet]
+    [Route("GetFolderItems")]
     public List<FolderItem> GetFolderItems([FromQuery] string? folderPartialPath) => 
         _filesService.GetFolderItems(folderPartialPath);
 }

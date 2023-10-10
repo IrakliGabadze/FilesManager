@@ -16,32 +16,23 @@ export class FilesComponent implements OnInit {
   folderItems?: FolderItem[];
   currentFolderItemPath?: string;
 
-  ngOnInit() {
-    this.getFolderItems(undefined);
+  async ngOnInit() {
+    await this.getFolderItems(undefined);
   }
 
-  getFolderItems(folderPartialPath?: string) {
-
-    var pathWithouArgs = "https://localhost:7142/files";
-
-    let url = folderPartialPath == undefined ? pathWithouArgs : `${pathWithouArgs}?folderPartialPath=${folderPartialPath}`;
-
-    this.filesService.getFolderItems(url).subscribe({
-      next: res => this.folderItems = res,
-      error: (err: any) => console.log(err) //TODO handle error
-      //complete: () => console.log(`API call for url: ${url} completed`)
-    });
+  async getFolderItems(folderPartialPath?: string) {
+    this.folderItems = await this.filesService.getFolderItems(folderPartialPath);
   }
 
-  folderItemClicked(type: FolderItemType, folderItemPath?: string) {
+  async folderItemClicked(type: FolderItemType, folderItemPath?: string) {
 
     if (type == FolderItemType.Folder) {
       this.currentFolderItemPath = folderItemPath;
-      this.getFolderItems(folderItemPath);
+      await this.getFolderItems(folderItemPath);
     }
   }
 
-  pathItemClickedInNavigator(path?: string) {
-    this.folderItemClicked(FolderItemType.Folder, path);
+  async pathItemClickedInNavigator(path?: string) {
+   await this.folderItemClicked(FolderItemType.Folder, path);
   }
 }
