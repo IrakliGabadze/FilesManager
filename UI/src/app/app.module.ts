@@ -14,6 +14,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { PathNavigatorComponent } from './components/path-navigator/path-navigator.component';
 import { MatCardModule } from '@angular/material/card';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -34,7 +35,8 @@ import { MatCardModule } from '@angular/material/card';
       MatButtonModule,
       MatIconModule,
       MatCardModule,
-      MatIconModule
+      MatIconModule,
+      MatMenuModule
     ]
   })
   export class AppModule {

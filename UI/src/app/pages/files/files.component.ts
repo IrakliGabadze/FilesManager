@@ -33,6 +33,6 @@ export class FilesComponent implements OnInit {
   }
 
   async pathItemClickedInNavigator(path?: string) {
-   await this.folderItemClicked(FolderItemType.Folder, path);
+    await this.folderItemClicked(FolderItemType.Folder, path);
   }
 }

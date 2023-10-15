@@ -1,10 +1,10 @@
 
 img {
-    min-width:100px;
-    max-width:250px;
-    height: 80px;
-    display:block;
-    margin-bottom:5px;
+  min-width: 100px;
+  max-width: 250px;
+  height: 80px;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .card svg.material-icons path {
@@ -12,7 +12,7 @@ img {
 }
 
 .card {
-  all: unset;
+  position: relative;
   border-radius: 4px;
   border: 1px solid #eee;
   background-color: #fafafa;
@@ -41,7 +41,24 @@ img {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: clip;
-  font-size:14px;
+  font-size: 14px;
 }
 
+.folder-context-menu-item {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 5px;
+}
 
+  .folder-context-menu-item:hover {
+    cursor: pointer;
+    background-color: aliceblue;
+  }
+
+.folder-item-action-icon {
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  color: cornflowerblue;
+}
