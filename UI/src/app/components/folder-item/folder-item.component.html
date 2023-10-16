@@ -17,14 +17,11 @@
      [matMenuTriggerFor]="contextMenu">
 </div>
 
-<mat-menu #contextMenu="matMenu">
-
-    <ng-template matMenuContent>
+<mat-menu #contextMenu>
 
         <div (mouseleave)="onMenuMouseLeave()">
 
-            <div *ngFor="let actionTypeName of FolderItemComponent.folderItemActionTypes"
-                 class="folder-context-menu-item">
+            <div *ngFor="let actionTypeName of FolderItemComponent.folderItemActionTypes" class="folder-context-menu-item">
 
                 <mat-icon (click)="$event.stopPropagation(); onFolderItemActionIconClicked(actionTypeName)"
                           fontIcon="{{getActionIconImgPath(actionTypeName)}}"
@@ -36,7 +33,5 @@
             </div>
 
         </div>
-
-    </ng-template>
 
 </mat-menu>
