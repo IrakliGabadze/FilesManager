@@ -18,7 +18,7 @@ export class FilesService {
 
    getFolderItems(folderPartialPath?: string) : Promise<FolderItem[]> {
 
-    let url = this.getFullUrl(folderPartialPath == undefined ? "GetFolderItems" : `GetFolderItems?folderPartialPath=${folderPartialPath}`);
+    let url = this.getFullUrl(`${FilesService.getFolderItemsApiMethodName}${folderPartialPath == undefined ? `` : `?folderPartialPath=${folderPartialPath}`}`);
 
     return this.http.get(url);
   }
