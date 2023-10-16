@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderItemComponent } from '../folder-item/folder-item.component';
 
@@ -19,22 +19,17 @@ export class ContextMenuComponent<TItem> {
   @ViewChild(MatMenuTrigger)
   contextMenu!: MatMenuTrigger;
 
-  contextMenuPosition = { x: '0px', y: '0px' };
+  @ViewChild("contextMenuRenderer")
+  renderDivRef!: ElementRef<HTMLDivElement>; 
 
   tItem?: TItem;
 
   onContextMenu(event: MouseEvent, tItem: TItem) {
     event.preventDefault();
     this.tItem = tItem;
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    //this.contextMenu.menuData = { 'item': tItem };
+    this.renderDivRef.nativeElement.style.left = event.clientX + 'px';
+    this.renderDivRef.nativeElement.style.top = event.clientY + 'px';
     this.contextMenu.openMenu();
-  }
-
-  closeContextMenu() {
-    this.tItem = undefined;
-    this.contextMenu.closeMenu();
   }
 
   onContextMenuItemClicked(actionTypeName: string) {
@@ -43,5 +38,10 @@ export class ContextMenuComponent<TItem> {
       this.menuItemClick.emit([actionTypeName, this.tItem]);
 
     this.closeContextMenu();
+  }
+
+  closeContextMenu() {
+    this.tItem = undefined;
+    this.contextMenu.closeMenu();
   }
 }

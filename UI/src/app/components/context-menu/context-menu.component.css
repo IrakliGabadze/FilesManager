@@ -1,16 +1,22 @@
-.folder-context-menu-item {
+
+.context-menu-renderer {
+  visibility: hidden;
+  position: fixed;
+}
+
+.context-menu-item {
   display: flex;
   justify-content: left;
   align-items: center;
   padding: 3px 8px;
 }
 
-  .folder-context-menu-item:hover {
+  .context-menu-item:hover {
     cursor: pointer;
     background-color: aliceblue;
   }
 
-.folder-item-action-icon {
+.context-menu-item-icon {
   margin-right: 10px;
   width: 24px;
   height: 24px;

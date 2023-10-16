@@ -1,9 +1,5 @@
 
-<div style="visibility: hidden; position: fixed"
-     [style.left]="contextMenuPosition.x"
-     [style.top]="contextMenuPosition.y"
-     [matMenuTriggerFor]="contextMenu">
-</div>
+<div #contextMenuRenderer [matMenuTriggerFor]="contextMenu" class="context-menu-renderer"></div>
 
 <mat-menu #contextMenu>
 
@@ -11,9 +7,9 @@
 
         <div *ngFor="let action of menuItemsWithIcons"
              (click)="$event.stopPropagation(); onContextMenuItemClicked(action[0])"
-             class="folder-context-menu-item">
+             class="context-menu-item">
 
-            <mat-icon fontIcon="{{action[1]}}" class="folder-item-action-icon"></mat-icon>
+            <mat-icon fontIcon="{{action[1]}}" class="context-menu-item-icon"></mat-icon>
 
             {{action[0]}}
 
