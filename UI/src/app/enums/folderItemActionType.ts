@@ -1,8 +1,8 @@
 export enum FolderItemActionType
 {
-    Download,
-    Copy,
-    Cut,
-    Delete,
-    Rename
+    Download = "Download",
+    Copy = "Copy",
+    Cut = "Cut",
+    Delete = "Delete",
+    Rename = "Rename"
 }

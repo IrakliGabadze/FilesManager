@@ -1,0 +1,25 @@
+
+<div style="visibility: hidden; position: fixed"
+     [style.left]="contextMenuPosition.x"
+     [style.top]="contextMenuPosition.y"
+     [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu>
+
+    <div (mouseleave)="closeContextMenu()">
+
+        <div *ngFor="let action of menuItemsWithIcons"
+             (click)="$event.stopPropagation(); onContextMenuItemClicked(action[0])"
+             class="folder-context-menu-item">
+
+            <mat-icon fontIcon="{{action[1]}}" class="folder-item-action-icon"></mat-icon>
+
+            {{action[0]}}
+
+        </div>
+
+    </div>
+
+</mat-menu>
+

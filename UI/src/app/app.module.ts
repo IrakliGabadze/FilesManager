@@ -15,6 +15,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { PathNavigatorComponent } from './components/path-navigator/path-navigator.component';
 import { MatCardModule } from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
+import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -24,7 +25,8 @@ import {MatMenuModule} from '@angular/material/menu';
       FilesComponent,
       HomeComponent,
       AboutComponent,
-      PathNavigatorComponent],
+      PathNavigatorComponent,
+      ContextMenuComponent],
     imports: [
       RouterModule,
       AppRoutingModule,

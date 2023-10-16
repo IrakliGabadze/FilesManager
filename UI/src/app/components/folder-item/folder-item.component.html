@@ -1,5 +1,5 @@
 
-<div class="card" (click)="onFolderItemClicked()" (contextmenu)="onContextMenu($event)">
+<div class="card" (click)="onFolderItemClicked()">
 
     <img [src]="iconPath" />
 
@@ -10,28 +10,3 @@
     </div>
 
 </div>
-
-<div style="visibility: hidden; position: fixed"
-     [style.left]="contextMenuPosition.x"
-     [style.top]="contextMenuPosition.y"
-     [matMenuTriggerFor]="contextMenu">
-</div>
-
-<mat-menu #contextMenu>
-
-        <div (mouseleave)="onMenuMouseLeave()">
-
-            <div *ngFor="let actionTypeName of FolderItemComponent.folderItemActionTypes" class="folder-context-menu-item">
-
-                <mat-icon (click)="$event.stopPropagation(); onFolderItemActionIconClicked(actionTypeName)"
-                          fontIcon="{{getActionIconImgPath(actionTypeName)}}"
-                          class="folder-item-action-icon">
-                </mat-icon>
-
-                {{actionTypeName}}
-
-            </div>
-
-        </div>
-
-</mat-menu>

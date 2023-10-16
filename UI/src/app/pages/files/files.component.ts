@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FolderItem } from '../../models/folderItemModel';
 import { FilesService } from '../../services/files/files.service';
 import { FolderItemType } from '../../enums/folderItemType';
+import { FolderItemActionType } from '../../enums/folderItemActionType';
+import { ContextMenuComponent } from '../../components/context-menu/context-menu.component';
 
 @Component({
   selector: 'files-page',
@@ -13,8 +15,20 @@ export class FilesComponent implements OnInit {
 
   constructor(private filesService: FilesService) { }
 
+  FilesComponent = FilesComponent;
+
+  static actionNamesWithIcons: [string, string][] = [
+    [FolderItemActionType.Download, "download"],
+    [FolderItemActionType.Rename, "edit_note"],
+    [FolderItemActionType.Copy, "file_copy"],
+    [FolderItemActionType.Cut, "content_cut"],
+    [FolderItemActionType.Delete, "delete"]
+  ];
+
   folderItems?: FolderItem[];
   currentFolderItemPath?: string;
+
+  @ViewChild(ContextMenuComponent) folderItemContextMenuRef?: ContextMenuComponent<FolderItem>;
 
   async ngOnInit() {
     await this.getFolderItems(undefined);
@@ -34,5 +48,17 @@ export class FilesComponent implements OnInit {
 
   async pathItemClickedInNavigator(path?: string) {
     await this.folderItemClicked(FolderItemType.Folder, path);
+  }
+
+  getActionType(actionTypeName: string): FolderItemActionType {
+    return FolderItemActionType[actionTypeName as keyof typeof FolderItemActionType];
+  }
+
+  onFolderItemContextMenu(event: MouseEvent, folderItem: FolderItem) {
+    this.folderItemContextMenuRef?.onContextMenu(event, folderItem);
+  }
+
+  onFolderItemContextMenuItemClicked(actionInfo: [string, FolderItem]) {
+    console.log(actionInfo);
   }
 }

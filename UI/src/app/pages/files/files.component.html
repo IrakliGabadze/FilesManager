@@ -1,3 +1,4 @@
+
 <div class="files-page-content">
 
     <path-navigator [currentFolderItemPath]="currentFolderItemPath"
@@ -6,7 +7,10 @@
 
     <folder-item *ngFor="let folderItem of folderItems;"
                  [folderItem]="folderItem"
-                 (folderItemClick)="folderItemClicked(folderItem.type, $event.path)">
+                 (folderItemClick)="folderItemClicked(folderItem.type, $event.path)"
+                 (contextmenu)="onFolderItemContextMenu($event, folderItem)">
     </folder-item>
 
 </div>
+
+<context-menu [menuItemsWithIcons]="FilesComponent.actionNamesWithIcons" (menuItemClick)="onFolderItemContextMenuItemClicked($event)"></context-menu>
