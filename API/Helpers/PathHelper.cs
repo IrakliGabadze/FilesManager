@@ -4,21 +4,28 @@ using Microsoft.Extensions.Options;
 
 namespace API.Helpers;
 
-public class PathHelper
+public static class PathHelper
 {
     private const string InternalFilesRootFolderPartialPath = "FilesRootFolder";
 
     private static readonly char[] InvalidChars = Path.GetInvalidPathChars();
 
-    public static bool PathIsSafe(string path) => !ContainsPathTraversal(path) && !ContainsInvalidCharacters(path);
+    public static string GetSafePath(string path, bool checkForNullOrWhiteSpace = true)
+    {
+        if (checkForNullOrWhiteSpace && string.IsNullOrWhiteSpace(path))
+            throw new InvalidOperationException("Path can't be null or white space.");
+
+        var normalizedPath = GetNormalizedPath(path);
+
+        if (!StartsWithSlash(normalizedPath) && !ContainsPathTraversal(normalizedPath) && ContainsInvalidCharacters(normalizedPath))
+            throw new InvalidOperationException();
+
+        return normalizedPath;
+    }
 
     private static bool ContainsPathTraversal(string path)
     {
-        var normalizedPath = GetNormalizedPath(path);
-
-        var components = normalizedPath.Split(Path.DirectorySeparatorChar);
-
-        foreach (var component in components)
+        foreach (var component in path.Split(Path.DirectorySeparatorChar))
         {
             if (component == "..")
                 return true;
@@ -37,6 +44,8 @@ public class PathHelper
 
         return false;
     }
+
+    private static bool StartsWithSlash(string partialPath) => partialPath.StartsWith("\\") || partialPath.StartsWith("/");
 
     public static FolderItemType GetFolderItemType(string fileName)
     {
@@ -57,14 +66,9 @@ public class PathHelper
         var filesRootFolderPath = options.Value.FilesRootFolderPath;
 
         if (string.IsNullOrWhiteSpace(filesRootFolderPath))
-        {
             filesRootFolderPath = Path.Combine(env.ContentRootPath, InternalFilesRootFolderPartialPath);
-        }
         else
-        {
-            var directoryInfo = new DirectoryInfo(filesRootFolderPath);
-            filesRootFolderPath = directoryInfo.FullName;
-        }
+            filesRootFolderPath = new DirectoryInfo(filesRootFolderPath).FullName;
 
         if (!filesRootFolderPath.EndsWith("\\"))
             filesRootFolderPath = $"{filesRootFolderPath}\\";

@@ -15,10 +15,12 @@ public static class SettingsExt
 
         section.Bind(settings);
 
-        if (!string.IsNullOrWhiteSpace(settings.FilesRootFolderPath) &&
-            (!PathHelper.PathIsSafe(settings.FilesRootFolderPath) || !Directory.Exists(settings.FilesRootFolderPath)))
+        if (!string.IsNullOrWhiteSpace(settings.FilesRootFolderPath))
         {
-            throw new InvalidOperationException("FilesRootFolderPath is not correct in appsettings.json");
+            settings.FilesRootFolderPath = PathHelper.GetSafePath(settings.FilesRootFolderPath, false);
+
+            if (!Directory.Exists(settings.FilesRootFolderPath))
+                throw new InvalidOperationException("FilesRootFolderPath isn't correct in appsettings.json");
         }
 
         self.Configure<Settings>(section);

@@ -14,54 +14,135 @@ public class FilesService
     public FilesService(IWebHostEnvironment env, IOptions<Settings> options, ThumbnailService thumbnailHelper)
     {
         _thumbnailService = thumbnailHelper;
-
         _filesRootFolderPath = PathHelper.GetCleanRootFolderPath(env, options);
     }
 
     public List<FolderItem> GetFolderItems(string? folderPartialPath)
     {
-        if (folderPartialPath?.StartsWith("\\") == true || folderPartialPath?.StartsWith("/") == true)
-            throw new InvalidOperationException($"Invalid characters in folder partial path: {folderPartialPath}");
+        var safePath = string.IsNullOrWhiteSpace(folderPartialPath) ? _filesRootFolderPath : GetFullSafePath(folderPartialPath, false);
 
         var result = new List<FolderItem>(0);
 
-        var isNullOrWhiteSpace = string.IsNullOrWhiteSpace(folderPartialPath);
+        if (!Directory.Exists(safePath))
+            throw new InvalidOperationException($"Folder does not exists for path: {safePath}");
 
-        if (isNullOrWhiteSpace || PathHelper.PathIsSafe(folderPartialPath!))
+        var directoryInfo = new DirectoryInfo(safePath);
+
+        foreach (var item in directoryInfo.GetFileSystemInfos())
         {
-            var fullPath = isNullOrWhiteSpace ? _filesRootFolderPath : Path.Combine(_filesRootFolderPath, folderPartialPath!);
+            var isFolder = IsFolder(item);
 
-            if (!Directory.Exists(fullPath))
-                throw new InvalidOperationException($"Folder does not exists for path: {fullPath}");
+            var folderItemType = isFolder ? FolderItemType.Folder : PathHelper.GetFolderItemType(item.Name);
 
-            var directoryInfo = new DirectoryInfo(fullPath);
+            var fileMediaType = isFolder ? null : PathHelper.GetMimeType(item.Extension);
 
-            var folderItems = directoryInfo.GetFileSystemInfos();
+            var partialPath = item.FullName.Replace(_filesRootFolderPath, string.Empty);
 
-            foreach (var item in folderItems)
-            {
-                var isFolder = IsFolder(item);
+            var folderItem = new FolderItem(
+                item.Name,
+                partialPath,
+                folderItemType,
+                fileMediaType,
+                item.Extension,
+                null); //GetFileThumbnail(folderItemType, item.FullName, item.Extension));
 
-                var folderItemType = isFolder ? FolderItemType.Folder : PathHelper.GetFolderItemType(item.Name);
-
-                var fileMediaType = isFolder ? null : PathHelper.GetMimeType(item.Extension);
-
-                var partialPath = item.FullName.Replace(_filesRootFolderPath, string.Empty);
-
-                var folderItem = new FolderItem(
-                    item.Name,
-                    partialPath,
-                    folderItemType,
-                    fileMediaType,
-                    item.Extension,
-                    null); //GetFileThumbnail(folderItemType, item.FullName, item.Extension));
-
-                result.Add(folderItem);
-            }
+            result.Add(folderItem);
         }
 
         return result.OrderByDescending(f => f.Type == FolderItemType.Folder).ToList();
     }
+
+    public void DeleteFolderItem(string folderItemPartialPath)
+    {
+        var safePath = Path.Combine(_filesRootFolderPath, PathHelper.GetSafePath(folderItemPartialPath));
+
+        if (Directory.Exists(safePath))
+            Directory.Delete(safePath, true);
+        else if (File.Exists(safePath))
+            File.Delete(safePath);
+        else
+            throw new InvalidOperationException($"Folder item does not exists for path: {safePath}");
+    }
+
+    public void CutFolderItem(CopyCutFolderItem cutFolderItem)
+    {
+        var safeOldPath = GetFullSafePath(cutFolderItem.OldPath);
+        var safeNewPath = Path.Combine(GetFullSafePath(cutFolderItem.NewPath), Path.GetFileName(safeOldPath));
+
+        if (Directory.Exists(safeOldPath))
+        {
+            try
+            {
+                Directory.Move(safeOldPath, safeNewPath);
+            }
+            catch
+            {
+                if (Directory.Exists(safeNewPath))
+                    Directory.Delete(safeNewPath, true); //Clear already moved items
+
+                throw;
+            }
+        }
+        else if (File.Exists(safeOldPath))
+        {
+            File.Move(safeOldPath, safeNewPath, cutFolderItem.Overwrite);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Folder item does not exists for path: {safeOldPath}");
+        }
+    }
+
+    public void CopyFolderItem(CopyCutFolderItem copyFolderItem)
+    {
+        var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
+        var safeNewPath = GetFullSafePath(copyFolderItem.NewPath);
+        var mainTargetDir = Path.Combine(safeNewPath, Path.GetFileName(safeOldPath));
+
+        if (Directory.Exists(safeOldPath))
+        {
+            try
+            {
+                DirectoryCopy(safeOldPath, mainTargetDir, copyFolderItem.Overwrite);
+            }
+            catch
+            {
+                if (Directory.Exists(mainTargetDir))
+                    Directory.Delete(mainTargetDir, true); //Clear already copied items
+
+                throw;
+            }
+        }
+        else if (File.Exists(safeOldPath))
+        {
+            File.Copy(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Folder item does not exists for path: {safeOldPath}");
+        }
+    }
+
+    private static void DirectoryCopy(string sourceDir, string targetDir, bool overwrite)
+    {
+        Directory.CreateDirectory(targetDir);
+
+        foreach (var file in Directory.GetFiles(sourceDir))
+        {
+            var fileName = Path.GetFileName(file);
+            var destFile = Path.Combine(targetDir, fileName);
+            File.Copy(file, destFile, overwrite);
+        }
+
+        foreach (var subDir in Directory.GetDirectories(sourceDir))
+        {
+            var destSubDir = Path.Combine(targetDir, Path.GetFileName(subDir));
+            DirectoryCopy(subDir, destSubDir, overwrite);
+        }
+    }
+
+    private static string GetFullSafePath(string partialPath, bool checkForNullOrWhiteSpace = true) =>
+        Path.Combine(_filesRootFolderPath, PathHelper.GetSafePath(partialPath, checkForNullOrWhiteSpace));
 
     private static bool IsFolder(FileSystemInfo fileSystemInfo) => fileSystemInfo is DirectoryInfo;
 
