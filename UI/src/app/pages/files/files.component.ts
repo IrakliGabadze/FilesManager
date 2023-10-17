@@ -31,7 +31,7 @@ export class FilesComponent implements OnInit {
   @ViewChild(ContextMenuComponent) folderItemContextMenuRef?: ContextMenuComponent<FolderItem>;
 
   async ngOnInit() {
-    await this.getFolderItems(undefined);
+    await this.getFolderItems();
   }
 
   async getFolderItems(folderPartialPath?: string) {
@@ -58,7 +58,12 @@ export class FilesComponent implements OnInit {
     this.folderItemContextMenuRef?.onContextMenu(event, folderItem);
   }
 
-  onFolderItemContextMenuItemClicked(actionInfo: [string, FolderItem]) {
-    console.log(actionInfo);
+  async onFolderItemContextMenuItemClicked(actionInfo: [string, FolderItem]) {
+    switch (actionInfo[0]) {
+      case FolderItemActionType.Delete :
+        await this.filesService.deleteFolderItem(actionInfo[1].path);
+    }
+
+    await this.getFolderItems(this.currentFolderItemPath);
   }
 }

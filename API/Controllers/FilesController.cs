@@ -22,8 +22,8 @@ public class FilesController : ControllerBase
 
     [HttpPost]
     [Route("DeleteFolderItem")]
-    public void DeleteFolderItem([FromBody] string folderPartialPath) =>
-        _filesService.DeleteFolderItem(folderPartialPath);
+    public void DeleteFolderItem([FromBody] DeleteFolderItem deleteFolderItem) =>
+        _filesService.DeleteFolderItem(deleteFolderItem.PartialPath);
 
     [HttpPost]
     [Route("CopyFolderItem")]

@@ -9,6 +9,11 @@ import { FolderItem } from '../../models/folderItemModel';
 export class FilesService {
 
   static getFolderItemsApiMethodName = "GetFolderItems";
+  static deleteFolderItemApiMethodName = "DeleteFolderItem";
+  static copyFolderItemApiMethodName = "CopyFolderItem";
+  static cutFolderItemApiMethodName = "CutFolderItem";
+  static renameFolderItemApiMethodName = "RenameFolderItem";
+  static downloadFolderItemApiMethodName = "DownloadFolderItem";
 
   filesApiControllerAddress!:string;
 
@@ -21,6 +26,13 @@ export class FilesService {
     let url = this.getFullUrl(`${FilesService.getFolderItemsApiMethodName}${folderPartialPath == undefined ? `` : `?folderPartialPath=${folderPartialPath}`}`);
 
     return this.http.get(url);
+  }
+
+  deleteFolderItem(folderItemPartialPath: string) : Promise<string> {
+
+    let url = this.getFullUrl(FilesService.deleteFolderItemApiMethodName);
+
+    return this.http.post(url, JSON.stringify({partialPath: folderItemPartialPath}));
   }
 
   getFullUrl(methodNameWithQueryParams: string): string {

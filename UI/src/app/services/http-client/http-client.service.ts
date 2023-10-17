@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { lastValueFrom} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,19 @@ export class HttpClientService {
 
     try {
       return lastValueFrom(this.http.get<T>(url));
+    }
+    catch (e) {
+      console.log(e) //TODO handle error
+      throw e;
+    }
+  }
+
+  post<T>(url: string, data: T): Promise<T> {
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    try {
+      return lastValueFrom(this.http.post<T>(url, data, { headers }));
     }
     catch (e) {
       console.log(e) //TODO handle error

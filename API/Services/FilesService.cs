@@ -54,7 +54,7 @@ public class FilesService
 
     public void DeleteFolderItem(string folderItemPartialPath)
     {
-        var safePath = Path.Combine(_filesRootFolderPath, PathHelper.GetSafePath(folderItemPartialPath));
+        var safePath = GetFullSafePath(folderItemPartialPath);
 
         if (Directory.Exists(safePath))
             Directory.Delete(safePath, true);
