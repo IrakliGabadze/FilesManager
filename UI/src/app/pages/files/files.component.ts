@@ -4,6 +4,9 @@ import { FilesService } from '../../services/files/files.service';
 import { FolderItemType } from '../../enums/folderItemType';
 import { FolderItemActionType } from '../../enums/folderItemActionType';
 import { ContextMenuComponent } from '../../components/context-menu/context-menu.component';
+import { DialogService } from '../../services/dialog/dialog.service';
+import { lastValueFrom } from 'rxjs';
+import { DialogComponent } from '../../components/dialog/dialog.component';
 
 @Component({
   selector: 'files-page',
@@ -13,7 +16,7 @@ import { ContextMenuComponent } from '../../components/context-menu/context-menu
 
 export class FilesComponent implements OnInit {
 
-  constructor(private filesService: FilesService) { }
+  constructor(private filesService: FilesService, private dialogService: DialogService) { }
 
   FilesComponent = FilesComponent;
 
@@ -60,9 +63,23 @@ export class FilesComponent implements OnInit {
 
   async onFolderItemContextMenuItemClicked(actionInfo: [string, FolderItem]) {
     switch (actionInfo[0]) {
-      case FolderItemActionType.Delete :
-        await this.filesService.deleteFolderItem(actionInfo[1].path);
+      case FolderItemActionType.Delete: await this.deleteFolderItemAfterConfirmation(actionInfo)
     }
+
+  }
+
+  async deleteFolderItemAfterConfirmation(actionInfo: [string, FolderItem]) {
+
+    let dialogRef = this.dialogService.openWithResult<DialogComponent, boolean>(DialogComponent, {
+      data: {
+        folderItemName: actionInfo[1].name
+      }
+    });
+
+    var result = await lastValueFrom(dialogRef.afterClosed());
+
+    if (result)
+      await this.filesService.deleteFolderItem(actionInfo[1].path);
 
     await this.getFolderItems(this.currentFolderItemPath);
   }

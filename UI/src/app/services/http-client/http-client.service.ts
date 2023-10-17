@@ -20,7 +20,7 @@ export class HttpClientService {
     }
   }
 
-  post<T>(url: string, data: T): Promise<T> {
+  post<T>(url: string, data: T) {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 

@@ -28,7 +28,7 @@ export class FilesService {
     return this.http.get(url);
   }
 
-  deleteFolderItem(folderItemPartialPath: string) : Promise<string> {
+  deleteFolderItem(folderItemPartialPath: string) {
 
     let url = this.getFullUrl(FilesService.deleteFolderItemApiMethodName);
 
