@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FolderItem } from '../../models/folderItemModel';
+import { FolderItem } from '../../models/folder-item-model';
 import { FilesService } from '../../services/files/files.service';
-import { FolderItemType } from '../../enums/folderItemType';
-import { FolderItemActionType } from '../../enums/folderItemActionType';
+import { FolderItemType } from '../../enums/folder-item-type';
+import { FolderItemActionType } from '../../enums/folder-item-action-type';
 import { ContextMenuComponent } from '../../components/context-menu/context-menu.component';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { lastValueFrom } from 'rxjs';

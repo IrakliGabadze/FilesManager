@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClientService } from '../http-client/http-client.service';
-import { FolderItem } from '../../models/folderItemModel';
+import { FolderItem } from '../../models/folder-item-model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +28,11 @@ export class FilesService {
     return this.http.get(url);
   }
 
-  deleteFolderItem(folderItemPartialPath: string) {
+  async deleteFolderItem(folderItemPartialPath: string) {
 
     let url = this.getFullUrl(FilesService.deleteFolderItemApiMethodName);
 
-    return this.http.post(url, JSON.stringify({partialPath: folderItemPartialPath}));
+    await this.http.post(url, JSON.stringify({partialPath: folderItemPartialPath}));
   }
 
   getFullUrl(methodNameWithQueryParams: string): string {

@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { SnackBarService } from '../snack-bar/snack-bar.service';
+import { SnackBarType } from '../../enums/snack-bar-type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _snackBarService: SnackBarService) { }
+
+  static successfullOperationMessage : string = "Operation completed successfully";
+  static errorOperationMessage : string = "Error occured";
 
   get<T>(url: string): Promise<T> {
 
@@ -20,15 +25,18 @@ export class HttpClientService {
     }
   }
 
-  post<T>(url: string, data: T) {
+  async post<T>(url: string, data: T) {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     try {
-      return lastValueFrom(this.http.post<T>(url, data, { headers }));
+      await lastValueFrom(this.http.post<T>(url, data, { headers }));
+
+      this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
     }
     catch (e) {
       console.log(e) //TODO handle error
+      this._snackBarService.openSnackBar(SnackBarType.Error, HttpClientService.errorOperationMessage);
       throw e;
     }
   }

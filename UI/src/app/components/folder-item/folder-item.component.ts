@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation } from '@angular/core';
-import { FolderItem } from '../../models/folderItemModel';
-import { FolderItemType } from '../../enums/folderItemType';
-import { FolderItemActionType } from '../../enums/folderItemActionType';
+import { FolderItem } from '../../models/folder-item-model';
+import { FolderItemType } from '../../enums/folder-item-type';
+import { FolderItemActionType } from '../../enums/folder-item-action-type';
 
 @Component({
   selector: 'folder-item',

@@ -1,4 +1,4 @@
-import { FolderItemType } from "../enums/folderItemType";
+import { FolderItemType } from "../enums/folder-item-type";
 
 export class FolderItem {
 

@@ -17,7 +17,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
-import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -42,7 +43,8 @@ import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular
     MatCardModule,
     MatIconModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [{
     provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {
@@ -54,7 +56,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular
       minWidth: '250px',
       width: '550px',
       maxWidth: '90%',
-      autoFocus : false
+      autoFocus: false
     }
   }]
 })
