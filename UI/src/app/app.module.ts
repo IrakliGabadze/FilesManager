@@ -16,7 +16,7 @@ import { PathNavigatorComponent } from './components/path-navigator/path-navigat
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
-import { DialogComponent } from './components/dialog/dialog.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
@@ -29,7 +29,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular
     AboutComponent,
     PathNavigatorComponent,
     ContextMenuComponent,
-    DialogComponent],
+    ConfirmationDialogComponent],
   imports: [
     RouterModule,
     AppRoutingModule,
@@ -43,10 +43,20 @@ import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogModule } from '@angular
     MatIconModule,
     MatMenuModule,
     MatDialogModule
-  ]//,
-  //providers: [
-  //  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
-  //]
+  ],
+  providers: [{
+    provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {
+      hasBackdrop: true,
+      disableClose: true,
+      minHeight: '250px',
+      height: 'fit-content',
+      maxHeight: '90vh',
+      minWidth: '250px',
+      width: '550px',
+      maxWidth: '90%',
+      autoFocus : false
+    }
+  }]
 })
 export class AppModule {
 }

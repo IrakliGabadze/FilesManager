@@ -6,7 +6,7 @@ import { FolderItemActionType } from '../../enums/folderItemActionType';
 import { ContextMenuComponent } from '../../components/context-menu/context-menu.component';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { lastValueFrom } from 'rxjs';
-import { DialogComponent } from '../../components/dialog/dialog.component';
+import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'files-page',
@@ -70,7 +70,7 @@ export class FilesComponent implements OnInit {
 
   async deleteFolderItemAfterConfirmation(actionInfo: [string, FolderItem]) {
 
-    let dialogRef = this.dialogService.openWithResult<DialogComponent, boolean>(DialogComponent, {
+    let dialogRef = this.dialogService.openWithResult<ConfirmationDialogComponent, boolean>(ConfirmationDialogComponent, {
       data: {
         folderItemName: actionInfo[1].name
       }
