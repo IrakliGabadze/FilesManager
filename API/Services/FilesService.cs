@@ -52,6 +52,32 @@ public class FilesService
         return result.OrderByDescending(f => f.Type == FolderItemType.Folder).ToList();
     }
 
+    public void RenameFolderItem(RenameFolderItem renameFolderItem)
+    {
+        var safePath = GetFullSafePath(renameFolderItem.Path);
+
+        var safeName = PathHelper.GetSafePath(renameFolderItem.Name);
+
+        var parentDirectory = Path.GetDirectoryName(safePath)!;
+
+        if (Directory.Exists(safePath))
+        {
+            var newFolderPath = Path.Combine(parentDirectory, safeName);
+
+            Directory.Move(safePath, newFolderPath);
+        }
+        else if (File.Exists(safePath))
+        {
+            var newFilePath = Path.Combine(parentDirectory, safeName);
+
+            File.Move(safePath, newFilePath);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Folder item does not exists for path: {safePath}");
+        }
+    }
+
     public void DeleteFolderItem(string folderItemPartialPath)
     {
         var safePath = GetFullSafePath(folderItemPartialPath);

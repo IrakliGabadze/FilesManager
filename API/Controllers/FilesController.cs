@@ -34,4 +34,9 @@ public class FilesController : ControllerBase
     [Route("CutFolderItem")]
     public void CutFolderItem([FromBody] CopyCutFolderItem cutFolderItem) =>
        _filesService.CutFolderItem(cutFolderItem);
+
+    [HttpPost]
+    [Route("RenameFolderItem")]
+    public void RenameFolderItem([FromBody] RenameFolderItem renameFolderItem) =>
+       _filesService.RenameFolderItem(renameFolderItem);
 }
