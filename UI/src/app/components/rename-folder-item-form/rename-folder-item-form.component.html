@@ -1,0 +1,37 @@
+
+
+<form [formGroup]="renameForm" (ngSubmit)="$event.preventDefault(); onFormSubmit()">
+
+    <mat-form-field>
+
+        <mat-label>Current name</mat-label>
+
+        <input matInput disabled value="{{data.folderItemName}}">
+
+    </mat-form-field>
+
+    <mat-form-field>
+
+        <mat-label>New name</mat-label>
+
+        <input spellcheck="false" matInput placeholder="Enter new name" formControlName="newName">
+
+    </mat-form-field>
+
+    <small *ngIf="renameForm.get('newName')?.hasError('required')" class="text-danger">
+        New name is required !!!
+    </small>
+
+    <small *ngIf="renameForm.get('newName')?.hasError('maxlength')" class="text-danger">
+        Max length for new name characters is 30 !!!
+    </small>
+
+    <div>
+
+        <button type="button" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+
+        <button type="submit" mat-raised-button disabled="{{renameForm.invalid}}" color="primary">Rename</button>
+
+    </div>
+
+</form>

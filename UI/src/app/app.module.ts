@@ -18,7 +18,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RenameFolderItemFormComponent } from './components/rename-folder-item-form/rename-folder-item-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -30,7 +34,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AboutComponent,
     PathNavigatorComponent,
     ContextMenuComponent,
-    ConfirmationDialogComponent],
+    ConfirmationDialogComponent,
+    RenameFolderItemFormComponent],
   imports: [
     RouterModule,
     AppRoutingModule,
@@ -44,7 +49,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatIconModule,
     MatMenuModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [{
     provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {
@@ -58,7 +66,11 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
       maxWidth: '90%',
       autoFocus: false
     }
-  }]
+  },
+  {
+    provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' }
+  }
+  ]
 })
 export class AppModule {
 }

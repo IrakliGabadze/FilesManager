@@ -35,6 +35,13 @@ export class FilesService {
     await this.http.post(url, JSON.stringify({partialPath: folderItemPartialPath}));
   }
 
+  async renameFolderItem(folderItemPartialPath: string, newName: string) {
+
+    let url = this.getFullUrl(FilesService.renameFolderItemApiMethodName);
+
+    await this.http.post(url, JSON.stringify({path: folderItemPartialPath, name: newName}));
+  }
+
   getFullUrl(methodNameWithQueryParams: string): string {
     return `${this.filesApiControllerAddress}/${methodNameWithQueryParams}`;
   }

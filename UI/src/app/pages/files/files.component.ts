@@ -7,6 +7,7 @@ import { ContextMenuComponent } from '../../components/context-menu/context-menu
 import { DialogService } from '../../services/dialog/dialog.service';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
+import { RenameFolderItemFormComponent } from '../../components/rename-folder-item-form/rename-folder-item-form.component';
 
 @Component({
   selector: 'files-page',
@@ -64,6 +65,9 @@ export class FilesComponent implements OnInit {
   async onFolderItemContextMenuItemClicked(actionInfo: [string, FolderItem]) {
     switch (actionInfo[0]) {
       case FolderItemActionType.Delete: await this.deleteFolderItemAfterConfirmation(actionInfo)
+        break
+      case FolderItemActionType.Rename: await this.renameFolderItem(actionInfo)
+        break
     }
 
   }
@@ -78,8 +82,28 @@ export class FilesComponent implements OnInit {
 
     var result = await lastValueFrom(dialogRef.afterClosed());
 
-    if (result)
-      await this.filesService.deleteFolderItem(actionInfo[1].path);
+    if (!result)
+      return;
+
+    await this.filesService.deleteFolderItem(actionInfo[1].path);
+
+    await this.getFolderItems(this.currentFolderItemPath);
+  }
+
+  async renameFolderItem(actionInfo: [string, FolderItem]) {
+
+    let dialogRef = this.dialogService.openWithResult<RenameFolderItemFormComponent, string>(RenameFolderItemFormComponent, {
+      data: {
+        folderItemName: actionInfo[1].name
+      }
+    });
+
+    var result = await lastValueFrom(dialogRef.afterClosed()) as string;
+
+    if (!result)
+      return;
+
+    await this.filesService.renameFolderItem(actionInfo[1].path, result);
 
     await this.getFolderItems(this.currentFolderItemPath);
   }
