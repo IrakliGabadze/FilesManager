@@ -1,0 +1,34 @@
+
+<mat-toolbar>
+
+    <mat-toolbar-row>
+        <img src="assets/toolbarIcon.png" id="toobar-icon" />
+
+        <span id="toolbar-header">Files Manager</span>
+
+        <span class="spacer"></span>
+
+        <ul>
+            <li>
+                <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{ exact: true }">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a routerLink="/files" routerLinkActive="active" ariaCurrentWhenActive="page">
+                    Files
+                </a>
+            </li>
+            <li>
+                <a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">
+                    About
+                </a>
+            </li>
+        </ul>
+    </mat-toolbar-row>
+
+</mat-toolbar>
+
+<div class="content-wrapper">
+    <router-outlet></router-outlet>
+</div>

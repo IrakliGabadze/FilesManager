@@ -1,0 +1,43 @@
+
+.path-navigator-wrapper {
+  height: 55px;
+  display: block;
+  margin-top: -30px;
+  margin-bottom: 18px;
+  box-shadow: var(--box-shadow);
+  color: darkcyan;
+}
+
+.files-path-nav-item {
+  color: cornflowerblue;
+}
+
+  .files-path-nav-item:hover, .navBackIconEnabled:hover {
+    color: blue !important;
+    cursor: pointer;
+  }
+
+.navBackIconEnabled:hover {
+  border: 1px solid blue;
+}
+
+.files-path-nav-item, .nav-item-slash {
+  vertical-align: super;
+  font-size: 16px;
+  margin-top:-2px;
+}
+
+.navBackIconEnabled, .navBackIconDisabled {
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+.navBackIconEnabled {
+  color: darkcyan;
+  border: 1px solid darkcyan;
+}
+
+.navBackIconDisabled {
+  color: lightgray;
+  border: 1px solid lightgray;
+}

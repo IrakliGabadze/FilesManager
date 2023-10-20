@@ -1,0 +1,45 @@
+
+img {
+  min-width: 100px;
+  max-width: 250px;
+  height: 80px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.card svg.material-icons path {
+  fill: #888;
+}
+
+.card {
+  position: relative;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+  width: 250px;
+  height: 180px;
+  margin: 0 8px 16px;
+  padding: 16px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  line-height: 24px;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+}
+
+  .card:hover {
+    transform: scale(1.02);
+  }
+
+.folder-item-name {
+  max-width: 100%;
+  text-align: center;
+  word-break: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: clip;
+  font-size: 14px;
+}

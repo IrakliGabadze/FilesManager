@@ -1,0 +1,21 @@
+
+<div #contextMenuRenderer [matMenuTriggerFor]="contextMenu" class="context-menu-renderer"></div>
+
+<mat-menu #contextMenu>
+
+    <div (mouseleave)="closeContextMenu()">
+
+        <div *ngFor="let action of menuItemsWithIcons"
+             (click)="$event.stopPropagation(); onContextMenuItemClicked(action[0])"
+             class="context-menu-item">
+
+            <mat-icon fontIcon="{{action[1]}}" class="context-menu-item-icon"></mat-icon>
+
+            {{action[0]}}
+
+        </div>
+
+    </div>
+
+</mat-menu>
+

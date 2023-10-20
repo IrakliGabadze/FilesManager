@@ -1,0 +1,34 @@
+
+<mat-card class="path-navigator-wrapper">
+
+    <mat-card-content>
+
+        <ng-container *ngIf="enableReturnBack then enableReturnBackIcon else disableReturnBackIcon"></ng-container>
+
+        <span *ngFor="let pathItem of currentPathItems; let i = index;">
+
+            <span (click)="pathItemClicked(i)" class="files-path-nav-item">
+                {{pathItem}}
+            </span>
+
+            <span *ngIf="pathItemNeedsSlashToEnd(i)" class="nav-item-slash">
+                /
+            </span>
+
+        </span>
+
+        <ng-content></ng-content>
+
+    </mat-card-content>
+
+</mat-card>
+
+<ng-template #enableReturnBackIcon>
+    <mat-icon (click)="returnBackIconClicked()" class="navBackIconEnabled mr-2" fontIcon="arrow_back"></mat-icon>
+</ng-template>
+
+<ng-template #disableReturnBackIcon>
+    <mat-icon class="navBackIconDisabled mr-2" fontIcon="arrow_back"></mat-icon>
+</ng-template>
+
+
