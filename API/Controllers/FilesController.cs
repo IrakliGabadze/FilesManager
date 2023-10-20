@@ -27,12 +27,12 @@ public class FilesController : ControllerBase
 
     [HttpPost]
     [Route("CopyFolderItem")]
-    public void CopyFolderItem([FromBody] CopyCutFolderItem copyFolderItem) =>
+    public void CopyFolderItem([FromBody] CutOrCopyFolderItem copyFolderItem) =>
        _filesService.CopyFolderItem(copyFolderItem);
 
     [HttpPost]
     [Route("CutFolderItem")]
-    public void CutFolderItem([FromBody] CopyCutFolderItem cutFolderItem) =>
+    public void CutFolderItem([FromBody] CutOrCopyFolderItem cutFolderItem) =>
        _filesService.CutFolderItem(cutFolderItem);
 
     [HttpPost]

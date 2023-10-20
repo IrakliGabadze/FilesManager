@@ -9,7 +9,7 @@ export class SnackBarService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  openSnackBar(type: SnackBarType, message: string, action?: string, duration: number = 3000) {
+  openSnackBar(type: SnackBarType, message: string, action?: string, duration: number = 2000) {
     this._snackBar.open(message, action, {
       duration: duration,
       panelClass: `snackbar-${type}-bg`

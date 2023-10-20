@@ -8,6 +8,8 @@ import { DialogService } from '../../services/dialog/dialog.service';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
 import { RenameFolderItemFormComponent } from '../../components/rename-folder-item-form/rename-folder-item-form.component';
+import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
+import { SnackBarType } from '../../enums/snack-bar-type';
 
 @Component({
   selector: 'files-page',
@@ -17,7 +19,7 @@ import { RenameFolderItemFormComponent } from '../../components/rename-folder-it
 
 export class FilesComponent implements OnInit {
 
-  constructor(private filesService: FilesService, private dialogService: DialogService) { }
+  constructor(private filesService: FilesService, private dialogService: DialogService, private _snackBarService: SnackBarService) { }
 
   FilesComponent = FilesComponent;
 
@@ -31,6 +33,8 @@ export class FilesComponent implements OnInit {
 
   folderItems?: FolderItem[];
   currentFolderItemPath?: string;
+  cutOrCopiedItemPathWithActionType?: [string, FolderItemActionType];
+  cutOrCopiedItemParentPath?: string;
 
   @ViewChild(ContextMenuComponent) folderItemContextMenuRef?: ContextMenuComponent<FolderItem>;
 
@@ -58,18 +62,23 @@ export class FilesComponent implements OnInit {
     return FolderItemActionType[actionTypeName as keyof typeof FolderItemActionType];
   }
 
-  onFolderItemContextMenu(event: MouseEvent, folderItem: FolderItem) {
+  onContextMenu(event: MouseEvent, folderItem: FolderItem) {
     this.folderItemContextMenuRef?.onContextMenu(event, folderItem);
   }
 
-  async onFolderItemContextMenuItemClicked(actionInfo: [string, FolderItem]) {
+  async onContextMenuItemClicked(actionInfo: [string, FolderItem]) {
     switch (actionInfo[0]) {
       case FolderItemActionType.Delete: await this.deleteFolderItemAfterConfirmation(actionInfo)
         break
       case FolderItemActionType.Rename: await this.renameFolderItem(actionInfo)
         break
+      case FolderItemActionType.Cut: case FolderItemActionType.Copy: {
+        this.cutOrCopiedItemParentPath = this.currentFolderItemPath;
+        this.cutOrCopiedItemPathWithActionType = [actionInfo[1].path, actionInfo[0]];
+        this._snackBarService.openSnackBar(SnackBarType.Info, "Choose folder to paste");
+        break
+      }
     }
-
   }
 
   async deleteFolderItemAfterConfirmation(actionInfo: [string, FolderItem]) {
@@ -106,5 +115,24 @@ export class FilesComponent implements OnInit {
     await this.filesService.renameFolderItem(actionInfo[1].path, result);
 
     await this.getFolderItems(this.currentFolderItemPath);
+  }
+
+  async cutOrCopyFolderItem() {
+
+    if (this.cutOrCopiedItemPathWithActionType == undefined)
+      return;
+
+    await this.filesService.cutOrCopyFolderItem(
+      this.cutOrCopiedItemPathWithActionType[1],
+      this.cutOrCopiedItemPathWithActionType[0],
+      this.currentFolderItemPath);
+
+    await this.getFolderItems(this.currentFolderItemPath);
+  }
+
+  cancelCutOrCopyFolderItem() {
+    this.cutOrCopiedItemPathWithActionType = undefined;
+    this.cutOrCopiedItemParentPath = undefined;
+    this._snackBarService.openSnackBar(SnackBarType.Info, "Operation canceled");
   }
 }

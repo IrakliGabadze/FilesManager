@@ -90,10 +90,11 @@ public class FilesService
             throw new InvalidOperationException($"Folder item does not exists for path: {safePath}");
     }
 
-    public void CutFolderItem(CopyCutFolderItem cutFolderItem)
+    public void CutFolderItem(CutOrCopyFolderItem cutFolderItem)
     {
         var safeOldPath = GetFullSafePath(cutFolderItem.OldPath);
-        var safeNewPath = Path.Combine(GetFullSafePath(cutFolderItem.NewPath), Path.GetFileName(safeOldPath));
+        var safeNewPath = string.IsNullOrWhiteSpace(cutFolderItem.NewPath) ? _filesRootFolderPath : 
+            Path.Combine(GetFullSafePath(cutFolderItem.NewPath), Path.GetFileName(safeOldPath));
 
         if (Directory.Exists(safeOldPath))
         {
@@ -119,10 +120,12 @@ public class FilesService
         }
     }
 
-    public void CopyFolderItem(CopyCutFolderItem copyFolderItem)
+    public void CopyFolderItem(CutOrCopyFolderItem copyFolderItem)
     {
         var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
-        var safeNewPath = GetFullSafePath(copyFolderItem.NewPath);
+        var safeNewPath = string.IsNullOrWhiteSpace(copyFolderItem.NewPath) ? _filesRootFolderPath : 
+            GetFullSafePath(copyFolderItem.NewPath);
+
         var mainTargetDir = Path.Combine(safeNewPath, Path.GetFileName(safeOldPath));
 
         if (Directory.Exists(safeOldPath))

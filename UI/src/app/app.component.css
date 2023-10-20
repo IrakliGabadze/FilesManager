@@ -95,14 +95,17 @@ mat-toolbar {
 .snackbar-success-bg * {
   border-radius: 5px;
   background-color: forestgreen !important;
+  font-size: 18px !important;
 }
 
 .snackbar-error-bg * {
   border-radius: 5px;
   background-color: orangered !important;
+  font-size: 18px !important;
 }
 
 .snackbar-info-bg * {
   border-radius: 5px;
   background-color: cornflowerblue !important;
+  font-size: 18px !important;
 }
