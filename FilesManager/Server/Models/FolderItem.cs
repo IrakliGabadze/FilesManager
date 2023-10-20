@@ -1,6 +1,6 @@
-﻿using FilesManager.Enums;
+﻿using FilesManager.Server.Enums;
 
-namespace FilesManager.Models;
+namespace FilesManager.Server.Models;
 
 public class FolderItem
 {

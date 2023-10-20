@@ -1,4 +1,4 @@
-﻿namespace FilesManager.Enums;
+﻿namespace FilesManager.Server.Enums;
 
 public enum FolderItemType
 {

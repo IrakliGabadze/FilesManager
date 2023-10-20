@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FilesManager.Models;
+namespace FilesManager.Server.Models;
 
 public class DeleteFolderItem
 {

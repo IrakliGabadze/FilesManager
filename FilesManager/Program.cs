@@ -1,5 +1,5 @@
-using FilesManager.Extensions;
-using FilesManager.Services;
+using FilesManager.Server.Extensions;
+using FilesManager.Server.Services;
 
 const string CorsPolicyname = "CorsPolicy";
 

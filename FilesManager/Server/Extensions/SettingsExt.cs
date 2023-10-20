@@ -1,7 +1,7 @@
-﻿using FilesManager.Helpers;
-using FilesManager.Models;
+﻿using FilesManager.Server.Helpers;
+using FilesManager.Server.Models;
 
-namespace FilesManager.Extensions;
+namespace FilesManager.Server.Extensions;
 
 public static class SettingsExt
 {

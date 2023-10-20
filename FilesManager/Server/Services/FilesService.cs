@@ -1,9 +1,9 @@
-﻿using FilesManager.Enums;
-using FilesManager.Helpers;
-using FilesManager.Models;
+﻿using FilesManager.Server.Enums;
+using FilesManager.Server.Helpers;
+using FilesManager.Server.Models;
 using Microsoft.Extensions.Options;
 
-namespace FilesManager.Services;
+namespace FilesManager.Server.Services;
 
 public class FilesService
 {
@@ -93,7 +93,7 @@ public class FilesService
     public void CutFolderItem(CutOrCopyFolderItem cutFolderItem)
     {
         var safeOldPath = GetFullSafePath(cutFolderItem.OldPath);
-        var safeNewPath = string.IsNullOrWhiteSpace(cutFolderItem.NewPath) ? _filesRootFolderPath : 
+        var safeNewPath = string.IsNullOrWhiteSpace(cutFolderItem.NewPath) ? _filesRootFolderPath :
             Path.Combine(GetFullSafePath(cutFolderItem.NewPath), Path.GetFileName(safeOldPath));
 
         if (Directory.Exists(safeOldPath))
@@ -123,7 +123,7 @@ public class FilesService
     public void CopyFolderItem(CutOrCopyFolderItem copyFolderItem)
     {
         var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
-        var safeNewPath = string.IsNullOrWhiteSpace(copyFolderItem.NewPath) ? _filesRootFolderPath : 
+        var safeNewPath = string.IsNullOrWhiteSpace(copyFolderItem.NewPath) ? _filesRootFolderPath :
             GetFullSafePath(copyFolderItem.NewPath);
 
         var mainTargetDir = Path.Combine(safeNewPath, Path.GetFileName(safeOldPath));

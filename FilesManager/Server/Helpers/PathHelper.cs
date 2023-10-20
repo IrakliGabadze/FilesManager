@@ -1,12 +1,12 @@
-﻿using FilesManager.Enums;
-using FilesManager.Models;
+﻿using FilesManager.Server.Enums;
+using FilesManager.Server.Models;
 using Microsoft.Extensions.Options;
 
-namespace FilesManager.Helpers;
+namespace FilesManager.Server.Helpers;
 
 public static class PathHelper
 {
-    private const string InternalFilesRootFolderPartialPath = "FilesRootFolder";
+    private const string InternalFilesRootFolderPartialPath = "Server\\FilesRootFolder";
 
     private static readonly char[] InvalidChars = Path.GetInvalidPathChars();
 

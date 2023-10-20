@@ -1,8 +1,8 @@
-﻿using FilesManager.Helpers;
+﻿using FilesManager.Server.Helpers;
 using ImageMagick;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace FilesManager.Services;
+namespace FilesManager.Server.Services;
 
 #pragma warning disable CA1416 // Validate platform compatibility
 
@@ -29,7 +29,7 @@ public class ThumbnailService
             using var image = new MagickImage(imagePath);
 
             var size = new MagickGeometry(1500, 0) { IgnoreAspectRatio = false };
-            
+
             image.Resize(size);
 
             var thumbnailBytes = image.ToByteArray();

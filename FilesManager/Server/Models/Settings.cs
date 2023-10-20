@@ -1,4 +1,4 @@
-﻿namespace FilesManager.Models;
+﻿namespace FilesManager.Server.Models;
 
 public class Settings
 {

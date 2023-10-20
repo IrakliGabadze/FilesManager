@@ -1,8 +1,8 @@
-using FilesManager.Models;
-using FilesManager.Services;
+using FilesManager.Server.Models;
+using FilesManager.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FilesManager.Controllers;
+namespace FilesManager.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]

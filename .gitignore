@@ -361,6 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/API/FilesRootFolder
-/FilesManager/FilesRootFolder
 /FilesManager/ClientApp/.angular
+/FilesManager/Server/FilesRootFolder
