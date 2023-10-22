@@ -122,17 +122,18 @@ export class FilesComponent implements OnInit {
     if (this.cutOrCopiedItemPathWithActionType == undefined)
       return;
 
-    await this.filesService.cutOrCopyFolderItem(
-      this.cutOrCopiedItemPathWithActionType[1],
-      this.cutOrCopiedItemPathWithActionType[0],
-      this.currentFolderItemPath);
+    await this.filesService.cutOrCopyFolderItem(this.cutOrCopiedItemPathWithActionType[1], this.cutOrCopiedItemPathWithActionType[0], this.currentFolderItemPath);
+
+    this.cancelCutOrCopyFolderItem(false);
 
     await this.getFolderItems(this.currentFolderItemPath);
   }
 
-  cancelCutOrCopyFolderItem() {
+  cancelCutOrCopyFolderItem(showSnackBar: boolean) {
     this.cutOrCopiedItemPathWithActionType = undefined;
     this.cutOrCopiedItemParentPath = undefined;
-    this._snackBarService.openSnackBar(SnackBarType.Info, "Operation canceled");
+
+    if (showSnackBar)
+      this._snackBarService.openSnackBar(SnackBarType.Info, "Operation canceled");
   }
 }

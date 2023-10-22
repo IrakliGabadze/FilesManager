@@ -5,7 +5,7 @@
                     (pathItemClick)="pathItemClickedInNavigator($event)">
 
         <button *ngIf="cutOrCopiedItemPathWithActionType != undefined"
-                (click)="cancelCutOrCopyFolderItem()"
+                (click)="cancelCutOrCopyFolderItem(true)"
                 mat-raised-button
                 color="accent">
             Cancel
