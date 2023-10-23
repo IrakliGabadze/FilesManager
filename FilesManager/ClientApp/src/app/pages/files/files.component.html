@@ -4,21 +4,25 @@
     <path-navigator [currentFolderItemPath]="currentFolderItemPath"
                     (pathItemClick)="pathItemClickedInNavigator($event)">
 
-        <button *ngIf="cutOrCopiedItemPathWithActionType != undefined"
-                (click)="cancelCutOrCopyFolderItem(true)"
-                mat-raised-button
-                color="accent">
-            Cancel
-        </button>
 
-        <button *ngIf="cutOrCopiedItemPathWithActionType != undefined &&
+        <div class="cut-copy-buttons-wrapper">
+
+            <button *ngIf="cutOrCopiedItemPathWithActionType != undefined"
+                    (click)="cancelCutOrCopyFolderItem(true)"
+                    mat-raised-button
+                    color="accent">
+                Cancel
+            </button>
+
+            <button *ngIf="cutOrCopiedItemPathWithActionType != undefined &&
                        (cutOrCopiedItemParentPath != currentFolderItemPath ||
                        cutOrCopiedItemPathWithActionType[1] != FolderItemActionType.Cut)"
-                (click)="cutOrCopyFolderItem()"
-                mat-raised-button
-                color="primary">
-            Paste
-        </button>
+                    (click)="cutOrCopyFolderItem()"
+                    mat-raised-button
+                    color="primary">
+                Paste
+            </button>
+        </div>
 
     </path-navigator>
 

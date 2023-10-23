@@ -8,3 +8,15 @@
   padding-top: 50px;
   box-sizing: border-box;
 }
+
+.cut-copy-buttons-wrapper {
+  display: flex;
+  align-items: center;
+  float: right;
+  width: fit-content;
+  height: 23px;
+}
+
+.cut-copy-buttons-wrapper button {
+    margin-left:10px;
+}
