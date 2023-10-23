@@ -26,14 +26,14 @@ public class FilesController : ControllerBase
         _filesService.DeleteFolderItem(deleteFolderItem.PartialPath);
 
     [HttpPost]
-    [Route("CopyFolderItem")]
-    public void CopyFolderItem([FromBody] CutOrCopyFolderItem copyFolderItem) =>
-       _filesService.CopyFolderItem(copyFolderItem);
-
-    [HttpPost]
     [Route("CutFolderItem")]
     public void CutFolderItem([FromBody] CutOrCopyFolderItem cutFolderItem) =>
-       _filesService.CutFolderItem(cutFolderItem);
+       _filesService.CutOrCopyFolderItem(cutFolderItem, true);
+    
+    [HttpPost]
+    [Route("CopyFolderItem")]
+    public void CopyFolderItem([FromBody] CutOrCopyFolderItem copyFolderItem) =>
+       _filesService.CutOrCopyFolderItem(copyFolderItem, false);
 
     [HttpPost]
     [Route("RenameFolderItem")]

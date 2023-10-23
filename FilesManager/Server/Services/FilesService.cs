@@ -24,7 +24,7 @@ public class FilesService
         var result = new List<FolderItem>(0);
 
         if (!Directory.Exists(safePath))
-            throw new InvalidOperationException($"Folder does not exists for path: {safePath}");
+            ThrowDoesNotExistException(safePath);
 
         var directoryInfo = new DirectoryInfo(safePath);
 
@@ -74,7 +74,7 @@ public class FilesService
         }
         else
         {
-            throw new InvalidOperationException($"Folder item does not exists for path: {safePath}");
+            ThrowDoesNotExistException(safePath);
         }
     }
 
@@ -87,68 +87,41 @@ public class FilesService
         else if (File.Exists(safePath))
             File.Delete(safePath);
         else
-            throw new InvalidOperationException($"Folder item does not exists for path: {safePath}");
+            ThrowDoesNotExistException(safePath);
     }
 
-    public void CutFolderItem(CutOrCopyFolderItem cutFolderItem)
+    public void CutOrCopyFolderItem(CutOrCopyFolderItem copyFolderItem, bool isCut)
     {
-        var safeOldPath = GetFullSafePath(cutFolderItem.OldPath);
-        var safeNewPath = string.IsNullOrWhiteSpace(cutFolderItem.NewPath) ? _filesRootFolderPath :
-            Path.Combine(GetFullSafePath(cutFolderItem.NewPath), Path.GetFileName(safeOldPath));
+        var (safeOldPath, safeNewPath) = GetSafePathsToCutOrCopy(copyFolderItem);
 
-        if (Directory.Exists(safeOldPath))
+        var isFolder = Directory.Exists(safeOldPath);
+
+        if (!isFolder && !File.Exists(safeOldPath))
+            ThrowDoesNotExistException(safeOldPath);
+
+        if (isFolder)
         {
             try
             {
-                Directory.Move(safeOldPath, safeNewPath);
+                if (isCut)
+                    Directory.Move(safeOldPath, safeNewPath);
+                else
+                    DirectoryCopy(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
             }
             catch
             {
                 if (Directory.Exists(safeNewPath))
-                    Directory.Delete(safeNewPath, true); //Clear already moved items
+                    Directory.Delete(safeNewPath, true); //Clear already copied items
 
                 throw;
             }
         }
-        else if (File.Exists(safeOldPath))
-        {
-            File.Move(safeOldPath, safeNewPath, cutFolderItem.Overwrite);
-        }
         else
         {
-            throw new InvalidOperationException($"Folder item does not exists for path: {safeOldPath}");
-        }
-    }
-
-    public void CopyFolderItem(CutOrCopyFolderItem copyFolderItem)
-    {
-        var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
-        var safeNewPath = string.IsNullOrWhiteSpace(copyFolderItem.NewPath) ? _filesRootFolderPath :
-            GetFullSafePath(copyFolderItem.NewPath);
-
-        var mainTargetDir = Path.Combine(safeNewPath, Path.GetFileName(safeOldPath));
-
-        if (Directory.Exists(safeOldPath))
-        {
-            try
-            {
-                DirectoryCopy(safeOldPath, mainTargetDir, copyFolderItem.Overwrite);
-            }
-            catch
-            {
-                if (Directory.Exists(mainTargetDir))
-                    Directory.Delete(mainTargetDir, true); //Clear already copied items
-
-                throw;
-            }
-        }
-        else if (File.Exists(safeOldPath))
-        {
-            File.Copy(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
-        }
-        else
-        {
-            throw new InvalidOperationException($"Folder item does not exists for path: {safeOldPath}");
+            if (isCut)
+                File.Move(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
+            else
+                File.Copy(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
         }
     }
 
@@ -170,6 +143,19 @@ public class FilesService
         }
     }
 
+    private static (string safeOldPath, string safeNewPath) GetSafePathsToCutOrCopy(CutOrCopyFolderItem copyFolderItem)
+    {
+        var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
+
+        var folderItemName = Path.GetFileName(safeOldPath);
+
+        var safeNewPath = string.IsNullOrWhiteSpace(copyFolderItem.TargetFolderPath) ? Path.Combine(_filesRootFolderPath, folderItemName) :
+            Path.Combine(GetFullSafePath(copyFolderItem.TargetFolderPath), folderItemName);
+
+        return (safeOldPath, safeNewPath);
+    }
+
+
     private static string GetFullSafePath(string partialPath, bool checkForNullOrWhiteSpace = true) =>
         Path.Combine(_filesRootFolderPath, PathHelper.GetSafePath(partialPath, checkForNullOrWhiteSpace));
 
@@ -184,4 +170,7 @@ public class FilesService
 
         return null;
     }
+
+    private static void ThrowDoesNotExistException(string forPath) =>
+        throw new InvalidOperationException($"Folder item does not exists for path: {forPath}");
 }

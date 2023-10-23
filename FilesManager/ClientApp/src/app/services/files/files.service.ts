@@ -55,7 +55,7 @@ export class FilesService {
 
     let requesData = {
       oldPath: cutOrCopiedfolderItemPartialPath,
-      newPath: targetFolderItemPatialPath,
+      targetFolderPath: targetFolderItemPatialPath,
       overwrite: true
     };
 
