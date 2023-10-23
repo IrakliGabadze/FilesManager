@@ -11,8 +11,8 @@ export class HttpClientService {
 
   constructor(private http: HttpClient, private _snackBarService: SnackBarService) { }
 
-  static successfullOperationMessage : string = "Operation completed successfully";
-  static errorOperationMessage : string = "Error occured";
+  static successfullOperationMessage: string = "Operation completed successfully";
+  static errorOperationMessage: string = "Error occured";
 
   get<T>(url: string): Promise<T> {
 
@@ -20,12 +20,14 @@ export class HttpClientService {
       return lastValueFrom(this.http.get<T>(url));
     }
     catch (e) {
+
       console.log(e) //TODO handle error
+
       throw e;
     }
   }
 
-  async post<T>(url: string, data: T) {
+  async post<T>(url: string, data: T, throwException: boolean = true) {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -35,9 +37,13 @@ export class HttpClientService {
       this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
     }
     catch (e) {
+
       console.log(e) //TODO handle error
+
       this._snackBarService.openSnackBar(SnackBarType.Error, HttpClientService.errorOperationMessage);
-      throw e;
+
+      if (throwException)
+        throw e;
     }
   }
 }

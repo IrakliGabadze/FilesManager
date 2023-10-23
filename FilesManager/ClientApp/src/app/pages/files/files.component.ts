@@ -22,6 +22,7 @@ export class FilesComponent implements OnInit {
   constructor(private filesService: FilesService, private dialogService: DialogService, private _snackBarService: SnackBarService) { }
 
   FilesComponent = FilesComponent;
+  FolderItemActionType = FolderItemActionType;
 
   static actionNamesWithIcons: [string, string][] = [
     [FolderItemActionType.Download, "download"],
@@ -127,6 +128,8 @@ export class FilesComponent implements OnInit {
     this.cancelCutOrCopyFolderItem(false);
 
     await this.getFolderItems(this.currentFolderItemPath);
+
+    this.cancelCutOrCopyFolderItem(false);
   }
 
   cancelCutOrCopyFolderItem(showSnackBar: boolean) {

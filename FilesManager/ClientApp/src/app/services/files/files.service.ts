@@ -33,7 +33,7 @@ export class FilesService {
 
     let url = this.getFullUrl(FilesService.deleteFolderItemApiMethodName);
 
-    await this.http.post(url, JSON.stringify({ partialPath: folderItemPartialPath }));
+    await this.http.post(url, JSON.stringify({ partialPath: folderItemPartialPath }), false);
   }
 
   async renameFolderItem(folderItemPartialPath: string, newName: string) {
@@ -45,7 +45,7 @@ export class FilesService {
       name: newName
     };
 
-    await this.http.post(url, JSON.stringify(requesData));
+    await this.http.post(url, JSON.stringify(requesData), false);
   }
 
   async cutOrCopyFolderItem(actionType: FolderItemActionType, cutOrCopiedfolderItemPartialPath: string, targetFolderItemPatialPath?: string) {
@@ -56,10 +56,10 @@ export class FilesService {
     let requesData = {
       oldPath: cutOrCopiedfolderItemPartialPath,
       targetFolderPath: targetFolderItemPatialPath,
-      overwrite: true
+      overwrite: false
     };
 
-    await this.http.post(url, JSON.stringify(requesData));
+    await this.http.post(url, JSON.stringify(requesData), false);
   }
 
   getFullUrl(methodNameWithQueryParams: string): string {

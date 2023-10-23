@@ -58,6 +58,9 @@ public class FilesService
 
         var safeName = PathHelper.GetSafePath(renameFolderItem.Name);
 
+        if (safeName.Length > 64)
+            throw new InvalidOperationException($"Name nust not be longer than 50 characters");
+
         var parentDirectory = Path.GetDirectoryName(safePath)!;
 
         if (Directory.Exists(safePath))
@@ -92,12 +95,7 @@ public class FilesService
 
     public void CutOrCopyFolderItem(CutOrCopyFolderItem copyFolderItem, bool isCut)
     {
-        var (safeOldPath, safeNewPath) = GetSafePathsToCutOrCopy(copyFolderItem);
-
-        var isFolder = Directory.Exists(safeOldPath);
-
-        if (!isFolder && !File.Exists(safeOldPath))
-            ThrowDoesNotExistException(safeOldPath);
+        var (safeOldPath, safeNewPath, isFolder) = GetSafePathsToCutOrCopy(copyFolderItem, isCut);
 
         if (isFolder)
         {
@@ -143,16 +141,51 @@ public class FilesService
         }
     }
 
-    private static (string safeOldPath, string safeNewPath) GetSafePathsToCutOrCopy(CutOrCopyFolderItem copyFolderItem)
+    private static (string safeOldPath, string safeNewPath, bool isFolder) GetSafePathsToCutOrCopy(CutOrCopyFolderItem copyFolderItem, bool isCut)
     {
         var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
 
-        var folderItemName = Path.GetFileName(safeOldPath);
+        var isFolder = Directory.Exists(safeOldPath);
 
-        var safeNewPath = string.IsNullOrWhiteSpace(copyFolderItem.TargetFolderPath) ? Path.Combine(_filesRootFolderPath, folderItemName) :
-            Path.Combine(GetFullSafePath(copyFolderItem.TargetFolderPath), folderItemName);
+        if (!isFolder && !File.Exists(safeOldPath))
+            ThrowDoesNotExistException(safeOldPath);
 
-        return (safeOldPath, safeNewPath);
+        var safeTargetFolderPath = string.IsNullOrWhiteSpace(copyFolderItem.TargetFolderPath) ?
+             _filesRootFolderPath : GetFullSafePath(copyFolderItem.TargetFolderPath);
+
+        var folderItemNameWithExt = Path.GetFileName(safeOldPath);
+
+        var ext = Path.GetExtension(folderItemNameWithExt);
+
+        var safeNewPath = Path.Combine(safeTargetFolderPath, folderItemNameWithExt);
+
+        if (!copyFolderItem.Overwrite && safeOldPath == safeNewPath)
+        {
+            if (isCut)
+                throw new InvalidOperationException($"Folder item with name '{folderItemNameWithExt}' already exists");
+
+            var folderItemNameWithoutExt = folderItemNameWithExt;
+
+            if (!isFolder)
+                folderItemNameWithoutExt = folderItemNameWithExt[..^ext.Length];
+
+            var fileSystemInfos = new DirectoryInfo(safeTargetFolderPath).GetFileSystemInfos();
+
+            var num = 1;
+
+            while (fileSystemInfos.Any(fs => fs.Name == folderItemNameWithExt))
+            {
+                folderItemNameWithExt = $"{folderItemNameWithoutExt} - Copy ({num}){(isFolder ? string.Empty : ext)}";
+                num++;
+            }
+
+            if (folderItemNameWithExt.Length > 64)
+                throw new InvalidOperationException($"Too much characters in folder item name");
+
+            safeNewPath = Path.Combine(safeTargetFolderPath, folderItemNameWithExt);
+        }
+
+        return (safeOldPath, safeNewPath, isFolder);
     }
 
 

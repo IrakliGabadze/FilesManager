@@ -14,7 +14,7 @@ export class RenameFolderItemFormComponent {
   }
 
   renameForm: FormGroup = new FormGroup({
-    newName: new FormControl("", [Validators.required, Validators.maxLength(30)])
+    newName: new FormControl("", [Validators.required, Validators.maxLength(64)])
   });
 
   onFormSubmit() {

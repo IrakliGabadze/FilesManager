@@ -11,7 +11,9 @@
             Cancel
         </button>
 
-        <button *ngIf="cutOrCopiedItemPathWithActionType != undefined && cutOrCopiedItemParentPath != currentFolderItemPath"
+        <button *ngIf="cutOrCopiedItemPathWithActionType != undefined &&
+                       (cutOrCopiedItemParentPath != currentFolderItemPath ||
+                       cutOrCopiedItemPathWithActionType[1] != FolderItemActionType.Cut)"
                 (click)="cutOrCopyFolderItem()"
                 mat-raised-button
                 color="primary">
