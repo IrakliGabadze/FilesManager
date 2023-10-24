@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClientService } from '../http-client/http-client.service';
 import { FolderItem } from '../../models/folder-item-model';
 import { FolderItemActionType } from '../../enums/folder-item-action-type';
+import { FolderItemType } from '../../enums/folder-item-type';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class FilesService {
   static copyFolderItemApiMethodName = "CopyFolderItem";
   static cutFolderItemApiMethodName = "CutFolderItem";
   static renameFolderItemApiMethodName = "RenameFolderItem";
-  static downloadFolderItemApiMethodName = "DownloadFolder";
+  static downloadFolderApiMethodName = "DownloadFolder";
+  static downloadFileApiMethodName = "DownloadFile";
 
   filesApiControllerAddress!: string;
 
@@ -62,14 +64,16 @@ export class FilesService {
     await this.http.post(url, JSON.stringify(requesData), false);
   }
 
-  async downloadFolder(folderPartialPath: string) {
+  async downloadFolderItem(folderItem: FolderItem) {
 
-    let url = this.getFullUrl(`${FilesService.downloadFolderItemApiMethodName}?folderPartialPath=${folderPartialPath}`);
+    var apiMethodName = folderItem.type == FolderItemType.Folder ? FilesService.downloadFolderApiMethodName : FilesService.downloadFileApiMethodName
 
-    this.downloadFile(url);
+    let url = this.getFullUrl(`${apiMethodName}?folderItemPartialPath=${folderItem.path}`);
+
+    this.clickLinkToStartDownloading(url);
   }
 
-  private downloadFile(url: string) {
+  private clickLinkToStartDownloading(url: string) {
     const a = document.createElement('a');
     a.href = url;
     document.body.appendChild(a);

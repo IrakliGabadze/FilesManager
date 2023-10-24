@@ -60,6 +60,23 @@ public class FilesService
             await ZipDirectoryRecursiveAsync(archive, subDir, responseBody, mainFolderFullPath);
         }
     }
+    
+    public async Task DownloadFileWithStreamAsync(HttpContext httpContext, string filePartialPath, CancellationToken cancellationToken)
+    {
+        var safeFullPath = GetFullSafePath(filePartialPath);
+
+        httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
+
+        var encodedFilename = Uri.EscapeDataString(new FileInfo(safeFullPath).Name);
+
+        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={encodedFilename}");
+
+        await using var fs = new FileStream(safeFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+        await fs.CopyToAsync(httpContext.Response.Body, cancellationToken);
+        
+        await httpContext.Response.Body.FlushAsync(cancellationToken);
+    }
 
     public List<FolderItem> GetFolderItems(string? folderPartialPath)
     {
