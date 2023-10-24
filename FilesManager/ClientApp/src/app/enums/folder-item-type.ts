@@ -2,8 +2,8 @@
 export enum FolderItemType
 {
     Folder,
-    Image,
-    Video,
-    Audio,
+    HtmlImage,
+    HtmlVideo,
+    HtmlAudio,
     OtherFile
 }

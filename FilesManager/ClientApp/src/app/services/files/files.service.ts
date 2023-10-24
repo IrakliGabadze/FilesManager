@@ -17,6 +17,7 @@ export class FilesService {
   static renameFolderItemApiMethodName = "RenameFolderItem";
   static downloadFolderApiMethodName = "DownloadFolder";
   static downloadFileApiMethodName = "DownloadFile";
+  static previewVideoOrAudioFileApiMethodName = "PreviewVideoOrAudioFile";
 
   filesApiControllerAddress!: string;
 

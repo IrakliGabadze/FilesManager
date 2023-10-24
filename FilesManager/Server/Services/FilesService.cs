@@ -20,67 +20,32 @@ public class FilesService
         _filesRootFolderPath = PathHelper.GetCleanRootFolderPath(env, options);
     }
 
-    public async Task DownloadFolderAsZipWithStreamAsync(HttpContext httpContext, string folderPartialPath, CancellationToken cancellationToken)
+    public async Task DownloadZippedFolderWithImmediateStreamingAsync(HttpContext httpContext, string folderPartialPath, CancellationToken cancellationToken)
     {
         var safeFullPath = GetFullSafePath(folderPartialPath);
 
-        if (!Directory.Exists(safeFullPath))
+        var directoryInfo = new DirectoryInfo(safeFullPath);
+
+        if (!directoryInfo.Exists)
             ThrowDoesNotExistException(safeFullPath);
 
-        var zipFileName = new DirectoryInfo(safeFullPath).Name;
-
-        httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
-
-        httpContext.Response.ContentType = "application/zip";
-
-        var escapedFilename = $"{Uri.EscapeDataString(zipFileName)}.zip";
-
-        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={escapedFilename}");
+        ConfigureResponseForFileDownload(httpContext, $"{Uri.EscapeDataString(directoryInfo.Name)}.zip");
 
         using var zipArchive = new ZipArchive(httpContext.Response.Body, ZipArchiveMode.Create, true);
 
         await ZipDirectoryRecursiveAsync(zipArchive, new DirectoryInfo(safeFullPath), httpContext.Response.Body, safeFullPath);
     }
 
-    private async Task ZipDirectoryRecursiveAsync(ZipArchive archive, DirectoryInfo dir, Stream responseBody, string mainFolderFullPath)
-    {
-        foreach (FileInfo file in dir.GetFiles())
-        {
-            await using var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-            var entryPath = file.FullName[(mainFolderFullPath.Length + 1)..];
-
-            var entry = archive.CreateEntry(entryPath, CompressionLevel.Fastest);
-
-            await using var entryStream = entry.Open();
-
-            await fs.CopyToAsync(entryStream);
-
-            await responseBody.FlushAsync();
-        }
-
-        foreach (DirectoryInfo subDir in dir.GetDirectories())
-        {
-            var folderEntryPath = subDir.FullName[(mainFolderFullPath.Length + 1)..];
-
-            archive.CreateEntry($"{folderEntryPath}\\", CompressionLevel.NoCompression); //For empty folders
-
-            await ZipDirectoryRecursiveAsync(archive, subDir, responseBody, mainFolderFullPath);
-        }
-    }
-
-    public async Task DownloadFileWithStreamAsync(HttpContext httpContext, string filePartialPath, CancellationToken cancellationToken)
+    public async Task DownloadFileWithImmediateStreamingAsync(HttpContext httpContext, string filePartialPath, CancellationToken cancellationToken)
     {
         var safeFullPath = GetFullSafePath(filePartialPath);
 
-        if (!File.Exists(safeFullPath))
+        var fileInfo = new FileInfo(safeFullPath);
+
+        if (!fileInfo.Exists)
             ThrowDoesNotExistException(safeFullPath);
 
-        httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
-
-        var escapedFilename = Uri.EscapeDataString(new FileInfo(safeFullPath).Name);
-
-        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={escapedFilename}");
+        ConfigureResponseForFileDownload(httpContext, Uri.EscapeDataString(fileInfo.Name));
 
         await using var fs = new FileStream(safeFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
@@ -100,7 +65,9 @@ public class FilesService
 
         try
         {
-            return new FileStreamResult(fs, PathHelper.GetMimeType(Path.GetExtension(safeFullPath)) ?? "application/octet-stream")
+            var mimeType = PathHelper.GetMimeType(Path.GetExtension(safeFullPath)) ?? "application/octet-stream";
+
+            return new FileStreamResult(fs, mimeType)
             {
                 EnableRangeProcessing = true
             };
@@ -127,21 +94,11 @@ public class FilesService
         {
             var isFolder = IsFolder(item);
 
-            var folderItemType = isFolder ? FolderItemType.Folder : PathHelper.GetFolderItemType(item.Name);
-
-            var fileMediaType = isFolder ? null : PathHelper.GetMimeType(item.Extension);
+            var folderItemType = isFolder ? FolderItemType.Folder : PathHelper.GetFileType(item.Extension);
 
             var partialPath = item.FullName.Replace(_filesRootFolderPath, string.Empty);
 
-            var folderItem = new FolderItem(
-                item.Name,
-                partialPath,
-                folderItemType,
-                fileMediaType,
-                item.Extension,
-                null); //GetFileThumbnail(folderItemType, item.FullName, item.Extension));
-
-            result.Add(folderItem);
+            result.Add(new FolderItem(item.Name, partialPath, folderItemType, item.Extension, null));
         }
 
         return result.OrderByDescending(f => f.Type == FolderItemType.Folder).ToList();
@@ -236,6 +193,40 @@ public class FilesService
         }
     }
 
+    private async Task ZipDirectoryRecursiveAsync(ZipArchive archive, DirectoryInfo dir, Stream responseBody, string mainFolderFullPath)
+    {
+        foreach (FileInfo file in dir.GetFiles())
+        {
+            await using var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+            var entryPath = file.FullName[(mainFolderFullPath.Length + 1)..]; // + 1 for slash \
+
+            var entry = archive.CreateEntry(entryPath, CompressionLevel.Fastest);
+
+            await using var entryStream = entry.Open();
+
+            await fs.CopyToAsync(entryStream);
+
+            await responseBody.FlushAsync();
+        }
+
+        foreach (DirectoryInfo subDir in dir.GetDirectories())
+        {
+            var folderEntryPath = subDir.FullName[(mainFolderFullPath.Length + 1)..];
+
+            archive.CreateEntry($"{folderEntryPath}\\", CompressionLevel.NoCompression); //For empty folders
+
+            await ZipDirectoryRecursiveAsync(archive, subDir, responseBody, mainFolderFullPath);
+        }
+    }
+
+    private static void ConfigureResponseForFileDownload(HttpContext httpContext, string fileName)
+    {
+        httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
+        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={fileName}");
+        httpContext.Response.ContentType = PathHelper.GetMimeType(Path.GetExtension(fileName));
+    }
+
     private static (string safeOldPath, string safeNewPath, bool isFolder) GetSafePathsToCutOrCopy(CutOrCopyFolderItem copyFolderItem, bool isCut)
     {
         var safeOldPath = GetFullSafePath(copyFolderItem.OldPath);
@@ -283,7 +274,6 @@ public class FilesService
         return (safeOldPath, safeNewPath, isFolder);
     }
 
-
     private static string GetFullSafePath(string partialPath, bool checkForNullOrWhiteSpace = true) =>
         Path.Combine(_filesRootFolderPath, PathHelper.GetSafePath(partialPath, checkForNullOrWhiteSpace));
 
@@ -291,7 +281,7 @@ public class FilesService
 
     private string? GetFileThumbnail(FolderItemType folderItemType, string fullPath, string ext)
     {
-        if (folderItemType == FolderItemType.Image)
+        if (folderItemType == FolderItemType.HtmlImage)
             return _thumbnailService.GetImageThumbnail(fullPath, ext);
 
         //TODO video thumbnail

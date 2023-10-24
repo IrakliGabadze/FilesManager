@@ -45,19 +45,19 @@ public static class PathHelper
         return false;
     }
 
-    private static bool StartsOrEndsWithSlash(string partialPath) => 
+    private static bool StartsOrEndsWithSlash(string partialPath) =>
         partialPath.StartsWith("\\") || partialPath.StartsWith("/") || partialPath.EndsWith("\\") || partialPath.EndsWith("/");
 
-    public static FolderItemType GetFolderItemType(string fileName)
+    public static FolderItemType GetFileType(string fileExt)
     {
-        if (IsImage(fileName))
-            return FolderItemType.Image;
+        if (IsHtmlSupportedImage(fileExt))
+            return FolderItemType.HtmlImage;
 
-        if (IsVideo(fileName))
-            return FolderItemType.Video;
+        if (IsHtmlSupportedVideo(fileExt))
+            return FolderItemType.HtmlVideo;
 
-        if (IsAudio(fileName))
-            return FolderItemType.Audio;
+        if (IsHtmlSupportedAudio(fileExt))
+            return FolderItemType.HtmlAudio;
 
         return FolderItemType.OtherFile;
     }
@@ -79,16 +79,14 @@ public static class PathHelper
 
     public static string GetNormalizedPath(string path) => path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 
-
-    public static readonly List<string> SupportedFileFormats = new()
-    {
-       ".mp4", ".mp3", ".jpg", ".jpeg", ".png", ".svg", ".pdf", ".json", ".txt", ".xml", ".docx", ".pptx", ".xlsx", ".zip", ".rar",
-    };
-
     public static string? GetMimeType(string fileExt) => fileExt.ToLower() switch
     {
-        ".jpg" or ".jpeg" => "image/jpeg",
         ".png" => "image/png",
+        ".jpg" or ".jpeg" => "image/jpeg",
+        ".gif" => "image/gif",
+        ".bmp" => "image/bmp",
+        ".ico" => "image/x-icon",
+        ".webp" => "image/webp",
         ".svg" => "image/svg+xml",
         ".pdf" => "application/pdf",
         ".json" => "application/json;",
@@ -125,12 +123,46 @@ public static class PathHelper
         _ => null
     };
 
-    public static bool IsVideo(string fileName) => fileName.EndsWith(".mp4", StringComparison.InvariantCultureIgnoreCase);
+    private static bool IsHtmlSupportedVideo(string fileExt) => ExtensionExists(fileExt, HtmlVideoFormats);
 
-    public static bool IsAudio(string fileName) => fileName.EndsWith(".mp4", StringComparison.InvariantCultureIgnoreCase);
+    private static bool IsHtmlSupportedAudio(string fileExt) => ExtensionExists(fileExt, HtmlAudioFormats);
 
-    public static bool IsImage(string fileName) => fileName.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase) ||
-                                            fileName.EndsWith(".jpeg", StringComparison.InvariantCultureIgnoreCase) ||
-                                            fileName.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase) ||
-                                            fileName.EndsWith(".svg", StringComparison.InvariantCultureIgnoreCase);
+    private static bool IsHtmlSupportedImage(string fileExt) => ExtensionExists(fileExt, HtmlImageFormats);
+
+    private static bool ExtensionExists(string fileExt, List<string> existingList) =>
+        existingList.Exists(ext => ext.Equals(fileExt, StringComparison.InvariantCultureIgnoreCase));
+
+    private static readonly List<string> HtmlImageFormats = new()
+    {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".bmp",
+        ".ico",
+        ".webp",
+        ".svg"
+    };
+
+    private static readonly List<string> HtmlVideoFormats = new()
+    {
+        ".mp4",
+        ".webm",
+        ".ogv"
+    };
+
+    private static readonly List<string> HtmlAudioFormats = new()
+    {
+        ".mp3",
+        ".ogg",
+        ".opus",
+        ".wav",
+        ".aac"
+    };
+
+    private static readonly List<string> SupportedFileFormatsToUpload = new()
+    {
+       ".mp4", ".mp3", ".jpg", ".jpeg", ".png", ".svg", ".pdf", ".json", ".txt", ".xml", ".docx", ".pptx", ".xlsx", ".zip", ".rar",
+    };
+
 }

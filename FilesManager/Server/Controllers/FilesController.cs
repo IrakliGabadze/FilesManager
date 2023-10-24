@@ -18,12 +18,12 @@ public class FilesController : ControllerBase
     [HttpGet]
     [Route("DownloadFolder")]
     public Task DownloadZipAsync([FromQuery] string folderItemPartialPath, CancellationToken cancellationToken) => 
-        _filesService.DownloadFolderAsZipWithStreamAsync(HttpContext, folderItemPartialPath, cancellationToken);
+        _filesService.DownloadZippedFolderWithImmediateStreamingAsync(HttpContext, folderItemPartialPath, cancellationToken);
     
     [HttpGet]
     [Route("DownloadFile")]
     public Task DownloadFileAsync([FromQuery] string folderItemPartialPath, CancellationToken cancellationToken) =>
-        _filesService.DownloadFileWithStreamAsync(HttpContext, folderItemPartialPath, cancellationToken);
+        _filesService.DownloadFileWithImmediateStreamingAsync(HttpContext, folderItemPartialPath, cancellationToken);
     
     [HttpGet]
     [Route("GetFolderItems")]
