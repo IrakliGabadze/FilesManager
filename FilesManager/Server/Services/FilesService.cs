@@ -2,6 +2,7 @@
 using FilesManager.Server.Helpers;
 using FilesManager.Server.Models;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.IO.Compression;
 
@@ -32,9 +33,9 @@ public class FilesService
 
         httpContext.Response.ContentType = "application/zip";
 
-        var encodedFilename = $"{Uri.EscapeDataString(zipFileName)}.zip";
+        var escapedFilename = $"{Uri.EscapeDataString(zipFileName)}.zip";
 
-        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={encodedFilename}");
+        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={escapedFilename}");
 
         using var zipArchive = new ZipArchive(httpContext.Response.Body, ZipArchiveMode.Create, true);
 
@@ -77,15 +78,38 @@ public class FilesService
 
         httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
 
-        var encodedFilename = Uri.EscapeDataString(new FileInfo(safeFullPath).Name);
+        var escapedFilename = Uri.EscapeDataString(new FileInfo(safeFullPath).Name);
 
-        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={encodedFilename}");
+        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={escapedFilename}");
 
         await using var fs = new FileStream(safeFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
         await fs.CopyToAsync(httpContext.Response.Body, cancellationToken);
 
         await httpContext.Response.Body.FlushAsync(cancellationToken);
+    }
+
+    public IActionResult PreviewVideoOrAudioFile(string partialPath)
+    {
+        var safeFullPath = GetFullSafePath(partialPath);
+
+        if (!File.Exists(safeFullPath))
+            ThrowDoesNotExistException(safeFullPath);
+
+        var fs = new FileStream(safeFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+        try
+        {
+            return new FileStreamResult(fs, PathHelper.GetMimeType(Path.GetExtension(safeFullPath)) ?? "application/octet-stream")
+            {
+                EnableRangeProcessing = true
+            };
+        }
+        catch (Exception)
+        {
+            fs.Dispose();
+            throw;
+        }
     }
 
     public List<FolderItem> GetFolderItems(string? folderPartialPath)

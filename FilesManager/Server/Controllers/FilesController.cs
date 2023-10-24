@@ -49,4 +49,9 @@ public class FilesController : ControllerBase
     [Route("RenameFolderItem")]
     public void RenameFolderItem([FromBody] RenameFolderItem renameFolderItem) =>
        _filesService.RenameFolderItem(renameFolderItem);
+
+    [HttpGet]
+    [Route("PreviewVideoOrAudioFile")]
+    public IActionResult PreviewVideoOrAudioFile([FromQuery] string partialPath) =>
+        _filesService.PreviewVideoOrAudioFile(partialPath);
 }

@@ -87,8 +87,6 @@ public static class PathHelper
 
     public static string? GetMimeType(string fileExt) => fileExt.ToLower() switch
     {
-        ".mp4" => "video/mp4",
-        ".mp3" => "audio/mpeg",
         ".jpg" or ".jpeg" => "image/jpeg",
         ".png" => "image/png",
         ".svg" => "image/svg+xml",
@@ -100,6 +98,30 @@ public static class PathHelper
         ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         ".zip" => "application/zip",
         ".rar" => "application/vnd.rar",
+        ".mp4" => "video/mp4",
+        ".webm" => "video/webm",
+        ".ogv" => "video/ogg",
+        ".avi" => "video/x-msvideo",
+        ".mov" => "video/quicktime",
+        ".mpeg" => "video/mpeg",
+        ".mpg" => "video/mpeg",
+        ".3gp" => "video/3gpp",
+        ".3g2" => "video/3gpp2",
+        ".flv" => "video/x-flv",
+        ".mkv" => "video/x-matroska",
+        ".mp3" => "audio/mpeg",
+        ".ogg" => "audio/ogg",
+        ".oga" => "audio/ogg",
+        ".wav" => "audio/wav",
+        ".aac" => "audio/aac",
+        ".flac" => "audio/flac",
+        ".midi" => "audio/midi",
+        ".mid" => "audio/midi",
+        ".weba" => "audio/webm",
+        ".ram" => "audio/x-pn-realaudio",
+        ".rm" => "audio/x-pn-realaudio",
+        ".wma" => "audio/x-ms-wma",
+        ".opus" => "audio/opus",
         _ => null
     };
 
