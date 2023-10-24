@@ -14,7 +14,7 @@ export class FilesService {
   static copyFolderItemApiMethodName = "CopyFolderItem";
   static cutFolderItemApiMethodName = "CutFolderItem";
   static renameFolderItemApiMethodName = "RenameFolderItem";
-  static downloadFolderItemApiMethodName = "DownloadFolderItem";
+  static downloadFolderItemApiMethodName = "DownloadFolder";
 
   filesApiControllerAddress!: string;
 
@@ -60,6 +60,21 @@ export class FilesService {
     };
 
     await this.http.post(url, JSON.stringify(requesData), false);
+  }
+
+  async downloadFolder(folderPartialPath: string) {
+
+    let url = this.getFullUrl(`${FilesService.downloadFolderItemApiMethodName}?folderPartialPath=${folderPartialPath}`);
+
+    this.downloadFile(url);
+  }
+
+  private downloadFile(url: string) {
+    const a = document.createElement('a');
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   getFullUrl(methodNameWithQueryParams: string): string {

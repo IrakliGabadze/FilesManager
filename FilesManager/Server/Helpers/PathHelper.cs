@@ -17,7 +17,7 @@ public static class PathHelper
 
         var normalizedPath = GetNormalizedPath(path);
 
-        if (!StartsWithSlash(normalizedPath) && !ContainsPathTraversal(normalizedPath) && ContainsInvalidCharacters(normalizedPath))
+        if (!StartsOrEndsWithSlash(normalizedPath) && !ContainsPathTraversal(normalizedPath) && ContainsInvalidCharacters(normalizedPath))
             throw new InvalidOperationException();
 
         return normalizedPath;
@@ -45,7 +45,8 @@ public static class PathHelper
         return false;
     }
 
-    private static bool StartsWithSlash(string partialPath) => partialPath.StartsWith("\\") || partialPath.StartsWith("/");
+    private static bool StartsOrEndsWithSlash(string partialPath) => 
+        partialPath.StartsWith("\\") || partialPath.StartsWith("/") || partialPath.EndsWith("\\") || partialPath.EndsWith("/");
 
     public static FolderItemType GetFolderItemType(string fileName)
     {

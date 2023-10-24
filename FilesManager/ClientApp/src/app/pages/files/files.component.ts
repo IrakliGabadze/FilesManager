@@ -73,70 +73,73 @@ export class FilesComponent implements OnInit {
         break
       case FolderItemActionType.Rename: await this.renameFolderItem(actionInfo)
         break
-      case FolderItemActionType.Cut: case FolderItemActionType.Copy: {
+      case FolderItemActionType.Cut: case FolderItemActionType.Copy:
         this.cutOrCopiedItemParentPath = this.currentFolderItemPath;
         this.cutOrCopiedItemPathWithActionType = [actionInfo[1].path, actionInfo[0]];
         this._snackBarService.openSnackBar(SnackBarType.Info, "Choose folder to paste");
         break
-      }
+      case FolderItemActionType.Download: {
+        await this.filesService.downloadFolder(actionInfo[1].path);
+        break
     }
   }
+}
 
   async deleteFolderItemAfterConfirmation(actionInfo: [string, FolderItem]) {
 
-    let dialogRef = this.dialogService.openWithResult<ConfirmationDialogComponent, boolean>(ConfirmationDialogComponent, {
-      data: {
-        folderItemName: actionInfo[1].name
-      }
-    });
+  let dialogRef = this.dialogService.openWithResult<ConfirmationDialogComponent, boolean>(ConfirmationDialogComponent, {
+    data: {
+      folderItemName: actionInfo[1].name
+    }
+  });
 
-    var result = await lastValueFrom(dialogRef.afterClosed());
+  var result = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!result)
-      return;
+  if (!result)
+    return;
 
-    await this.filesService.deleteFolderItem(actionInfo[1].path);
+  await this.filesService.deleteFolderItem(actionInfo[1].path);
 
-    await this.getFolderItems(this.currentFolderItemPath);
-  }
+  await this.getFolderItems(this.currentFolderItemPath);
+}
 
   async renameFolderItem(actionInfo: [string, FolderItem]) {
 
-    let dialogRef = this.dialogService.openWithResult<RenameFolderItemFormComponent, string>(RenameFolderItemFormComponent, {
-      data: {
-        folderItemName: actionInfo[1].name
-      }
-    });
+  let dialogRef = this.dialogService.openWithResult<RenameFolderItemFormComponent, string>(RenameFolderItemFormComponent, {
+    data: {
+      folderItemName: actionInfo[1].name
+    }
+  });
 
-    var result = await lastValueFrom(dialogRef.afterClosed()) as string;
+  var result = await lastValueFrom(dialogRef.afterClosed()) as string;
 
-    if (!result)
-      return;
+  if (!result)
+    return;
 
-    await this.filesService.renameFolderItem(actionInfo[1].path, result);
+  await this.filesService.renameFolderItem(actionInfo[1].path, result);
 
-    await this.getFolderItems(this.currentFolderItemPath);
-  }
+  await this.getFolderItems(this.currentFolderItemPath);
+}
 
   async cutOrCopyFolderItem() {
 
-    if (this.cutOrCopiedItemPathWithActionType == undefined)
-      return;
+  if (this.cutOrCopiedItemPathWithActionType == undefined)
+    return;
 
-    await this.filesService.cutOrCopyFolderItem(this.cutOrCopiedItemPathWithActionType[1], this.cutOrCopiedItemPathWithActionType[0], this.currentFolderItemPath);
+  await this.filesService.cutOrCopyFolderItem(this.cutOrCopiedItemPathWithActionType[1], this.cutOrCopiedItemPathWithActionType[0], this.currentFolderItemPath);
 
-    this.cancelCutOrCopyFolderItem(false);
+  this.cancelCutOrCopyFolderItem(false);
 
-    await this.getFolderItems(this.currentFolderItemPath);
+  await this.getFolderItems(this.currentFolderItemPath);
 
-    this.cancelCutOrCopyFolderItem(false);
-  }
+  this.cancelCutOrCopyFolderItem(false);
+}
 
-  cancelCutOrCopyFolderItem(showSnackBar: boolean) {
-    this.cutOrCopiedItemPathWithActionType = undefined;
-    this.cutOrCopiedItemParentPath = undefined;
+cancelCutOrCopyFolderItem(showSnackBar: boolean) {
+  this.cutOrCopiedItemPathWithActionType = undefined;
+  this.cutOrCopiedItemParentPath = undefined;
 
-    if (showSnackBar)
-      this._snackBarService.openSnackBar(SnackBarType.Info, "Operation canceled");
-  }
+  if (showSnackBar)
+    this._snackBarService.openSnackBar(SnackBarType.Info, "Operation canceled");
+}
 }

@@ -1,7 +1,9 @@
 ﻿using FilesManager.Server.Enums;
 using FilesManager.Server.Helpers;
 using FilesManager.Server.Models;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
+using System.IO.Compression;
 
 namespace FilesManager.Server.Services;
 
@@ -15,6 +17,48 @@ public class FilesService
     {
         _thumbnailService = thumbnailHelper;
         _filesRootFolderPath = PathHelper.GetCleanRootFolderPath(env, options);
+    }
+
+    public async Task DownloadFolderAsZipWithStreamAsync(HttpContext httpContext, string folderPartialPath, CancellationToken cancellationToken)
+    {
+        var safeFullPath = GetFullSafePath(folderPartialPath);
+
+        var zipFileName = new DirectoryInfo(safeFullPath).Name;
+
+        httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
+
+        httpContext.Response.ContentType = "application/zip";
+
+        var encodedFilename = Uri.EscapeDataString($"{zipFileName}.zip");
+
+        httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={encodedFilename}");
+
+        using var zipArchive = new ZipArchive(httpContext.Response.Body, ZipArchiveMode.Create, true);
+
+        await ZipDirectoryRecursiveAsync(zipArchive, new DirectoryInfo(safeFullPath), httpContext.Response.Body, safeFullPath);
+    }
+
+    private async Task ZipDirectoryRecursiveAsync(ZipArchive archive, DirectoryInfo dir, Stream responseBody, string mainFolderFullPath)
+    {
+        foreach (FileInfo file in dir.GetFiles())
+        {
+            await using var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            
+            var entryPath = file.FullName.Substring(mainFolderFullPath.Length + 1);
+
+            var entry = archive.CreateEntry(entryPath, CompressionLevel.Fastest);
+           
+            await using var entryStream = entry.Open();
+            
+            await fs.CopyToAsync(entryStream);
+            
+            await responseBody.FlushAsync();
+        }
+
+        foreach (DirectoryInfo subDir in dir.GetDirectories())
+        {
+            await ZipDirectoryRecursiveAsync(archive, subDir, responseBody, mainFolderFullPath);
+        }
     }
 
     public List<FolderItem> GetFolderItems(string? folderPartialPath)
