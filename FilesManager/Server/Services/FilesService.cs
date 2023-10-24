@@ -23,13 +23,16 @@ public class FilesService
     {
         var safeFullPath = GetFullSafePath(folderPartialPath);
 
+        if (!Directory.Exists(safeFullPath))
+            ThrowDoesNotExistException(safeFullPath);
+
         var zipFileName = new DirectoryInfo(safeFullPath).Name;
 
         httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
 
         httpContext.Response.ContentType = "application/zip";
 
-        var encodedFilename = Uri.EscapeDataString($"{zipFileName}.zip");
+        var encodedFilename = $"{Uri.EscapeDataString(zipFileName)}.zip";
 
         httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={encodedFilename}");
 
@@ -43,27 +46,34 @@ public class FilesService
         foreach (FileInfo file in dir.GetFiles())
         {
             await using var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            
-            var entryPath = file.FullName.Substring(mainFolderFullPath.Length + 1);
+
+            var entryPath = file.FullName[(mainFolderFullPath.Length + 1)..];
 
             var entry = archive.CreateEntry(entryPath, CompressionLevel.Fastest);
-           
+
             await using var entryStream = entry.Open();
-            
+
             await fs.CopyToAsync(entryStream);
-            
+
             await responseBody.FlushAsync();
         }
 
         foreach (DirectoryInfo subDir in dir.GetDirectories())
         {
+            var folderEntryPath = subDir.FullName[(mainFolderFullPath.Length + 1)..];
+
+            archive.CreateEntry($"{folderEntryPath}\\", CompressionLevel.NoCompression); //For empty folders
+
             await ZipDirectoryRecursiveAsync(archive, subDir, responseBody, mainFolderFullPath);
         }
     }
-    
+
     public async Task DownloadFileWithStreamAsync(HttpContext httpContext, string filePartialPath, CancellationToken cancellationToken)
     {
         var safeFullPath = GetFullSafePath(filePartialPath);
+
+        if (!File.Exists(safeFullPath))
+            ThrowDoesNotExistException(safeFullPath);
 
         httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
 
@@ -74,7 +84,7 @@ public class FilesService
         await using var fs = new FileStream(safeFullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
         await fs.CopyToAsync(httpContext.Response.Body, cancellationToken);
-        
+
         await httpContext.Response.Body.FlushAsync(cancellationToken);
     }
 

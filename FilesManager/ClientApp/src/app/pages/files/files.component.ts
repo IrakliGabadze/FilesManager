@@ -78,10 +78,9 @@ export class FilesComponent implements OnInit {
         this.cutOrCopiedItemPathWithActionType = [actionInfo[1].path, actionInfo[0]];
         this._snackBarService.openSnackBar(SnackBarType.Info, "Choose folder to paste");
         break
-      case FolderItemActionType.Download: {
+      case FolderItemActionType.Download:
         await this.filesService.downloadFolderItem(actionInfo[1]);
         break
-      }
     }
   }
 
