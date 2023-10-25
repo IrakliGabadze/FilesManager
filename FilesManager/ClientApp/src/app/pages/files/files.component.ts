@@ -93,7 +93,8 @@ export class FilesComponent implements OnInit {
         break
       case FolderItemActionType.Rename: await this.renameFolderItem(actionInfo)
         break
-      case FolderItemActionType.Cut: case FolderItemActionType.Copy:
+      case FolderItemActionType.Cut:
+      case FolderItemActionType.Copy:
         this.cutOrCopiedItemParentPath = this.currentFolderItemPath;
         this.cutOrCopiedItemPathWithActionType = [actionInfo[1].path, actionInfo[0]];
         this._snackBarService.openSnackBar(SnackBarType.Info, "Choose folder to paste");

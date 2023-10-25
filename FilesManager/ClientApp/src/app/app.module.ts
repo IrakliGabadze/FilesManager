@@ -58,12 +58,12 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
     provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {
       hasBackdrop: true,
       disableClose: true,
-      minHeight: '250px',
-      height: 'fit-content',
-      maxHeight: '90vh',
       minWidth: '250px',
-      width: '550px',
-      maxWidth: '90%',
+      width: '95vw',
+      maxWidth: '95vw',
+      minHeight: '250px',
+      height: '95vh',
+      maxHeight: '95vh',
       autoFocus: false
     }
   },

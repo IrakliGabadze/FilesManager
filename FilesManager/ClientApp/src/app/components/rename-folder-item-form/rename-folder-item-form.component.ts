@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-rename-folder-item-form',
+  selector: 'rename-folder-item-form',
   templateUrl: './rename-folder-item-form.component.html',
   styleUrls: ['./rename-folder-item-form.component.css']
 })

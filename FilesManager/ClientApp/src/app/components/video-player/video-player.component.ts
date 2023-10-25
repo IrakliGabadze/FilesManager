@@ -4,7 +4,7 @@ import { FolderItem } from '../../models/folder-item-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-video-player',
+  selector: 'video-player',
   templateUrl: './video-player.component.html',
   styleUrls: ['./video-player.component.css']
 })
