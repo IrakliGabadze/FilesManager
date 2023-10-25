@@ -73,10 +73,9 @@ export class FilesComponent implements OnInit {
 
   async pathItemClickedInNavigator(path?: string) {
 
-    var folderItem = this.folderItems?.find(f => f.path == path);
+    this.currentFolderItemPath = path;
 
-    if (folderItem != undefined)
-      await this.folderItemClicked(folderItem);
+    await this.getFolderItems(path);
   }
 
   getActionType(actionTypeName: string): FolderItemActionType {
