@@ -10,6 +10,8 @@ import { ConfirmationDialogComponent } from '../../components/confirmation-dialo
 import { RenameFolderItemFormComponent } from '../../components/rename-folder-item-form/rename-folder-item-form.component';
 import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { SnackBarType } from '../../enums/snack-bar-type';
+import { VideoPlayerComponent } from '../../components/video-player/video-player.component';
+import { AudioPlayerComponent } from '../../components/audio-player/audio-player.component';
 
 @Component({
   selector: 'files-page',
@@ -19,7 +21,7 @@ import { SnackBarType } from '../../enums/snack-bar-type';
 
 export class FilesComponent implements OnInit {
 
-  constructor(private filesService: FilesService, private dialogService: DialogService, private _snackBarService: SnackBarService) { }
+  constructor(private _filesService: FilesService, private _dialogService: DialogService, private _snackBarService: SnackBarService) { }
 
   FilesComponent = FilesComponent;
   FolderItemActionType = FolderItemActionType;
@@ -44,19 +46,37 @@ export class FilesComponent implements OnInit {
   }
 
   async getFolderItems(folderPartialPath?: string) {
-    this.folderItems = await this.filesService.getFolderItems(folderPartialPath);
+    this.folderItems = await this._filesService.getFolderItems(folderPartialPath);
   }
 
-  async folderItemClicked(type: FolderItemType, folderItemPath?: string) {
+  async folderItemClicked(folderItem: FolderItem) {
 
-    if (type == FolderItemType.Folder) {
-      this.currentFolderItemPath = folderItemPath;
-      await this.getFolderItems(folderItemPath);
+    switch (folderItem.type) {
+      case FolderItemType.Folder:
+        this.currentFolderItemPath = folderItem.path;
+        await this.getFolderItems(folderItem.path);
+        break
+      case FolderItemType.HtmlAudio:
+        this.previewAudio(folderItem)
+        break
+      case FolderItemType.HtmlVideo:
+        this.previewVideo(folderItem)
+        break
+      case FolderItemType.HtmlImage:
+        this.previewImage(folderItem)
+        break
+      case FolderItemType.OtherFile:
+        this._filesService.downloadFolderItem(folderItem)
+        break
     }
   }
 
   async pathItemClickedInNavigator(path?: string) {
-    await this.folderItemClicked(FolderItemType.Folder, path);
+
+    var folderItem = this.folderItems?.find(f => f.path == path);
+
+    if (folderItem != undefined)
+      await this.folderItemClicked(folderItem);
   }
 
   getActionType(actionTypeName: string): FolderItemActionType {
@@ -79,14 +99,14 @@ export class FilesComponent implements OnInit {
         this._snackBarService.openSnackBar(SnackBarType.Info, "Choose folder to paste");
         break
       case FolderItemActionType.Download:
-        await this.filesService.downloadFolderItem(actionInfo[1]);
+        await this._filesService.downloadFolderItem(actionInfo[1]);
         break
     }
   }
 
   async deleteFolderItemAfterConfirmation(actionInfo: [string, FolderItem]) {
 
-    let dialogRef = this.dialogService.openWithResult<ConfirmationDialogComponent, boolean>(ConfirmationDialogComponent, {
+    let dialogRef = this._dialogService.openWithResult<ConfirmationDialogComponent, boolean>(ConfirmationDialogComponent, {
       data: {
         folderItemName: actionInfo[1].name
       }
@@ -97,14 +117,14 @@ export class FilesComponent implements OnInit {
     if (!result)
       return;
 
-    await this.filesService.deleteFolderItem(actionInfo[1].path);
+    await this._filesService.deleteFolderItem(actionInfo[1].path);
 
     await this.getFolderItems(this.currentFolderItemPath);
   }
 
   async renameFolderItem(actionInfo: [string, FolderItem]) {
 
-    let dialogRef = this.dialogService.openWithResult<RenameFolderItemFormComponent, string>(RenameFolderItemFormComponent, {
+    let dialogRef = this._dialogService.openWithResult<RenameFolderItemFormComponent, string>(RenameFolderItemFormComponent, {
       data: {
         folderItemName: actionInfo[1].name
       }
@@ -115,7 +135,7 @@ export class FilesComponent implements OnInit {
     if (!result)
       return;
 
-    await this.filesService.renameFolderItem(actionInfo[1].path, result);
+    await this._filesService.renameFolderItem(actionInfo[1].path, result);
 
     await this.getFolderItems(this.currentFolderItemPath);
   }
@@ -125,7 +145,7 @@ export class FilesComponent implements OnInit {
     if (this.cutOrCopiedItemPathWithActionType == undefined)
       return;
 
-    await this.filesService.cutOrCopyFolderItem(this.cutOrCopiedItemPathWithActionType[1], this.cutOrCopiedItemPathWithActionType[0], this.currentFolderItemPath);
+    await this._filesService.cutOrCopyFolderItem(this.cutOrCopiedItemPathWithActionType[1], this.cutOrCopiedItemPathWithActionType[0], this.currentFolderItemPath);
 
     this.cancelCutOrCopyFolderItem(false);
 
@@ -140,5 +160,26 @@ export class FilesComponent implements OnInit {
 
     if (showSnackBar)
       this._snackBarService.openSnackBar(SnackBarType.Info, "Operation canceled");
+  }
+
+  previewVideo(folderItem: FolderItem) {
+
+    this._dialogService.open<VideoPlayerComponent>(VideoPlayerComponent, {
+      data: {
+        folderItem: folderItem
+      }
+    });
+  }
+
+  previewAudio(folderItem: FolderItem) {
+
+    this._dialogService.open<AudioPlayerComponent>(AudioPlayerComponent, {
+      data: {
+        folderItem: folderItem
+      }
+    });
+  }
+
+  previewImage(folderItem: FolderItem) {
   }
 }

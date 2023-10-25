@@ -28,7 +28,7 @@
 
     <folder-item *ngFor="let folderItem of folderItems;"
                  [folderItem]="folderItem"
-                 (folderItemClick)="folderItemClicked(folderItem.type, $event.path)"
+                 (folderItemClick)="folderItemClicked($event)"
                  (contextmenu)="onContextMenu($event, folderItem)">
     </folder-item>
 
