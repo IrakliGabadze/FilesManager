@@ -92,6 +92,7 @@ mat-toolbar {
   flex: 1 1 auto;
 }
 
+/*#region material dialog*/
 .snackbar-success-bg * {
   border-radius: 5px;
   background-color: forestgreen !important;
@@ -109,25 +110,27 @@ mat-toolbar {
   background-color: cornflowerblue !important;
   font-size: 18px !important;
 }
+/*#endregion */
 
-.mat-mdc-dialog-container .mdc-dialog__surface {
-  box-shadow: none !important;
-  background: transparent !important;
-  display: flex !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
+/*#region material dialog*/
 .mat-mdc-dialog-container .mdc-dialog__surface {
   display: flex !important;
   box-shadow: none !important;
   background: transparent !important;
   width: 100% !important;
   height: 100% !important;
-  border-radius:10px !important;
+  border-radius: 10px !important;
 }
 
-.mat-dialog-content{
+.mdc-dialog__surface > :first-child {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.mat-dialog-content {
   border-radius: 10px !important;
   background-color: ghostwhite !important;
   padding: 20px !important;
@@ -137,12 +140,6 @@ form, video, audio {
   max-width: 90%;
   max-height: 90%;
 }
+/*#endregion */
 
-rename-folder-item-form, video-player, audio-player {
-  display: flex !important;
-  width: 100% !important;
-  height: 100% !important;
-  justify-content: center !important;
-  align-items: center !important;
-}
 
