@@ -23,6 +23,9 @@ import { RenameFolderItemFormComponent } from './components/rename-folder-item-f
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import { DialogsBaseComponent } from './components/dialogs-base/dialogs-base.component';
+import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
+import { VideoPlayerComponent } from './components/video-player/video-player.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -35,7 +38,11 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
     PathNavigatorComponent,
     ContextMenuComponent,
     ConfirmationDialogComponent,
-    RenameFolderItemFormComponent],
+    RenameFolderItemFormComponent,
+    DialogsBaseComponent,
+    AudioPlayerComponent,
+    VideoPlayerComponent
+  ],
   imports: [
     RouterModule,
     AppRoutingModule,
@@ -52,7 +59,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
     MatSnackBarModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule,
+    MatInputModule
   ],
   providers: [{
     provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {

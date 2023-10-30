@@ -154,7 +154,7 @@ public class FilesService
             try
             {
                 if (isCut)
-                    Directory.Move(safeOldPath, safeNewPath);
+                      Directory.Move(safeOldPath, safeNewPath);
                 else
                     DirectoryCopy(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
             }
@@ -257,12 +257,9 @@ public class FilesService
 
             var fileSystemInfos = new DirectoryInfo(safeTargetFolderPath).GetFileSystemInfos();
 
-            var num = 1;
-
-            while (fileSystemInfos.Any(fs => fs.Name == folderItemNameWithExt))
+            for (var num = 1; fileSystemInfos.Any(fs => fs.Name == folderItemNameWithExt); num++)
             {
                 folderItemNameWithExt = $"{folderItemNameWithoutExt} - Copy ({num}){(isFolder ? string.Empty : ext)}";
-                num++;
             }
 
             if (folderItemNameWithExt.Length > 64)
