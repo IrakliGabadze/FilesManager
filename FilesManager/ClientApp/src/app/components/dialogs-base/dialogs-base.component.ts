@@ -1,5 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'dialogs-base',
@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogsBaseComponent {
 
-  constructor(private _dialogRef: MatDialogRef<DialogsBaseComponent>) {}
+  constructor(private _dialogRef: MatDialogRef<DialogsBaseComponent>, @Inject(MAT_DIALOG_DATA) public data: { headerText: string }) {}
 
   close() {
     this._dialogRef.close();

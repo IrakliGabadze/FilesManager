@@ -73,7 +73,7 @@ mat-toolbar {
 
 #toobar-icon {
   width: 70px;
-  height: 70px;
+  height: 57px;
   margin-top: -7px;
 }
 
@@ -111,5 +111,9 @@ mat-toolbar {
   font-size: 18px !important;
 }
 /*#endregion */
+
+audio-player .mat-dialog-content {
+  height: 150px !important
+}
 
 

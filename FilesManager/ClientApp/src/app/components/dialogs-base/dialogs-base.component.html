@@ -1,14 +1,18 @@
 
 <div class="mat-dialog-content">
 
-    <div>
+    <div class="mat-dialog-header">
 
-        <h3>Header text here</h3>
-        
-        <button (click)="close()" mat-raised-button color="primary">Cancel</button>
+        <h3>{{data.headerText}}</h3>
+
+        <mat-icon fontIcon="close" (click)="close()"></mat-icon>
 
     </div>
 
-    <ng-content></ng-content>
+    <div class="mat-dialog-body">
+
+        <ng-content></ng-content>
+
+    </div>
 
 </div>

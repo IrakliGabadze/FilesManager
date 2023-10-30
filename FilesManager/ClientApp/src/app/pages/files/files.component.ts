@@ -166,7 +166,8 @@ export class FilesComponent implements OnInit {
 
     this._dialogService.open<VideoPlayerComponent>(VideoPlayerComponent, {
       data: {
-        folderItem: folderItem
+        folderItem: folderItem,
+        headerText: folderItem.name
       }
     });
   }
@@ -175,7 +176,8 @@ export class FilesComponent implements OnInit {
 
     this._dialogService.open<AudioPlayerComponent>(AudioPlayerComponent, {
       data: {
-        folderItem: folderItem
+        folderItem: folderItem,
+        headerText: folderItem.name
       }
     });
   }
