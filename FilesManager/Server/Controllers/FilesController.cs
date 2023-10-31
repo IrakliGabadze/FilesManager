@@ -17,14 +17,14 @@ public class FilesController : ControllerBase
 
     [HttpGet]
     [Route("DownloadFolder")]
-    public Task DownloadZipAsync([FromQuery] string folderItemPartialPath, CancellationToken cancellationToken) => 
+    public Task DownloadZipAsync([FromQuery] string folderItemPartialPath, CancellationToken cancellationToken) =>
         _filesService.DownloadZippedFolderWithImmediateStreamingAsync(HttpContext, folderItemPartialPath, cancellationToken);
-    
+
     [HttpGet]
     [Route("DownloadFile")]
     public Task DownloadFileAsync([FromQuery] string folderItemPartialPath, CancellationToken cancellationToken) =>
         _filesService.DownloadFileWithImmediateStreamingAsync(HttpContext, folderItemPartialPath, cancellationToken);
-    
+
     [HttpGet]
     [Route("GetFolderItems")]
     public List<FolderItem> GetFolderItems([FromQuery] string? folderPartialPath) =>
@@ -39,7 +39,7 @@ public class FilesController : ControllerBase
     [Route("CutFolderItem")]
     public void CutFolderItem([FromBody] CutOrCopyFolderItem cutFolderItem) =>
        _filesService.CutOrCopyFolderItem(cutFolderItem, true);
-    
+
     [HttpPost]
     [Route("CopyFolderItem")]
     public void CopyFolderItem([FromBody] CutOrCopyFolderItem copyFolderItem) =>

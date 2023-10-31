@@ -26,6 +26,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { DialogsBaseComponent } from './components/dialogs-base/dialogs-base.component';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -41,7 +42,8 @@ import { VideoPlayerComponent } from './components/video-player/video-player.com
     RenameFolderItemFormComponent,
     DialogsBaseComponent,
     AudioPlayerComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    CarouselComponent
   ],
   imports: [
     RouterModule,

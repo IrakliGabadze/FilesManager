@@ -12,7 +12,7 @@ export class VideoPlayerComponent implements OnInit {
 
   fileFullPath!:string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: {folderItem: FolderItem}, private _dialogRef: MatDialogRef<VideoPlayerComponent>, private _filesService: FilesService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) private data: {folderItem: FolderItem}, private _filesService: FilesService) { }
 
   ngOnInit(): void {
 

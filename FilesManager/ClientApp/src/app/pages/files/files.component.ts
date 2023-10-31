@@ -12,6 +12,7 @@ import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 import { SnackBarType } from '../../enums/snack-bar-type';
 import { VideoPlayerComponent } from '../../components/video-player/video-player.component';
 import { AudioPlayerComponent } from '../../components/audio-player/audio-player.component';
+import { CarouselComponent } from '../../components/carousel/carousel.component';
 
 @Component({
   selector: 'files-page',
@@ -183,5 +184,14 @@ export class FilesComponent implements OnInit {
   }
 
   previewImage(folderItem: FolderItem) {
+
+    let imageItems = this.folderItems?.filter(fi => fi.type == FolderItemType.HtmlImage);
+
+    this._dialogService.open<CarouselComponent>(CarouselComponent, {
+      data: {
+        imageItems: imageItems,
+        selectedImagePath: folderItem.path
+      }
+    });
   }
 }
