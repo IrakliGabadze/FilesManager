@@ -1,0 +1,41 @@
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+img {
+  width: auto;
+  max-width: 80%;
+  height: auto;
+  max-height: 80%;
+}
+
+mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute !important;
+  font-size: 35px;
+  width: 50px;
+  height: 50px;
+}
+
+  mat-icon:hover {
+      border-radius: 50%;
+      background-color:lightblue;
+      cursor:pointer;
+  }
+
+.carousel-wrapper mat-icon:first-child {
+  left: 20px;
+  padding-left: 10px;
+}
+
+.carousel-wrapper mat-icon:last-child {
+  right: 20px;
+}
