@@ -195,7 +195,7 @@ public class FilesService
 
     private async Task ZipDirectoryRecursiveAsync(ZipArchive archive, DirectoryInfo dir, Stream responseBody, string mainFolderFullPath)
     {
-        foreach (FileInfo file in dir.GetFiles())
+        foreach (var file in dir.GetFiles())
         {
             await using var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
 

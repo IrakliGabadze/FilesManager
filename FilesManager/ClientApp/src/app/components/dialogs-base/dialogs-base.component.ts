@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -8,6 +8,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   encapsulation: ViewEncapsulation.None
 })
 export class DialogsBaseComponent {
+
+  @Input() headerText?: string;
 
   constructor(private _dialogRef: MatDialogRef<DialogsBaseComponent>, @Inject(MAT_DIALOG_DATA) public data: { headerText: string }) {}
 
