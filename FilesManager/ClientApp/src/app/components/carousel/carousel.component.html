@@ -1,14 +1,14 @@
 
 <dialogs-base [headerText]="data.imageItems[currentImageIndex].name">
 
-  <div class="carousel-wrapper">
+    <div class="carousel-wrapper">
 
-    <mat-icon *ngIf="this.currentImageIndex > 0" fontIcon="arrow_back_ios" (click)="previousImage()"></mat-icon>
+        <mat-icon *ngIf="previousImageIsAvailable()" fontIcon="arrow_back_ios" (click)="previousImage()"></mat-icon>
 
-    <img [src]="this.currentImageFullUrl" />
+        <img [src]="this.currentImageFullUrl" />
 
-    <mat-icon *ngIf="this.currentImageIndex < this.data.imageItems.length - 1" fontIcon="arrow_forward_ios" (click)="nextImage()"></mat-icon>
+        <mat-icon *ngIf="nextImageIsAvailable()" fontIcon="arrow_forward_ios" (click)="nextImage()"></mat-icon>
 
-  </div>
+    </div>
 
 </dialogs-base>
