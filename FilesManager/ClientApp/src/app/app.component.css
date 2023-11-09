@@ -116,4 +116,10 @@ audio-player .mat-dialog-content {
   height: 150px !important
 }
 
+audio-player dialogs-base {
+  display: flex !important;
+  width: 500px !important;
+  align-items: center !important;
+}
+
 
