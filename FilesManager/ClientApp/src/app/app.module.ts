@@ -27,6 +27,7 @@ import { DialogsBaseComponent } from './components/dialogs-base/dialogs-base.com
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { UploadFilesComponent } from './components/upload-files/upload-files.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -43,7 +44,8 @@ import { CarouselComponent } from './components/carousel/carousel.component';
     DialogsBaseComponent,
     AudioPlayerComponent,
     VideoPlayerComponent,
-    CarouselComponent
+    CarouselComponent,
+    UploadFilesComponent
   ],
   imports: [
     RouterModule,

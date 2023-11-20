@@ -5,8 +5,7 @@ import { FolderItemComponent } from '../folder-item/folder-item.component';
 @Component({
   selector: 'context-menu',
   templateUrl: './context-menu.component.html',
-  styleUrls: ['./context-menu.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./context-menu.component.css']
 })
 export class ContextMenuComponent<TItem> {
 

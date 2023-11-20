@@ -154,7 +154,7 @@ public class FilesService
             try
             {
                 if (isCut)
-                      Directory.Move(safeOldPath, safeNewPath);
+                    Directory.Move(safeOldPath, safeNewPath);
                 else
                     DirectoryCopy(safeOldPath, safeNewPath, copyFolderItem.Overwrite);
             }
@@ -175,6 +175,37 @@ public class FilesService
         }
     }
 
+    public async Task UploadFilesAsync(string mainFolderPartialPath, HttpRequest request, CancellationToken cancellationToken)
+    {
+        var safeMainFolderPartialPath = PathHelper.GetSafePath(mainFolderPartialPath);
+
+        if (!IsMultipartContentType(request.ContentType))
+            return;
+
+        var formCollection = await request.ReadFormAsync(cancellationToken);
+
+        foreach (var file in formCollection.Files)
+        {
+            if (file.Length == 0)
+                continue;
+
+            var safeFileName = PathHelper.GetSafePath(file.FileName);
+
+            var fullDestPath = Path.Combine(_filesRootFolderPath, safeMainFolderPartialPath, safeFileName);
+
+            var buffer = new byte[file.Length];
+
+            await using var stream = file.OpenReadStream();
+
+            await using var fsDest = new FileStream(fullDestPath, FileMode.Create, FileAccess.Write);
+
+            await stream.CopyToAsync(fsDest, cancellationToken);
+        }
+    }
+
+    private static bool IsMultipartContentType(string? contentType) =>
+        !string.IsNullOrEmpty(contentType) && contentType.Contains("multipart/", StringComparison.OrdinalIgnoreCase);
+
     private static void DirectoryCopy(string sourceDir, string targetDir, bool overwrite)
     {
         Directory.CreateDirectory(targetDir);
@@ -193,7 +224,7 @@ public class FilesService
         }
     }
 
-    private async Task ZipDirectoryRecursiveAsync(ZipArchive archive, DirectoryInfo dir, Stream responseBody, string mainFolderFullPath)
+    private static async Task ZipDirectoryRecursiveAsync(ZipArchive archive, DirectoryInfo dir, Stream responseBody, string mainFolderFullPath)
     {
         foreach (var file in dir.GetFiles())
         {

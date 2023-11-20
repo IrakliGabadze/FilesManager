@@ -1,7 +1,6 @@
 using FilesManager.Server.Models;
 using FilesManager.Server.Services;
 using Microsoft.AspNetCore.Mvc;
-
 namespace FilesManager.Server.Controllers;
 
 [ApiController]
@@ -54,4 +53,11 @@ public class FilesController : ControllerBase
     [Route("PreviewVideoOrAudioFile")]
     public IActionResult PreviewVideoOrAudioFile([FromQuery] string partialPath) =>
         _filesService.PreviewVideoOrAudioFile(partialPath);
+
+    [HttpPost]
+    [Route("UploadFiles")]
+    [DisableRequestSizeLimit]
+    [RequestFormLimits(MultipartBodyLengthLimit = long.MaxValue, ValueLengthLimit = int.MaxValue)]
+    public Task UploadFilesAsync([FromQuery] string mainFolderPartialPath, CancellationToken cancellationToken) =>
+        _filesService.UploadFilesAsync(mainFolderPartialPath, Request, cancellationToken);
 }

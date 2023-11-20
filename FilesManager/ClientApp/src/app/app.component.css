@@ -122,4 +122,32 @@ audio-player dialogs-base {
   align-items: center !important;
 }
 
+confirmation-dialog dialogs-base {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 390px !important;
+  height: 200px !important;
+}
+
+confirmation-dialog .mat-dialog-body {
+  padding: 0 !important;
+  flex-direction: column !important;
+}
+
+rename-folder-item-form dialogs-base {
+  display: flex !important;
+  width: fit-content !important;
+  align-items: center !important;
+}
+
+rename-folder-item-form .mat-dialog-content {
+  height: 350px !important
+}
+
+rename-folder-item-form .mat-dialog-body {
+  padding: 0 !important;
+}
+
+
+
 

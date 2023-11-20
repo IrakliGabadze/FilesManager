@@ -74,6 +74,18 @@ export class FilesService {
     this.clickLinkToStartDownloading(url);
   }
 
+  async uploadFiles(mainFolderPartialPath: string, files: File[]) {
+    const formData = new FormData();
+   
+     files.forEach(file => {
+      formData.append('files', file, file.name);  // Include the file name when appending
+    });
+
+    let url = this.getFullUrl(`UploadFiles?mainFolderPartialPath=${mainFolderPartialPath}`);
+
+    await this.http.postFiles(url, formData);
+  }
+
   private clickLinkToStartDownloading(url: string) {
     const a = document.createElement('a');
     a.href = url;

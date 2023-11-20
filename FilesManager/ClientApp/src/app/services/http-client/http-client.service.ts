@@ -46,4 +46,24 @@ export class HttpClientService {
         throw e;
     }
   }
+
+  async postFiles<T>(url: string, data: T, throwException: boolean = true) {
+
+   // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    try {
+      await lastValueFrom(this.http.post(url, data));
+
+      this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
+    }
+    catch (e) {
+
+      console.log(e) //TODO handle error
+
+      this._snackBarService.openSnackBar(SnackBarType.Error, HttpClientService.errorOperationMessage);
+
+      if (throwException)
+        throw e;
+    }
+  }
 }
