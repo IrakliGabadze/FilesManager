@@ -9,14 +9,27 @@
   box-sizing: border-box;
 }
 
-.cut-copy-buttons-wrapper {
+.path-navigator-buttons-wrapper {
   display: flex;
   align-items: center;
   float: right;
   width: fit-content;
   height: 23px;
+  margin-right: -5px;
 }
 
-.cut-copy-buttons-wrapper button {
+.path-navigator-buttons-wrapper button {
     margin-left:10px;
+}
+
+.upload-btn {
+  min-width: 40px !important;
+  width: 40px !important;
+}
+
+.upload-icon {
+  margin: 0 !important;
+  font-size: 1.6rem !important;
+  padding-right: 25px;
+  padding-bottom: 26px;
 }

@@ -4,7 +4,7 @@
     <path-navigator [currentFolderItemPath]="currentFolderItemPath"
                     (pathItemClick)="pathItemClickedInNavigator($event)">
 
-        <div class="cut-copy-buttons-wrapper">
+        <div class="path-navigator-buttons-wrapper">
 
             <button *ngIf="cutOrCopiedItemPathWithActionType != undefined"
                     (click)="cancelCutOrCopyFolderItem(true)"
@@ -20,6 +20,12 @@
                     mat-raised-button
                     color="primary">
                 Paste
+            </button>
+
+            <button (click)="showFilesUploadForm()" mat-raised-button class="upload-btn" color="primary">
+
+               <mat-icon fontIcon="upload" class="upload-icon"></mat-icon>
+
             </button>
         </div>
 

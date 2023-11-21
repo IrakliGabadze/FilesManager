@@ -13,6 +13,7 @@ import { SnackBarType } from '../../enums/snack-bar-type';
 import { VideoPlayerComponent } from '../../components/video-player/video-player.component';
 import { AudioPlayerComponent } from '../../components/audio-player/audio-player.component';
 import { CarouselComponent } from '../../components/carousel/carousel.component';
+import { UploadFilesComponent } from '../../components/upload-files/upload-files.component';
 
 @Component({
   selector: 'files-page',
@@ -22,7 +23,10 @@ import { CarouselComponent } from '../../components/carousel/carousel.component'
 
 export class FilesComponent implements OnInit {
 
-  constructor(private _filesService: FilesService, private _dialogService: DialogService, private _snackBarService: SnackBarService) { }
+  constructor(
+    private _filesService: FilesService,
+    private _dialogService: DialogService,
+    private _snackBarService: SnackBarService) { }
 
   FilesComponent = FilesComponent;
   FolderItemActionType = FolderItemActionType;
@@ -192,6 +196,21 @@ export class FilesComponent implements OnInit {
         imageItems: imageItems,
         selectedImagePath: folderItem.path
       }
+    });
+  }
+
+  async showFilesUploadForm() {
+
+    this.cancelCutOrCopyFolderItem(false);
+
+    const dialogRef = this._dialogService.open<UploadFilesComponent>(UploadFilesComponent, {
+      data: {
+        mainFolderPartialPath: this.currentFolderItemPath,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.getFolderItems(this.currentFolderItemPath);
     });
   }
 }

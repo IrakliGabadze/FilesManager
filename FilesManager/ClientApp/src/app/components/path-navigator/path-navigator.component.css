@@ -10,6 +10,7 @@
 
 .files-path-nav-item {
   color: cornflowerblue;
+  font-size: 19px !important;
 }
 
   .files-path-nav-item:hover, .navBackIconEnabled:hover {
@@ -23,8 +24,11 @@
 
 .files-path-nav-item, .nav-item-slash {
   vertical-align: super;
-  font-size: 16px;
   margin-top:-2px;
+}
+
+.nav-item-slash {
+  font-size: 22px;
 }
 
 .navBackIconEnabled, .navBackIconDisabled {
