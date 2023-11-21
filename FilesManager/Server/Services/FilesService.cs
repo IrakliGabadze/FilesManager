@@ -31,7 +31,7 @@ public class FilesService
 
         ConfigureResponseForFileDownload(httpContext, $"{Uri.EscapeDataString(directoryInfo.Name)}.zip");
 
-        using var zipArchive = new ZipArchive(httpContext.Response.Body, ZipArchiveMode.Create, true);
+        using var zipArchive = new ZipArchive(httpContext.Response.BodyWriter.AsStream(), ZipArchiveMode.Create, true);
 
         await ZipDirectoryRecursiveAsync(zipArchive, new DirectoryInfo(safeFullPath), httpContext.Response.Body, safeFullPath);
     }
@@ -251,19 +251,11 @@ public class FilesService
         }
     }
 
-    private static void ConfigureResponseForFileDownload(HttpContext httpContext, string fileName, bool allowSynchronousIO)
+    private static void ConfigureResponseForFileDownload(HttpContext httpContext, string fileName)
     {
         httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
         httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={fileName}");
         httpContext.Response.ContentType = PathHelper.GetMimeType(Path.GetExtension(fileName));
-
-        if (!allowSynchronousIO)
-            return;
-
-        var syncIOFeature = httpContext.Features.Get<IHttpBodyControlFeature>();
-
-        if (syncIOFeature is not null)
-            syncIOFeature.AllowSynchronousIO = true;
     }
 
     private static (string safeOldPath, string safeNewPath, bool isFolder) GetSafePathsToCutOrCopy(CutOrCopyFolderItem copyFolderItem, bool isCut)
