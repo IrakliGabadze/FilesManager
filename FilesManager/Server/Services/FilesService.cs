@@ -251,11 +251,19 @@ public class FilesService
         }
     }
 
-    private static void ConfigureResponseForFileDownload(HttpContext httpContext, string fileName)
+    private static void ConfigureResponseForFileDownload(HttpContext httpContext, string fileName, bool allowSynchronousIO)
     {
         httpContext.Features.Get<IHttpResponseBodyFeature>()?.DisableBuffering();
         httpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename={fileName}");
         httpContext.Response.ContentType = PathHelper.GetMimeType(Path.GetExtension(fileName));
+
+        if (!allowSynchronousIO)
+            return;
+
+        var syncIOFeature = httpContext.Features.Get<IHttpBodyControlFeature>();
+
+        if (syncIOFeature is not null)
+            syncIOFeature.AllowSynchronousIO = true;
     }
 
     private static (string safeOldPath, string safeNewPath, bool isFolder) GetSafePathsToCutOrCopy(CutOrCopyFolderItem copyFolderItem, bool isCut)

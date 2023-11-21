@@ -1,5 +1,6 @@
 using FilesManager.Server.Extensions;
 using FilesManager.Server.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 const string CorsPolicyname = "CorsPolicy";
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureSettings(builder.Configuration);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -36,9 +37,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.MapFallbackToFile("index.html");
 
