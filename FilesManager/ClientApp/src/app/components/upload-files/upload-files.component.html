@@ -1,0 +1,41 @@
+
+<dialogs-base headerText="Upload files">
+
+    <div class="upload-files-wrapper">
+
+        <div class="upload-inputs-wrapper">
+
+            <label for="file-upload" class="custom-file-upload">
+
+                <mat-icon fontIcon="attach_file"></mat-icon>
+
+                Select Files
+
+            </label>
+
+            <input id="file-upload" type="file" multiple (change)="onFileChange($event)">
+
+            <button (click)="uploadFiles()" mat-raised-button disabled="{{!canBeUploaded()}}" color="primary">
+
+                <mat-icon fontIcon="upload" class="upload-icon"></mat-icon>
+
+                Upload
+
+            </button>
+
+        </div>
+
+        <div class="selected-files-wrapper vertically-scrollable-div">
+
+            <div *ngFor="let file of selectedFiles; let i = index;" class="selected-file-name">
+
+                {{file.name}}
+
+                <mat-icon fontIcon="close" (click)="onFileRemove(i)" class="remove-selected-file-icon"></mat-icon>
+            </div>
+
+        </div>
+
+    </div>
+
+</dialogs-base>

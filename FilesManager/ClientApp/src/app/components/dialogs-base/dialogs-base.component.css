@@ -17,12 +17,13 @@
 
 dialogs-base {
   max-height: 100% !important;
-  max-width:100% !important;
+  max-width: 100% !important;
   width: 100% !important;
   height: 100% !important;
 }
 
 .mat-dialog-content {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -92,7 +93,7 @@ dialogs-base {
     width: 500px;
   }
 
-  carousel dialogs-base {
-    width: 1000px !important;
-    max-width: 100% !important;
-  }
+carousel dialogs-base {
+  width: 1000px !important;
+  max-width: 100% !important;
+}

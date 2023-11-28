@@ -1,0 +1,58 @@
+
+.upload-files-wrapper {
+  padding: 10px;
+  min-width: 450px;
+  height: 100%;
+}
+
+.upload-inputs-wrapper {
+  display: flex;
+}
+
+#file-upload {
+  display: none !important;
+}
+
+.custom-file-upload {
+  display: inline-flex;
+  align-items: center;
+  width: 350px;
+  height: 37px;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.selected-files-wrapper {
+  max-height: 320px;
+  margin-top: 10px;
+}
+
+.selected-file-name {
+  display: flex !important;
+  align-items: center;
+  padding-top: 10px;
+  padding-left: 5px;
+  width: 100%;
+}
+
+.remove-selected-file-icon {
+  color: red !important;
+  font-size: 23px !important;
+  width: 35px !important;
+  margin-left: 5px;
+}
+
+  .remove-selected-file-icon:hover {
+    color: darkred !important;
+    cursor: pointer !important;
+  }
