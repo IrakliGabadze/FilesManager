@@ -149,7 +149,8 @@ rename-folder-item-form .mat-dialog-body {
 }
 
 upload-files .mat-dialog-content {
-  min-height: 300px !important;
+  min-height: 150px !important;
+  height: auto !important;
   max-height: 450px !important;
 }
 
