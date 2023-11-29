@@ -18,9 +18,9 @@
   margin-right: -5px;
 }
 
-.path-navigator-buttons-wrapper button {
-    margin-left:10px;
-}
+  .path-navigator-buttons-wrapper button {
+    margin-left: 10px;
+  }
 
 .upload-btn {
   min-width: 40px !important;
@@ -32,4 +32,11 @@
   font-size: 1.6rem !important;
   padding-right: 25px;
   padding-bottom: 26px;
+}
+
+.folder-items-wrapper {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
+  gap: 20px;
 }

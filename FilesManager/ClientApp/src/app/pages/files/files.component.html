@@ -24,18 +24,22 @@
 
             <button (click)="showFilesUploadForm()" mat-raised-button class="upload-btn" color="primary">
 
-               <mat-icon fontIcon="upload" class="upload-icon"></mat-icon>
+                <mat-icon fontIcon="upload" class="upload-icon"></mat-icon>
 
             </button>
         </div>
 
     </path-navigator>
 
-    <folder-item *ngFor="let folderItem of folderItems;"
-                 [folderItem]="folderItem"
-                 (folderItemClick)="folderItemClicked($event)"
-                 (contextmenu)="onContextMenu($event, folderItem)">
-    </folder-item>
+    <div class="folder-items-wrapper">
+
+        <folder-item *ngFor="let folderItem of folderItems;"
+                     [folderItem]="folderItem"
+                     (folderItemClick)="folderItemClicked($event)"
+                     (contextmenu)="onContextMenu($event, folderItem)">
+        </folder-item>
+
+    </div>
 
 </div>
 
