@@ -49,8 +49,6 @@ export class HttpClientService {
 
   async postFiles<T>(url: string, data: T, throwException: boolean = true) {
 
-   // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
     try {
       await lastValueFrom(this.http.post(url, data));
 

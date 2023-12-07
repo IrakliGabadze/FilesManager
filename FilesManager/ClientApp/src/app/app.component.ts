@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
 
   title: string = "FilesManager";
 
-  constructor(private authService: AuthService){ }
+  constructor(public authService: AuthService){ }
 
   ngOnInit(): void {
       this.authService.getCurrentUser();

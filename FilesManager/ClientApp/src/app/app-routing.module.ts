@@ -3,11 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { FilesComponent } from './pages/files/files.component';
 import { AboutComponent } from './pages/about/about.component';
+import { AuthGuard } from './services/auth-guard.service';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
-  { path: '', component: FilesComponent },
-  { path: 'files', component: FilesComponent },
-  { path: 'about', component:  AboutComponent },
+  { path: '', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']}  },
+  { path: 'files', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']} },
+  { path: 'login', component:  LoginComponent},
+  { path: 'about', component:  AboutComponent}
 ];
 
 @NgModule({

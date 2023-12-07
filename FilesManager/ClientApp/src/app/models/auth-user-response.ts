@@ -1,6 +1,6 @@
 export class AuthUserResponse {
 
-  Username: string;
+  Username!: string;
 
-  Roles: string[];
+  Roles!: string[];
 }

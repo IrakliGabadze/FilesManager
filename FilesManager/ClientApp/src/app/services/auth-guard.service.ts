@@ -7,30 +7,17 @@ import { AuthService } from './auth-service/auth.service';
 })
 export class PermissionsService {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-      const roles = next.data['roles'] as Array<string>;
+    const roles = next.data['roles'] as Array<string>;
 
-    if (roles && roles.length > 0) {
-      // Check if the user has any of the required roles
-      if (this.authService.hasAnyRole(roles)) {
-        return true;
-      } else {
-        // Redirect to unauthorized page or handle accordingly
-        this.router.navigate(['/unauthorized']);
-        return false;
-      }
-    } else {
-      // No specific roles required, just check for authentication
-      if (this.authService.isAuthenticated()) {
-        return true;
-      } else {
-        // Redirect to login page or handle unauthorized access
-        this.router.navigate(['/login']);
-        return false;
-      }
-    }
+    if (!(roles?.length > 0) || this.authService.authUserSig().hasAnyRole(roles))
+      return true;
+
+    this.authService.logout();
+
+    return false;
   }
 }
 

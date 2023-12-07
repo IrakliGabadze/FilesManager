@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  constructor(private router: Router, public http: HttpClientService, public authService: AuthService) {
+  constructor(private router: Router, public http: HttpClientService) {
     this.authApiControllerAddress = `${environment.filesApiBaseAddress}Auth`
   }
 
@@ -40,5 +40,16 @@ export class AuthService {
 
     if (!authUser.isAuthenticated)
       this.router.navigate(['/login']);
+  }
+
+  async logout() {
+
+    this.authUserSig.set(new AuthUser());
+
+    let url = `${this.authApiControllerAddress}/Logout`;
+
+    await this.http.get(url);
+
+    this.router.navigate(['/login']);
   }
 }
