@@ -2,12 +2,12 @@
 
 public class AuthUserResponse
 {
-    public AuthUserResponse(string username, List<string> roles)
+    public AuthUserResponse(string username, IEnumerable<string> roles)
     {
         Username = username;
         Roles = roles;
     }
 
     public string Username { get; set; }
-    public List<string> Roles { get; set; }
+    public IEnumerable<string> Roles { get; set; }
 }
