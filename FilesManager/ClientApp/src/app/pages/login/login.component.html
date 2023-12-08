@@ -1,1 +1,23 @@
 
+
+<form [formGroup]="loginForm" (ngSubmit)="$event.preventDefault(); login()">
+
+    <mat-form-field>
+
+        <mat-label>Username</mat-label>
+
+        <input matInput spellcheck="false" placeholder="Enter username" formControlName="username">
+
+    </mat-form-field>
+
+    <mat-form-field>
+
+        <mat-label>Password</mat-label>
+
+        <input type="password" matInput spellcheck="false" placeholder="Enter password" formControlName="password">
+
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button disabled="{{loginForm.invalid}}" color="primary">login</button>
+
+</form>

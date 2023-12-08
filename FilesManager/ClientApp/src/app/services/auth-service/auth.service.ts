@@ -36,9 +36,9 @@ export class AuthService {
       let authUserResponse = await lastValueFrom(this.httpClient.post<AuthUserResponse>(url, loginRequest, { headers, withCredentials: true }));
 
       if (authUserResponse != null) {
-        authUser.isAuthenticated = true;
-        authUser.username = authUserResponse.Username;
-        authUser.roles = authUserResponse.Roles;
+        authUser.IsAuthenticated = true;
+        authUser.Username = authUserResponse.username;
+        authUser.Roles = authUserResponse.roles;
       }
       else {
         this._snackBarService.openSnackBar(SnackBarType.Error, "Username or password is incorrect !!!");
@@ -55,7 +55,7 @@ export class AuthService {
 
     this.authUserSig.set(authUser);
 
-    if (authUser.isAuthenticated)
+    if (authUser.IsAuthenticated)
       this.router.navigateByUrl("files");
   }
 
@@ -68,18 +68,18 @@ export class AuthService {
       let currentUserResponse = await this.httpClientServcie.get<AuthUserResponse>(url);
 
       if (currentUserResponse != null) {
-        authUser.isAuthenticated = true;
-        authUser.username = currentUserResponse.Username;
-        authUser.roles = currentUserResponse.Roles;
+        authUser.IsAuthenticated = true;
+        authUser.Username = currentUserResponse.username;
+        authUser.Roles = currentUserResponse.roles;
       }
     }
     catch {
       //ignore
     }
 
-    this.authUserSig.set(authUser);
-
-    if (!authUser.isAuthenticated)
+    if (authUser.IsAuthenticated)
+      this.authUserSig.set(authUser);
+    else
       this.router.navigate(['/login']);
   }
 
@@ -91,6 +91,7 @@ export class AuthService {
 
     this.authUserSig.set(new AuthUser());
 
-    this.router.navigate(['/login']);
+    if (redirectToLoginPage)
+      this.router.navigate(['/login']);
   }
 }
