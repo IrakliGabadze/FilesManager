@@ -17,7 +17,7 @@ export class HttpClientService {
   get<T>(url: string): Promise<T> {
 
     try {
-      return lastValueFrom(this.http.get<T>(url));
+      return lastValueFrom(this.http.get<T>(url, { withCredentials: true }));
     }
     catch (e) {
 
@@ -32,7 +32,7 @@ export class HttpClientService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     try {
-      await lastValueFrom(this.http.post<T>(url, data, { headers }));
+      await lastValueFrom(this.http.post<T>(url, data, { headers, withCredentials: true }));
 
       this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
     }
@@ -50,7 +50,7 @@ export class HttpClientService {
   async postFiles<T>(url: string, data: T, throwException: boolean = true) {
 
     try {
-      await lastValueFrom(this.http.post(url, data));
+      await lastValueFrom(this.http.post(url, data, { withCredentials: true } ));
 
       this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
     }

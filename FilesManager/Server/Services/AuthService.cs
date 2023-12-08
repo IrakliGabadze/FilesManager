@@ -9,8 +9,6 @@ public class AuthService
 {
     public async Task<AuthUserResponse?> SignInUserAsync(HttpContext httpContext, LoginRequest loginRequest)
     {
-        await httpContext.SignOutAsync();
-
         //TODO in real scenario, check user in db and get roles
         if (loginRequest.Username != "Admin" && loginRequest.Password != "Admin")
             return null;
