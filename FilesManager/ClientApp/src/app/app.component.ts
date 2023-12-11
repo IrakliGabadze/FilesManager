@@ -9,5 +9,8 @@ import { AuthService } from "./services/auth-service/auth.service";
 })
 export class AppComponent {
 
+  constructor(public authService: AuthService){ }
+
   title: string = "FilesManager";
+
 }
