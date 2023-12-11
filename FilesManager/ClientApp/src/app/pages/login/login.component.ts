@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   loginForm: FormGroup = new FormGroup({
-    username: new FormControl("", [Validators.required]),
-    password: new FormControl("", [Validators.required])
+    username: new FormControl("Admin", [Validators.required]),
+    password: new FormControl("Admin", [Validators.required])
   });
 
   ngOnInit(): void {

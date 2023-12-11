@@ -71,13 +71,13 @@ mat-toolbar {
   color: rgb(85, 26, 139) !important;
 }
 
-#toobar-icon {
+.logo-img {
   width: 70px;
   height: 57px;
   margin-top: -7px;
 }
 
-#toolbar-header {
+.app-name-header {
   margin: 0;
   margin-left: 20px;
   color: cornflowerblue;

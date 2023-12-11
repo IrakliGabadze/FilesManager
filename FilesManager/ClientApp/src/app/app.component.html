@@ -1,15 +1,13 @@
-
-@if(authService.authUserSig().IsAuthenticated)
-{
+@if(authService.authUserSig().IsAuthenticated){
     <mat-toolbar>
 
         <mat-toolbar-row>
 
-            <img src="assets/toolbarIcon.png" id="toobar-icon" />
+            <img src="assets/toolbarIcon.png" class="logo-img" />
 
-            <span id="toolbar-header">Files Manager</span>
+            <span class="app-name-header">Files Manager</span>
 
-            <ul class="m-5">
+            <ul>
 
                 <li>
                     <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{ exact: true }">
@@ -33,13 +31,21 @@
 
             <span class="spacer"></span>
 
-            <auth-user-section/>
+            <auth-user-section />
 
         </mat-toolbar-row>
 
     </mat-toolbar>
- }
 
-<div class="content-wrapper">
-    <router-outlet></router-outlet>
-</div>
+    <div class="content-wrapper">
+        <router-outlet></router-outlet>
+    </div>
+
+}
+@else{
+
+  <router-outlet></router-outlet>
+
+}
+
+
