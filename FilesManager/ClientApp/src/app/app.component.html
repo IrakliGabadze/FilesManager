@@ -1,18 +1,17 @@
 
-<mat-toolbar>
+@if(authService.authUserSig().IsAuthenticated)
+{
+    <mat-toolbar>
 
-    <mat-toolbar-row>
+        <mat-toolbar-row>
 
-        <img src="assets/toolbarIcon.png" id="toobar-icon" />
+            <img src="assets/toolbarIcon.png" id="toobar-icon" />
 
-        <span id="toolbar-header">Files Manager</span>
+            <span id="toolbar-header">Files Manager</span>
 
-        <span class="spacer"></span>
+            <span class="spacer"></span>
 
-
-        <ul>
-
-            @if(authService.authUserSig().IsAuthenticated){
+            <ul>
 
                 <li>
                     <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{ exact: true }">
@@ -25,19 +24,19 @@
                         Files
                     </a>
                 </li>
-            }
 
-            <li>
-                <a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">
-                    About
-                </a>
-            </li>
+                <li>
+                    <a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">
+                        About
+                    </a>
+                </li>
 
-        </ul>
+            </ul>
 
-    </mat-toolbar-row>
+        </mat-toolbar-row>
 
-</mat-toolbar>
+    </mat-toolbar>
+ }
 
 <div class="content-wrapper">
     <router-outlet></router-outlet>

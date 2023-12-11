@@ -11,7 +11,7 @@ export class UploadFilesComponent {
   selectedFiles: File[] = [];
   constructor(
     private _dialogRef: MatDialogRef<UploadFilesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { mainFolderPartialPath: string },
+    @Inject(MAT_DIALOG_DATA) public data: { mainFolderPartialPath?: string },
     public _filesService: FilesService) {
   }
 
@@ -33,7 +33,7 @@ export class UploadFilesComponent {
     if (!this.canBeUploaded())
       return;
 
-     await this._filesService.uploadFiles(this.data.mainFolderPartialPath, this.selectedFiles);
+     await this._filesService.uploadFiles(this.selectedFiles, this.data.mainFolderPartialPath);
 
      this._dialogRef.close();
   }

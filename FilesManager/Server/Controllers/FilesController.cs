@@ -58,6 +58,6 @@ public class FilesController : ControllerBase
     [Route("UploadFiles")]
     [DisableRequestSizeLimit]
     [RequestFormLimits(MultipartBodyLengthLimit = long.MaxValue, ValueLengthLimit = int.MaxValue)]
-    public Task UploadFilesAsync([FromQuery] string mainFolderPartialPath, CancellationToken cancellationToken) =>
+    public Task UploadFilesAsync([FromQuery] string? mainFolderPartialPath, CancellationToken cancellationToken) =>
         _filesService.UploadFilesAsync(mainFolderPartialPath, Request, cancellationToken);
 }

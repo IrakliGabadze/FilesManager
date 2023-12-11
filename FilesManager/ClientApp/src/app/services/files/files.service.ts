@@ -74,14 +74,15 @@ export class FilesService {
     this.clickLinkToStartDownloading(url);
   }
 
-  async uploadFiles(mainFolderPartialPath: string, files: File[]) {
+  async uploadFiles(files: File[], mainFolderPartialPath?: string) {
     const formData = new FormData();
    
      files.forEach(file => {
-      formData.append('files', file, file.name);  // Include the file name when appending
+      formData.append('files', file, file.name);
     });
 
-    let url = this.getFullUrl(`UploadFiles?mainFolderPartialPath=${mainFolderPartialPath}`);
+    let url = this.getFullUrl(mainFolderPartialPath == null || mainFolderPartialPath == undefined ?
+      "UploadFiles" : `UploadFiles?mainFolderPartialPath=${mainFolderPartialPath}`);
 
     await this.http.postFiles(url, formData);
   }

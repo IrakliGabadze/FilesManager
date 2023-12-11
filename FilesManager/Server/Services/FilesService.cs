@@ -175,9 +175,9 @@ public class FilesService
         }
     }
 
-    public async Task UploadFilesAsync(string mainFolderPartialPath, HttpRequest request, CancellationToken cancellationToken)
+    public async Task UploadFilesAsync(string? mainFolderPartialPath, HttpRequest request, CancellationToken cancellationToken)
     {
-        var safeMainFolderPartialPath = PathHelper.GetSafePath(mainFolderPartialPath);
+        var safeMainFolderPath = string.IsNullOrWhiteSpace(mainFolderPartialPath) ? _filesRootFolderPath : GetFullSafePath(mainFolderPartialPath, false);
 
         if (!IsMultipartContentType(request.ContentType))
             return;
@@ -191,7 +191,7 @@ public class FilesService
 
             var safeFileName = PathHelper.GetSafePath(file.FileName);
 
-            var fullDestPath = Path.Combine(_filesRootFolderPath, safeMainFolderPartialPath, safeFileName);
+            var fullDestPath = Path.Combine(safeMainFolderPath, safeFileName);
 
             var buffer = new byte[file.Length];
 
