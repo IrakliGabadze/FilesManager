@@ -9,9 +9,7 @@
 
             <span id="toolbar-header">Files Manager</span>
 
-            <span class="spacer"></span>
-
-            <ul>
+            <ul class="m-5">
 
                 <li>
                     <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{ exact: true }">
@@ -32,6 +30,10 @@
                 </li>
 
             </ul>
+
+            <span class="spacer"></span>
+
+            <auth-user-section/>
 
         </mat-toolbar-row>
 

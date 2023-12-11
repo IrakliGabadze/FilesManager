@@ -29,6 +29,7 @@ import { VideoPlayerComponent } from './components/video-player/video-player.com
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { UploadFilesComponent } from './components/upload-files/upload-files.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthUserSectionComponent } from './components/auth-user-section/auth-user-section.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -47,7 +48,8 @@ import { LoginComponent } from './pages/login/login.component';
     VideoPlayerComponent,
     CarouselComponent,
     UploadFilesComponent,
-    LoginComponent
+    LoginComponent,
+    AuthUserSectionComponent
   ],
   imports: [
     RouterModule,

@@ -1,0 +1,10 @@
+
+<div class="auth-user-section">
+
+    <mat-icon class="auth-user-icon" fontIcon="person"></mat-icon>
+
+    {{authService.authUserSig().Username}}
+
+    <mat-icon (click)="logout()" class="logout-icon" fontIcon="logout"></mat-icon>
+
+</div>
