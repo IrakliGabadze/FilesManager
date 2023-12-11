@@ -7,13 +7,7 @@ import { AuthService } from "./services/auth-service/auth.service";
   styleUrls: ['./app.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   title: string = "FilesManager";
-
-  constructor(public authService: AuthService){ }
-
-  ngOnInit(): void {
-      this.authService.getCurrentUser();
-  }
 }

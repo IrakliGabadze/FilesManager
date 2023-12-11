@@ -9,8 +9,8 @@ import { LoginComponent } from './pages/login/login.component';
 const routes: Routes = [
   { path: '', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']}  },
   { path: 'files', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']} },
-  { path: 'login', component:  LoginComponent},
-  { path: 'about', component:  AboutComponent}
+  { path: 'about', component:  AboutComponent, canActivate: [AuthGuard] },
+  { path: 'login', component:  LoginComponent}
 ];
 
 @NgModule({

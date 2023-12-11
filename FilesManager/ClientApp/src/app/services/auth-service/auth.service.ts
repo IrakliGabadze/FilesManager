@@ -77,10 +77,7 @@ export class AuthService {
       //ignore
     }
 
-    if (authUser.IsAuthenticated)
-      this.authUserSig.set(authUser);
-    else
-      this.router.navigate(['/login']);
+    this.authUserSig.set(authUser);
   }
 
   async logout(redirectToLoginPage: boolean = true) {

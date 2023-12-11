@@ -9,8 +9,10 @@ export class PermissionsService {
 
   constructor(private authService: AuthService) { }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const roles = next.data['roles'] as Array<string>;
+
+    await this.authService.getCurrentUser();
 
     if (!(roles?.length > 0) || this.authService.authUserSig().hasAnyRole(roles))
       return true;
@@ -21,6 +23,6 @@ export class PermissionsService {
   }
 }
 
-export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
-  return inject(PermissionsService).canActivate(next, state);
+export const AuthGuard: CanActivateFn = async (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> => {
+  return await inject(PermissionsService).canActivate(next, state);
 }
