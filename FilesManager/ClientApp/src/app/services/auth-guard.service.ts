@@ -7,22 +7,20 @@ import { AuthService } from './auth-service/auth.service';
 })
 export class PermissionsService {
 
-  constructor(private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
-  async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const roles = next.data['roles'] as Array<string>;
-
-    await this.authService.getCurrentUser();
 
     if (!(roles?.length > 0) || this.authService.authUserSig().hasAnyRole(roles))
       return true;
 
-    this.authService.logout();
+    this.router.navigate(['/login']);
 
     return false;
   }
 }
 
-export const AuthGuard: CanActivateFn = async (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> => {
-  return await inject(PermissionsService).canActivate(next, state);
+export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+  return inject(PermissionsService).canActivate(next, state);
 }
