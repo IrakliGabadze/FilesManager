@@ -10,33 +10,38 @@ import { AuthUser } from '../models/auth-user';
 })
 export class PermissionsService {
 
-  constructor(private router: Router, private authService: AuthService, private httpClient: HttpClient) { }
+  constructor(private router: Router, private authService: AuthService, private httpClient: HttpClient) {
+    this.apiUrl = `${authService.authApiControllerAddress}/GetCurrentUser`;
+  }
+
+  apiUrl!:string;
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const roles = next.data['roles'] as Array<string>;
 
-    let url = `${this.authService.authApiControllerAddress}/GetCurrentUser`;
-
     let authUserFromSig = this.authService.authUserSig();
 
-    if (!(roles?.length > 0) || (authUserFromSig.hasJustUpdated() && authUserFromSig.hasAnyRole(roles)))
+    if (authUserFromSig.hasJustUpdated() && (!(roles?.length > 0) || authUserFromSig.hasAnyRole(roles)))
       return true;
 
     let authUser = new AuthUser();
 
-    this.httpClient.get<AuthUserResponse>(url, { withCredentials: true }).subscribe({
+    this.httpClient.get<AuthUserResponse>(this.apiUrl, { withCredentials: true }).subscribe({
 
       next: (res) => {
-        if (res != null) {
+        if (res != null)
           authUser.update(res);
-        }
+        else
+          authUser.LastUpdatedAt = new Date(Date.now());
 
         this.authService.authUserSig.set(authUser);
 
-        if (!(roles?.length > 0) || authUser.hasAnyRole(roles))
-          this.router.navigate([state.url]);
-        else
-          this.router.navigate(['/login']);
+        if (!(roles?.length > 0) || authUser.hasAnyRole(roles)) {
+          this.router.navigateByUrl(state.url == '/' ? 'home' : state.url);
+        }
+        else {
+          this.router.navigateByUrl('login');
+        }
       },
       error: (error) => {
         //TODO handle error

@@ -8,6 +8,7 @@ import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   { path: '', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']}  },
+  { path: 'home', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']}  },
   { path: 'files', component: FilesComponent, canActivate: [AuthGuard], data: { roles: ['Administrator']} },
   { path: 'about', component:  AboutComponent, canActivate: [AuthGuard] },
   { path: 'login', component:  LoginComponent}
