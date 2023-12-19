@@ -11,25 +11,27 @@
 
                 <li>
                     <a routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">
-                        Home
+                        {{'Home'|translate}}
                     </a>
                 </li>
 
                 <li>
                     <a routerLink="/files" routerLinkActive="active" ariaCurrentWhenActive="page">
-                        Files
+                        {{'Files'|translate}}
                     </a>
                 </li>
 
                 <li>
                     <a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">
-                        About
+                        {{'About'|translate}}
                     </a>
                 </li>
 
             </ul>
 
             <span class="spacer"></span>
+
+            <app-lang-selector/>
 
             <auth-user-section />
 

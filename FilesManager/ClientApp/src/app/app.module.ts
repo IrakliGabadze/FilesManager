@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +31,9 @@ import { UploadFilesComponent } from './components/upload-files/upload-files.com
 import { LoginComponent } from './pages/login/login.component';
 import { AuthUserSectionComponent } from './components/auth-user-section/auth-user-section.component';
 import { CreateFolderFormComponent } from './components/create-folder-form/create-folder-form.component';
+import { LangSelectorComponent } from './components/lang-selector/lang-selector.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -51,13 +54,23 @@ import { CreateFolderFormComponent } from './components/create-folder-form/creat
     UploadFilesComponent,
     LoginComponent,
     AuthUserSectionComponent,
-    CreateFolderFormComponent
+    CreateFolderFormComponent,
+    LangSelectorComponent
   ],
   imports: [
     RouterModule,
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
+    TranslateModule.forRoot(
+      {
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      }
+    ),
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
@@ -86,8 +99,14 @@ import { CreateFolderFormComponent } from './components/create-folder-form/creat
   },
   {
     provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' }
-  }
+  },
+
+    HttpClient
   ]
 })
 export class AppModule {
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
 }
