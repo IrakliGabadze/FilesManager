@@ -1,10 +1,13 @@
 using FilesManager.Server.Models;
 using FilesManager.Server.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 namespace FilesManager.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Roles = "Administrator")]
 public class FilesController : ControllerBase
 {
     private readonly FilesService _filesService;
