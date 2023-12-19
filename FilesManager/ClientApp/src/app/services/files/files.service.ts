@@ -15,6 +15,7 @@ export class FilesService {
   static copyFolderItemApiMethodName = "CopyFolderItem";
   static cutFolderItemApiMethodName = "CutFolderItem";
   static renameFolderItemApiMethodName = "RenameFolderItem";
+  static createFolderApiMethodName = "CreateFolder";
   static downloadFolderApiMethodName = "DownloadFolder";
   static downloadFileApiMethodName = "DownloadFile";
   static previewVideoOrAudioFileApiMethodName = "PreviewVideoOrAudioFile";
@@ -25,9 +26,9 @@ export class FilesService {
     this.filesApiControllerAddress = `${environment.filesApiBaseAddress}files`
   }
 
-  getFolderItems(folderPartialPath?: string): Promise<FolderItem[]> {
+  getFolderItems(folderPartialPath?: string | null): Promise<FolderItem[]> {
 
-    let url = this.getFullUrl(`${FilesService.getFolderItemsApiMethodName}${folderPartialPath == undefined ? `` : `?folderPartialPath=${folderPartialPath}`}`);
+    let url = this.getFullUrl(`${FilesService.getFolderItemsApiMethodName}${folderPartialPath == null ? `` : `?folderPartialPath=${folderPartialPath}`}`);
 
     return this.http.get(url);
   }
@@ -46,6 +47,18 @@ export class FilesService {
     let requesData = {
       path: folderItemPartialPath,
       name: newName
+    };
+
+    await this.http.post(url, JSON.stringify(requesData), false);
+  }
+
+   async createFolder(parentFolderPartialPath: string, name: string) {
+
+    let url = this.getFullUrl(FilesService.createFolderApiMethodName);
+
+    let requesData = {
+      parentFolderPartialPath: parentFolderPartialPath,
+      name: name
     };
 
     await this.http.post(url, JSON.stringify(requesData), false);

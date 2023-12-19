@@ -134,7 +134,7 @@ confirmation-dialog .mat-dialog-body {
   flex-direction: column !important;
 }
 
-rename-folder-item-form dialogs-base, upload-files dialogs-base {
+rename-folder-item-form dialogs-base, upload-files dialogs-base, create-folder-form dialogs-base {
   display: flex !important;
   width: fit-content !important;
   align-items: center !important;
@@ -144,7 +144,11 @@ rename-folder-item-form .mat-dialog-content {
   height: 350px !important
 }
 
-rename-folder-item-form .mat-dialog-body {
+create-folder-form .mat-dialog-content {
+  height: 220px !important
+}
+
+rename-folder-item-form .mat-dialog-body, create-folder-form .mat-dialog-body {
   padding: 0 !important;
 }
 

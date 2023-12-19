@@ -30,6 +30,7 @@ import { CarouselComponent } from './components/carousel/carousel.component';
 import { UploadFilesComponent } from './components/upload-files/upload-files.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthUserSectionComponent } from './components/auth-user-section/auth-user-section.component';
+import { CreateFolderFormComponent } from './components/create-folder-form/create-folder-form.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -49,7 +50,8 @@ import { AuthUserSectionComponent } from './components/auth-user-section/auth-us
     CarouselComponent,
     UploadFilesComponent,
     LoginComponent,
-    AuthUserSectionComponent
+    AuthUserSectionComponent,
+    CreateFolderFormComponent
   ],
   imports: [
     RouterModule,

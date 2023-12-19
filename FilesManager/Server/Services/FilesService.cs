@@ -111,7 +111,7 @@ public class FilesService
         var safeName = PathHelper.GetSafePath(renameFolderItem.Name);
 
         if (safeName.Length > 64)
-            throw new InvalidOperationException($"Name nust not be longer than 50 characters");
+            throw new InvalidOperationException("Name nust not be longer than 64 characters");
 
         var parentDirectory = Path.GetDirectoryName(safePath)!;
 
@@ -130,6 +130,28 @@ public class FilesService
         else
         {
             ThrowDoesNotExistException(safePath);
+        }
+    }
+
+    public void CreateFolder(CreateFolder createFolder)
+    {
+        var parentDirectory = string.IsNullOrWhiteSpace(createFolder.ParentFolderPartialPath) ?
+            _filesRootFolderPath : GetFullSafePath(createFolder.ParentFolderPartialPath);
+
+        var safeName = PathHelper.GetSafePath(createFolder.Name);
+
+        if (safeName.Length > 64)
+            throw new InvalidOperationException("Name nust not be longer than 64 characters");
+
+        if (Directory.Exists(parentDirectory))
+        {
+            var newFolderPath = Path.Combine(parentDirectory, safeName);
+
+            Directory.CreateDirectory(newFolderPath);
+        }
+        else
+        {
+            ThrowDoesNotExistException(parentDirectory);
         }
     }
 

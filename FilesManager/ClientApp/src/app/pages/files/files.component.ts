@@ -14,6 +14,7 @@ import { VideoPlayerComponent } from '../../components/video-player/video-player
 import { AudioPlayerComponent } from '../../components/audio-player/audio-player.component';
 import { CarouselComponent } from '../../components/carousel/carousel.component';
 import { UploadFilesComponent } from '../../components/upload-files/upload-files.component';
+import { CreateFolderFormComponent } from '../../components/create-folder-form/create-folder-form.component';
 
 @Component({
   selector: 'files-page',
@@ -209,8 +210,24 @@ export class FilesComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(async result => {
+    dialogRef.afterClosed().subscribe(async _ => {
       await this.getFolderItems(this.currentFolderItemPath);
     });
+  }
+
+  async showCreateFolderForm() {
+
+    this.cancelCutOrCopyFolderItem(false);
+
+    const dialogRef = this._dialogService.open<CreateFolderFormComponent>(CreateFolderFormComponent);
+
+    var result = await lastValueFrom(dialogRef.afterClosed()) as string;
+
+    if (!result)
+      return;
+      
+    await this._filesService.createFolder(this.currentFolderItemPath!, result);
+
+    await this.getFolderItems(this.currentFolderItemPath);
   }
 }

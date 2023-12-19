@@ -1,0 +1,31 @@
+<dialogs-base headerText="Create new folder">
+
+    <form [formGroup]="createFolderForm" (ngSubmit)="$event.preventDefault(); onFormSubmit()" class="mat-dialog-content">
+
+        <mat-form-field>
+
+            <mat-label>Name</mat-label>
+
+            <input matInput spellcheck="false" placeholder="Enter new name" formControlName="name">
+
+        </mat-form-field>
+
+        <small *ngIf="createFolderForm.get('name')?.hasError('required') && createFolderForm.get('name')?.touched" class="text-danger text-center">
+            Name is required !!!
+        </small>
+
+        <small *ngIf="createFolderForm.get('name')?.hasError('maxlength')" class="text-danger text-center">
+            Max length for new name characters is 64 !!!
+        </small>
+
+        <div class="d-flex justify-content-center">
+
+            <button type="button" class="m-1" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+
+            <button type="submit" class="m-1" mat-raised-button disabled="{{createFolderForm.invalid}}" color="primary">Create</button>
+
+        </div>
+
+    </form>
+
+</dialogs-base>
