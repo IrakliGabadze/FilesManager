@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LangSelectorComponent {
 
-  constructor(private translateService:TranslateService){}
+  constructor(public translateService:TranslateService){}
 
   changeLanguage(selectedLanguage:string){
 

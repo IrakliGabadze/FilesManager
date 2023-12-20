@@ -1,13 +1,9 @@
 
 
-<button (click)="changeLanguage('ka')" mat-raised-button  color="primary">
+<div class="lang-images-wrapper">
 
-    ka
+    <img src="assets/geo.png" (click)="changeLanguage('ka')" [ngClass]="translateService.currentLang == 'ka' ? 'selected' : ''" />
 
-</button>
+    <img src="assets/eng.png" (click)="changeLanguage('en')" [ngClass]="translateService.currentLang == 'en' ? 'selected' : ''" />
 
-<button (click)="changeLanguage('en')" mat-raised-button color="primary">
-
-    en
-
-</button>
+</div>
