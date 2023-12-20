@@ -3,16 +3,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { SnackBarService } from '../snack-bar/snack-bar.service';
 import { SnackBarType } from '../../enums/snack-bar-type';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  constructor(private http: HttpClient, private _snackBarService: SnackBarService) { }
+  constructor(private http: HttpClient, private _snackBarService: SnackBarService, private translate: TranslateService) { }
 
-  static successfullOperationMessage: string = "Operation completed successfully";
-  static errorOperationMessage: string = "Error occured";
+  static successfullOperationMessage: string = "OperationCompletedSuccessfully";
+  static errorOperationMessage: string = "ErrorOccured";
 
   get<T>(url: string): Promise<T> {
 
@@ -34,13 +35,13 @@ export class HttpClientService {
     try {
       await lastValueFrom(this.http.post<T>(url, data, { headers, withCredentials: true }));
 
-      this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
+      this._snackBarService.openSnackBar(SnackBarType.Success, this.getSuccessMsg());
     }
     catch (e) {
 
       console.log(e) //TODO handle error
 
-      this._snackBarService.openSnackBar(SnackBarType.Error, HttpClientService.errorOperationMessage);
+      this._snackBarService.openSnackBar(SnackBarType.Error,  this.getErrorMsg());
 
       if (throwException)
         throw e;
@@ -52,16 +53,24 @@ export class HttpClientService {
     try {
       await lastValueFrom(this.http.post(url, data, { withCredentials: true } ));
 
-      this._snackBarService.openSnackBar(SnackBarType.Success, HttpClientService.successfullOperationMessage);
+      this._snackBarService.openSnackBar(SnackBarType.Success, this.getSuccessMsg());
     }
     catch (e) {
 
       console.log(e) //TODO handle error
 
-      this._snackBarService.openSnackBar(SnackBarType.Error, HttpClientService.errorOperationMessage);
+      this._snackBarService.openSnackBar(SnackBarType.Error, this.getErrorMsg());
 
       if (throwException)
         throw e;
     }
+  }
+
+  getSuccessMsg() {
+    return this.translate.instant(HttpClientService.successfullOperationMessage);
+  }
+
+  getErrorMsg() {
+    return this.translate.instant(HttpClientService.errorOperationMessage);
   }
 }

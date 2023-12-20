@@ -1,20 +1,20 @@
 
 
-<dialogs-base headerText="Delete '{{data.folderItemName}}' ?">
+<dialogs-base headerText="{{'Delete'|translate}}">
 
-  <mat-dialog-content>
+    <mat-dialog-content>
 
-    This will delete '{{data.folderItemName}}' and it can't be undone.
+        '{{data.folderItemName}}' {{"WillBeDeletedForever"|translate}}
 
-  </mat-dialog-content>
+    </mat-dialog-content>
 
-  <mat-dialog-actions>
+    <mat-dialog-actions>
 
-    <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="accent" mat-dialog-close>{{"Cancel"|translate}}</button>
 
-    <button mat-raised-button color="warn" [mat-dialog-close]="true">Delete</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">{{"Delete"|translate}}</button>
 
-  </mat-dialog-actions>
+    </mat-dialog-actions>
 
 </dialogs-base>
 

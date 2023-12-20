@@ -1,10 +1,20 @@
 
-mat-dialog-content{
-    overflow: hidden;
+mat-dialog-content {
+  font-weight: bold !important;
+  color: red !important;
+  padding: 10px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 mat-dialog-actions {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+mat-dialog-actions button {
+  width: 100px !important;
 }

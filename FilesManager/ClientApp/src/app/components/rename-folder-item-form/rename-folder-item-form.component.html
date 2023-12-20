@@ -1,40 +1,40 @@
 
-<dialogs-base headerText="Rename '{{data.folderItemName}}'">
+<dialogs-base headerText="{{'Rename'|translate}}">
 
-  <form [formGroup]="renameForm" (ngSubmit)="$event.preventDefault(); onFormSubmit()" class="mat-dialog-content">
+    <form [formGroup]="renameForm" (ngSubmit)="$event.preventDefault(); onFormSubmit()" class="mat-dialog-content">
 
-    <mat-form-field>
+        <mat-form-field>
 
-      <mat-label>Current name</mat-label>
+            <mat-label>{{"CurrentName"|translate}}</mat-label>
 
-      <input matInput disabled value="{{data.folderItemName}}">
+            <input matInput disabled value="{{data.folderItemName}}">
 
-    </mat-form-field>
+        </mat-form-field>
 
-    <mat-form-field>
+        <mat-form-field>
 
-      <mat-label>New name</mat-label>
+            <mat-label>{{'NewName'|translate}}</mat-label>
 
-      <input matInput spellcheck="false" placeholder="Enter new name" formControlName="newName">
+            <input matInput spellcheck="false" placeholder="{{ 'EnterItem'|translate:{itemName:'NewName'|translate} }}" formControlName="newName">
 
-    </mat-form-field>
+        </mat-form-field>
 
-    <small *ngIf="renameForm.get('newName')?.hasError('required')" class="text-danger">
-      New name is required !!!
-    </small>
+        <small *ngIf="renameForm.get('newName')?.hasError('required')" class="text-danger">
+            {{ 'IsRequired'|translate:{itemName:'NewName'|translate} }}
+        </small>
 
-    <small *ngIf="renameForm.get('newName')?.hasError('maxlength')" class="text-danger">
-      Max length for new name characters is 30 !!!
-    </small>
+        <small *ngIf="renameForm.get('newName')?.hasError('maxlength')" class="text-danger">
+            {{ 'MaxLengthCharacters'|translate:{itemName:'NewName'|translate, maxLength: 64} }}
+        </small>
 
-    <div>
+        <div>
 
-      <button type="button" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+            <button type="button" mat-raised-button color="accent" mat-dialog-close>{{"Cancel"|translate}}</button>
 
-      <button type="submit" mat-raised-button disabled="{{renameForm.invalid}}" color="primary">Rename</button>
+            <button type="submit" mat-raised-button disabled="{{renameForm.invalid}}" color="primary">{{"Save"|translate}}</button>
 
-    </div>
+        </div>
 
-  </form>
+    </form>
 
 </dialogs-base>

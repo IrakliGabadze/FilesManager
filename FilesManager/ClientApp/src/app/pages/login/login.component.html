@@ -13,21 +13,21 @@
 
         <mat-form-field>
 
-            <mat-label>Username</mat-label>
+            <mat-label>{{"Username"|translate}}</mat-label>
 
-            <input matInput spellcheck="false" placeholder="Enter username" formControlName="username">
+            <input matInput spellcheck="false" placeholder="{{ 'EnterItem'|translate:{itemName:'Username'|translate} }}" formControlName="username">
 
         </mat-form-field>
 
         <mat-form-field>
 
-            <mat-label>Password</mat-label>
+            <mat-label>{{"Password"|translate}}</mat-label>
 
-            <input type="password" name="password-psw" matInput spellcheck="false" placeholder="Enter password" formControlName="password" autocomplete="new-password">
+            <input type="password" name="password-psw" matInput spellcheck="false" placeholder="{{ 'EnterItem'|translate:{itemName:'EnterPassword'|translate} }}" formControlName="password" autocomplete="new-password">
 
         </mat-form-field>
 
-        <button type="submit" mat-raised-button disabled="{{loginForm.invalid}}" color="primary">Login</button>
+        <button type="submit" mat-raised-button disabled="{{loginForm.invalid}}" color="primary">{{"Login"|translate}}</button>
 
     </form>
 

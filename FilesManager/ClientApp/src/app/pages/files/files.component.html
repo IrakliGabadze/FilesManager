@@ -10,7 +10,7 @@
                     (click)="cancelCutOrCopyFolderItem(true)"
                     mat-raised-button
                     color="accent">
-                Cancel
+                {{"Cancel"|translate}}
             </button>
 
             <button *ngIf="cutOrCopiedItemPathWithActionType != undefined &&
@@ -19,7 +19,7 @@
                     (click)="cutOrCopyFolderItem()"
                     mat-raised-button
                     color="primary">
-                Paste
+                {{"Paste"|translate}}
             </button>
 
             <button (click)="showCreateFolderForm()" mat-raised-button class="create-folder-btn" color="primary">

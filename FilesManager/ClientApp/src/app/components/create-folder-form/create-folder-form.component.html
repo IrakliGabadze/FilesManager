@@ -1,28 +1,30 @@
-<dialogs-base headerText="Create new folder">
+<dialogs-base headerText="{{'CreateNewFolder'|translate}}">
 
     <form [formGroup]="createFolderForm" (ngSubmit)="$event.preventDefault(); onFormSubmit()" class="mat-dialog-content">
 
         <mat-form-field>
 
-            <mat-label>Name</mat-label>
+            <mat-label>{{"Name"|translate}}</mat-label>
 
-            <input matInput spellcheck="false" placeholder="Enter new name" formControlName="name">
+            <input matInput spellcheck="false" placeholder="{{ 'EnterItem'|translate:{itemName:'Name'|translate} }}" formControlName="name">
 
         </mat-form-field>
 
+        <div></div>
+
         <small *ngIf="createFolderForm.get('name')?.hasError('required') && createFolderForm.get('name')?.touched" class="text-danger text-center">
-            Name is required !!!
+            {{'IsRequired'|translate:{itemName:'Name'|translate} }}
         </small>
 
         <small *ngIf="createFolderForm.get('name')?.hasError('maxlength')" class="text-danger text-center">
-            Max length for new name characters is 64 !!!
+            {{'MaxLengthCharacters'|translate:{itemName:'Name'|translate, maxLength: 64} }}
         </small>
 
         <div class="d-flex justify-content-center">
 
-            <button type="button" class="m-1" mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+            <button type="button" class="m-1" mat-raised-button color="accent" mat-dialog-close>{{"Cancel"|translate}}</button>
 
-            <button type="submit" class="m-1" mat-raised-button disabled="{{createFolderForm.invalid}}" color="primary">Create</button>
+            <button type="submit" class="m-1" mat-raised-button disabled="{{createFolderForm.invalid}}" color="primary">{{"Create"|translate}}</button>
 
         </div>
 

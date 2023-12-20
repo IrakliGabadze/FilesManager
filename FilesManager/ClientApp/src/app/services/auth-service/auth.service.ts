@@ -9,13 +9,19 @@ import { SnackBarService } from '../snack-bar/snack-bar.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SnackBarType } from '../../enums/snack-bar-type';
 import { lastValueFrom } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private router: Router, public httpClientServcie: HttpClientService, private httpClient: HttpClient, private _snackBarService: SnackBarService) {
+  constructor(
+    private router: Router,
+    public httpClientServcie: HttpClientService,
+    private httpClient: HttpClient,
+    private _snackBarService: SnackBarService,
+    private translate: TranslateService) {
     this.authApiControllerAddress = `${environment.filesApiBaseAddress}Auth`
   }
 
@@ -39,14 +45,14 @@ export class AuthService {
         authUser.update(authUserResponse);
       }
       else {
-        this._snackBarService.openSnackBar(SnackBarType.Error, "Username or password is incorrect !!!");
+        this._snackBarService.openSnackBar(SnackBarType.Error, this.translate.instant("IncorrectUsernameOrPassword"));
       }
     }
     catch (e) {
 
       console.log(e) //TODO handle error
 
-      this._snackBarService.openSnackBar(SnackBarType.Error, HttpClientService.errorOperationMessage);
+      this._snackBarService.openSnackBar(SnackBarType.Error, this.translate.instant(HttpClientService.errorOperationMessage));
 
       throw e;
     }
