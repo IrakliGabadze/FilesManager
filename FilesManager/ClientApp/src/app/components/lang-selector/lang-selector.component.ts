@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-lang-selector',
+  selector: 'lang-selector',
   templateUrl: './lang-selector.component.html',
   styleUrl: './lang-selector.component.css'
 })
