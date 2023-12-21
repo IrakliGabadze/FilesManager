@@ -1,27 +1,41 @@
-# FilesManager
+# File Management Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.2.
+This application is designed to manage files efficiently, offering a range of functionalities to enhance your file handling experience.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Used Technologies
 
-## Code scaffolding
+This application is built using a variety of modern technologies to ensure efficiency and ease of use:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Angular**
+- **Angular Material UI**
+- **Typescript**
+- **Javascript**
+- **HTML**
+- **CSS**
+- **Bootstrap**
+- **C#**
+- **ASP.NET Web API**
 
-## Build
+### Functionalities
+- **Upload**: Supports uploading multiple/single files.
+- **Download**: Allows downloading files either as a single file or as a folder in zipped format.
+- **Create Folder**: Enables the creation of new folders.
+- **Cut**: Implements cut operation for folder/file.
+- **Copy**: Implements copy operation for folder/file.
+- **Rename**: Implements rename operation for folder/file.
+- **Delete**: Provides the option to delete folder/file.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Localization
+- The application supports localization with two languages: English and Georgian.
 
-## Running unit tests
+### Authorization
+- Authorization is facilitated through HttpOnly Cookie.
+- For simplicity, the API implementation of cookie authentication code is kept minimal.
+- **Note**: A database is not used in this scenario.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Credentials for Demo
+- **Username**: Admin
+- **Password**: Admin
+- Use these credentials to authorize a user at the login page.
