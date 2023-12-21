@@ -32,7 +32,7 @@ This application is built using a variety of modern technologies to ensure effic
 
 ### Authorization
 - Authorization is facilitated through HttpOnly Cookie.
-- For simplicity, the API implementation of cookie authentication code is kept minimal.
+- For simplicity, the API implementation of authentication code is kept minimal.
 - **Note**: A database is not used in this scenario.
 
 ### Credentials for Demo
