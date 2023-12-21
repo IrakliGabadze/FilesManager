@@ -27,6 +27,10 @@ This application is built using a variety of modern technologies to ensure effic
 - **Rename**: Implements rename operation for folder/file.
 - **Delete**: Provides the option to delete folder/file.
 
+### Preview Functionality
+- **Preview**: Enables previewing image, audio, or video files on the website without the need to download them.
+  - **Note**: Video and audio files can be seeked forward or backward for convenient viewing and listening.
+
 ### Localization
 - The application supports localization with two languages: English and Georgian.
 
