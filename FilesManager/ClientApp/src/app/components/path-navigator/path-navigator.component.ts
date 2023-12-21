@@ -7,6 +7,15 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 })
 export class PathNavigatorComponent implements OnChanges {
 
+  @Input() currentFolderItemPath?: string;
+
+  @Output() pathItemClick: EventEmitter<string> = new EventEmitter();
+
+  static rootPathItem: Array<string> = ["Home"];
+
+  currentPathItems!: Array<string>;
+  enableReturnBack: boolean = false;
+
   ngOnChanges(changes: SimpleChanges): void {
 
     if (this.currentFolderItemPath == undefined) {
@@ -20,14 +29,6 @@ export class PathNavigatorComponent implements OnChanges {
     this.enableReturnBack = this.currentFolderItemPath != undefined;
   }
 
-  @Input() currentFolderItemPath?: string;
-
-  @Output() pathItemClick: EventEmitter<string> = new EventEmitter();
-
-  static rootPathItem: Array<string> = ["Root"];
-
-  currentPathItems!: Array<string>;
-  enableReturnBack: boolean = false;
 
   pathItemNeedsSlashToEnd(index: number): boolean {
 

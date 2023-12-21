@@ -8,7 +8,11 @@
         <span *ngFor="let pathItem of currentPathItems; let i = index;">
 
             <span (click)="pathItemClicked(i)" class="files-path-nav-item">
-                {{pathItem}}
+                @if(i == 0){
+                  {{"Home"|translate}}
+                }@else{
+                  {{pathItem}}
+                }
             </span>
 
             <span *ngIf="pathItemNeedsSlashToEnd(i)" class="nav-item-slash">

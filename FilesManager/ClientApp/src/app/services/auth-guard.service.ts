@@ -37,7 +37,7 @@ export class PermissionsService {
         this.authService.authUserSig.set(authUser);
 
         if (!(roles?.length > 0) || authUser.hasAnyRole(roles)) {
-          this.router.navigateByUrl(state.url == '/' ? 'home' : state.url);
+          this.router.navigateByUrl(state.url == '/' ? 'files' : state.url);
         }
         else {
           this.router.navigateByUrl('login');

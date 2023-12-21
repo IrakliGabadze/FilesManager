@@ -60,7 +60,7 @@ export class AuthService {
     this.authUserSig.set(authUser);
 
     if (authUser.IsAuthenticated)
-      this.router.navigateByUrl("home");
+      this.router.navigateByUrl("files");
   }
 
   async getCurrentUser() {
