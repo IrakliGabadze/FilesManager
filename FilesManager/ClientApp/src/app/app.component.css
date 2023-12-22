@@ -63,6 +63,10 @@ mat-toolbar {
     text-shadow: var(--text-shadow);
   }
 
+mat-toolbar-row ul {
+  margin: 48px;
+}
+
 .active {
   color: rgb(85, 26, 139) !important;
 }
@@ -189,4 +193,14 @@ upload-files .mat-dialog-content {
 /* Edge */
 .scrollable-div, .vertically-scrollable-div, .vertically-scrollable-div {
   -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+@media (max-width:1000px) {
+  .app-name-header {
+    display: none;
+  }
+
+  mat-toolbar-row ul {
+    margin: 5px;
+  }
 }

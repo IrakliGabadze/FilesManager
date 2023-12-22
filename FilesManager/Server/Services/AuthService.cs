@@ -7,6 +7,8 @@ namespace FilesManager.Server.Services;
 
 public class AuthService
 {
+     private const string TestUsername = "Test User";
+
     public async Task<AuthUserResponse?> SignInUserAsync(HttpContext httpContext, LoginRequest loginRequest)
     {
         //TODO in real scenario, check user in db and get roles
@@ -15,7 +17,7 @@ public class AuthService
 
         var claims = new List<Claim>()
         {
-            new(ClaimTypes.Name, loginRequest.Username),
+            new(ClaimTypes.Name, TestUsername),
             new(ClaimTypes.Role, "Administrator")
         };
 
@@ -30,7 +32,7 @@ public class AuthService
 
         await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-        return new AuthUserResponse(loginRequest.Username, roles);
+        return new AuthUserResponse(TestUsername, roles);
     }
 
     public async Task<AuthUserResponse?> GetCurrentUserAsync(HttpContext httpContext)
