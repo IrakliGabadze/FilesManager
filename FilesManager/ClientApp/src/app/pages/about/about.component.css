@@ -1,6 +1,12 @@
-.about-wrapper {
+.about-outer-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-inner-wrapper {
   max-width: 1000px;
-  margin: 50px auto;
+  margin: 30px;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
