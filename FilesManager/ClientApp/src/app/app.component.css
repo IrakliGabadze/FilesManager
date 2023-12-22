@@ -36,6 +36,7 @@ body {
   position: relative;
   width: 100%;
   height: max-content;
+  padding-bottom: 20px;
 }
 
 ul {
@@ -49,11 +50,6 @@ ul {
 li {
   margin: 0 9px;
 }
-
-  li:hover {
-    cursor: pointer;
-    color: #d6002f;
-  }
 
 mat-toolbar {
   box-shadow: var(--box-shadow);
