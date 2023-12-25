@@ -3,23 +3,27 @@
 
     <mat-card-content>
 
-        <ng-container *ngIf="enableReturnBack then enableReturnBackIcon else disableReturnBackIcon"></ng-container>
+        <div class="path-items-wrapper">
 
-        <span *ngFor="let pathItem of currentPathItems; let i = index;">
+            <ng-container *ngIf="enableReturnBack then enableReturnBackIcon else disableReturnBackIcon"></ng-container>
 
-            <span (click)="pathItemClicked(i)" class="files-path-nav-item">
-                @if(i == 0){
-                  {{"Home"|translate}}
-                }@else{
-                  {{pathItem}}
-                }
-            </span>
+            <div *ngFor="let pathItem of currentPathItems; let i = index;">
 
-            <span *ngIf="pathItemNeedsSlashToEnd(i)" class="nav-item-slash">
-                /
-            </span>
+                <div (click)="pathItemClicked(i)" class="files-path-nav-item">
+                    @if(i == 0){
+                    {{"Home"|translate}}
+                    }@else{
+                    {{pathItem}}
+                    }
+                </div>
 
-        </span>
+                <div *ngIf="pathItemNeedsSlashToEnd(i)" class="nav-item-slash">
+                    /
+                </div>
+
+            </div>
+
+        </div>
 
         <ng-content></ng-content>
 
