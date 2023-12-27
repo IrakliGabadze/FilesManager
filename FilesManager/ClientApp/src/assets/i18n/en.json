@@ -20,7 +20,7 @@
   "Create": "Create",
   "CreateNewFolder": "Create new folder",
   "Name": "Name",
-  "NewName": "NewName",
+  "NewName": "New name",
   "CurrentName": "Current name",
   "IsRequired": "{{itemName}} is required",
   "MaxLengthCharacters": "Max length for {{itemName}} is {{maxLength}}",
