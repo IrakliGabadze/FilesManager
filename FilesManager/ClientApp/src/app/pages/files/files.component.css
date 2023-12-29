@@ -44,7 +44,14 @@
 
 .folder-items-wrapper {
   display: grid;
-  justify-content: center;
+  align-content: start;
+  justify-items: center !important;
+  justify-content: center !important;
   grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
   gap: 20px;
+  height: calc(100vh - 190px);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  border-radius: 5px;
+  overflow-x: hidden;
 }
