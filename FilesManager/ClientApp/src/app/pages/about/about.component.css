@@ -1,11 +1,12 @@
 .about-outer-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
+  height: calc(100vh - 90px);
 }
 
 .about-inner-wrapper {
   max-width: 1000px;
+  height: fit-content;
   margin: 30px;
   background: #fff;
   padding: 20px;
