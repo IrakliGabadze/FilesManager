@@ -42,12 +42,14 @@
 }
 
 .nav-item-slash {
-  font-size: 22px;
+  font-size: 19px;
 }
 
 .navBackIconEnabled, .navBackIconDisabled {
   margin-right: 5px;
   border-radius: 50%;
+  height: 25px;
+  width: 25px;
 }
 
 .navBackIconEnabled {
